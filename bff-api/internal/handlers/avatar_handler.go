@@ -49,7 +49,7 @@ func AvatarHandler(w http.ResponseWriter, r *http.Request) {
 	avatarData, err := os.ReadFile(avatarPath)
 	if err != nil {
 		if typ == "AVATAR" {
-			avatarData, err = os.ReadFile("data/Placeholder_Image")
+			avatarData, err = os.ReadFile("placeholder/placeholder_avatar")
 			if err != nil {
 				http.Error(w, "Placeholder nicht gefunden", http.StatusInternalServerError)
 				return

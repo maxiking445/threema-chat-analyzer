@@ -54,6 +54,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/delete-zip": {
+            "delete": {
+                "description": "Löscht ein angegebenes temporäres Verzeichnis rekursiv",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "upload"
+                ],
+                "summary": "Löscht ein temporäres Verzeichnis",
+                "responses": {
+                    "200": {
+                        "description": "Temp-Verzeichnis gelöscht",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Temp-Verzeichnis nicht angegeben oder ungültig",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Fehler beim Löschen",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/groups": {
             "get": {
                 "description": "Einfacher Test",
@@ -64,6 +99,63 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "Test OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/upload-zip": {
+            "post": {
+                "description": "Nimmt eine passwortgeschützte ZIP-Datei entgegen, entpackt sie in das relative Verzeichnis ./data",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "upload"
+                ],
+                "summary": "Upload ZIP (password protected)",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Passwort der ZIP-Datei",
+                        "name": "X-Zip-Password",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "ZIP-Datei",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ZIP successfully extracted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request / wrong password / invalid zip",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allowed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
                         "schema": {
                             "type": "string"
                         }

@@ -45,6 +45,29 @@ paths:
           schema:
             type: file
       summary: Avatar Endpoint
+  /delete-zip:
+    delete:
+      consumes:
+      - application/json
+      description: Löscht ein angegebenes temporäres Verzeichnis rekursiv
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Temp-Verzeichnis gelöscht
+          schema:
+            type: string
+        "400":
+          description: Temp-Verzeichnis nicht angegeben oder ungültig
+          schema:
+            type: string
+        "500":
+          description: Fehler beim Löschen
+          schema:
+            type: string
+      summary: Löscht ein temporäres Verzeichnis
+      tags:
+      - upload
   /groups:
     get:
       description: Einfacher Test
@@ -56,6 +79,45 @@ paths:
           schema:
             type: string
       summary: Test Endpoint
+  /upload-zip:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Nimmt eine passwortgeschützte ZIP-Datei entgegen, entpackt sie
+        in das relative Verzeichnis ./data
+      parameters:
+      - description: Passwort der ZIP-Datei
+        in: header
+        name: X-Zip-Password
+        required: true
+        type: string
+      - description: ZIP-Datei
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: ZIP successfully extracted
+          schema:
+            type: string
+        "400":
+          description: Bad request / wrong password / invalid zip
+          schema:
+            type: string
+        "405":
+          description: Method not allowed
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Upload ZIP (password protected)
+      tags:
+      - upload
   /users:
     get:
       description: Gibt alle User aus dem identity.csv zurück
