@@ -1,0 +1,134 @@
+basePath: /
+definitions:
+  models.Identity:
+    properties:
+      firstName:
+        type: string
+      identity:
+        type: string
+      identityID:
+        type: string
+      lastName:
+        type: string
+      nickName:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  title: BFF API
+  version: "1.0"
+paths:
+  /avatar/{id}:
+    get:
+      description: Gets Avatar for CONTACT, Group or Avatar by ID
+      parameters:
+      - description: CONTACT, GROUP or AVATAR
+        enum:
+        - CONTACT
+        - GROUP
+        - AVATAR
+        in: query
+        name: type
+        required: true
+        type: string
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - image/png
+      responses:
+        "200":
+          description: Image
+          schema:
+            type: file
+      summary: Avatar Endpoint
+  /delete-zip:
+    delete:
+      consumes:
+      - application/json
+      description: Löscht ein angegebenes temporäres Verzeichnis rekursiv
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Temp-Verzeichnis gelöscht
+          schema:
+            type: string
+        "400":
+          description: Temp-Verzeichnis nicht angegeben oder ungültig
+          schema:
+            type: string
+        "500":
+          description: Fehler beim Löschen
+          schema:
+            type: string
+      summary: Löscht ein temporäres Verzeichnis
+      tags:
+      - upload
+  /groups:
+    get:
+      description: Einfacher Test
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Test OK
+          schema:
+            type: string
+      summary: Test Endpoint
+  /upload-zip:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Nimmt eine passwortgeschützte ZIP-Datei entgegen, entpackt sie
+        in das relative Verzeichnis ./data
+      parameters:
+      - description: Passwort der ZIP-Datei
+        in: header
+        name: X-Zip-Password
+        required: true
+        type: string
+      - description: ZIP-Datei
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: ZIP successfully extracted
+          schema:
+            type: string
+        "400":
+          description: Bad request / wrong password / invalid zip
+          schema:
+            type: string
+        "405":
+          description: Method not allowed
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Upload ZIP (password protected)
+      tags:
+      - upload
+  /users:
+    get:
+      description: Gibt alle User aus dem identity.csv zurück
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Identity'
+            type: array
+      summary: User list
+swagger: "2.0"
