@@ -15,6 +15,7 @@ import (
 // @BasePath /
 
 func main() {
+	http.HandleFunc("/avatar/", handlers.AvatarHandler)
 	http.HandleFunc("/groups", handlers.GroupsHandler)
 	http.HandleFunc("/user", handlers.TestHandler)
 	http.HandleFunc("/swagger/", httpSwagger.WrapHandler)

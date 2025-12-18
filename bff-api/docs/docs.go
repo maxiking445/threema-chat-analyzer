@@ -16,6 +16,44 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/avatar/{id}": {
+            "get": {
+                "description": "Gets Avatar for CONTACT, Group or Avatar by ID",
+                "produces": [
+                    "image/png"
+                ],
+                "summary": "Avatar Endpoint",
+                "parameters": [
+                    {
+                        "enum": [
+                            "CONTACT",
+                            "GROUP",
+                            "AVATAR"
+                        ],
+                        "type": "string",
+                        "description": "CONTACT, GROUP or AVATAR",
+                        "name": "type",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Image",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
+        },
         "/groups": {
             "get": {
                 "description": "Einfacher Test",

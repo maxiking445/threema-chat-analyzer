@@ -5,6 +5,32 @@ info:
   title: BFF API
   version: "1.0"
 paths:
+  /avatar/{id}:
+    get:
+      description: Gets Avatar for CONTACT, Group or Avatar by ID
+      parameters:
+      - description: CONTACT, GROUP or AVATAR
+        enum:
+        - CONTACT
+        - GROUP
+        - AVATAR
+        in: query
+        name: type
+        required: true
+        type: string
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - image/png
+      responses:
+        "200":
+          description: Image
+          schema:
+            type: file
+      summary: Avatar Endpoint
   /groups:
     get:
       description: Einfacher Test
