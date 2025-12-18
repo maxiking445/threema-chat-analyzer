@@ -1,4 +1,18 @@
 basePath: /
+definitions:
+  models.Identity:
+    properties:
+      firstName:
+        type: string
+      identity:
+        type: string
+      identityID:
+        type: string
+      lastName:
+        type: string
+      nickName:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -42,15 +56,17 @@ paths:
           schema:
             type: string
       summary: Test Endpoint
-  /user:
+  /users:
     get:
-      description: Einfacher Test
+      description: Gibt alle User aus dem identity.csv zurück
       produces:
-      - text/plain
+      - application/json
       responses:
         "200":
-          description: Test OK
+          description: OK
           schema:
-            type: string
-      summary: Test Endpoint
+            items:
+              $ref: '#/definitions/models.Identity'
+            type: array
+      summary: User list
 swagger: "2.0"

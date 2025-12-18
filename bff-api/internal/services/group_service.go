@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	model "github.com/maxiking445/bff-api/internal/models/Group"
+	model "github.com/maxiking445/bff-api/internal/models"
 )
 
 func LoadGroupsWithMessageCounts(groupsPath string, groupChatPath string) ([]model.Group, error) {

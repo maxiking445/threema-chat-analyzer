@@ -71,20 +71,45 @@ const docTemplate = `{
                 }
             }
         },
-        "/user": {
+        "/users": {
             "get": {
-                "description": "Einfacher Test",
+                "description": "Gibt alle User aus dem identity.csv zurück",
                 "produces": [
-                    "text/plain"
+                    "application/json"
                 ],
-                "summary": "Test Endpoint",
+                "summary": "User list",
                 "responses": {
                     "200": {
-                        "description": "Test OK",
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Identity"
+                            }
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Identity": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "identity": {
+                    "type": "string"
+                },
+                "identityID": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "nickName": {
+                    "type": "string"
                 }
             }
         }

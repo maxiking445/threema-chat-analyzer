@@ -17,7 +17,7 @@ import (
 func main() {
 	http.HandleFunc("/avatar/", handlers.AvatarHandler)
 	http.HandleFunc("/groups", handlers.GroupsHandler)
-	http.HandleFunc("/user", handlers.TestHandler)
+	http.HandleFunc("/users", handlers.UserHandler)
 	http.HandleFunc("/swagger/", httpSwagger.WrapHandler)
 	fmt.Println("Server: http://localhost:8080/swagger/index.html")
 	http.ListenAndServe(":8080", nil)
