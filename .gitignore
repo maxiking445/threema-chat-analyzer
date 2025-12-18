@@ -31,13 +31,4 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
-bff-api/data/contact_avatar_me
-bff-api/data/contact_profile_pic_0012965652
-bff-api/data/contact_profile_pic_0051605413
-bff-api/data/contact_profile_pic_0065124507
-bff-api/data/contact_profile_pic_2041716896
-bff-api/data/contact_profile_pic_2141021766
-bff-api/data/group_avatar_0447190116
-bff-api/data/group_avatar_0539910367
-bff-api/data/group_avatar_1307739700
-bff-api/data/group_avatar_1587502506
+bff-api/data/*
