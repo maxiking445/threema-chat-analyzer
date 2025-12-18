@@ -1,0 +1,30 @@
+basePath: /
+host: localhost:8080
+info:
+  contact: {}
+  title: BFF API
+  version: "1.0"
+paths:
+  /groups:
+    get:
+      description: Einfacher Test
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Test OK
+          schema:
+            type: string
+      summary: Test Endpoint
+  /user:
+    get:
+      description: Einfacher Test
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Test OK
+          schema:
+            type: string
+      summary: Test Endpoint
+swagger: "2.0"

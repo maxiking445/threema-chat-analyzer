@@ -1,0 +1,46 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "BFF API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/groups": {
+            "get": {
+                "description": "Einfacher Test",
+                "produces": [
+                    "text/plain"
+                ],
+                "summary": "Test Endpoint",
+                "responses": {
+                    "200": {
+                        "description": "Test OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "description": "Einfacher Test",
+                "produces": [
+                    "text/plain"
+                ],
+                "summary": "Test Endpoint",
+                "responses": {
+                    "200": {
+                        "description": "Test OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
