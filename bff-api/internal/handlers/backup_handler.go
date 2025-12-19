@@ -7,8 +7,57 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/maxiking445/bff-api/internal/common"
 	"github.com/yeka/zip"
 )
+
+// DeleteTempDirHandler godoc
+//
+// @Summary      Löscht ein temporäres Verzeichnis
+// @Description  Löscht ein angegebenes temporäres Verzeichnis rekursiv
+// @Tags         upload
+// @Accept       json
+// @Produce      json
+// @Success      200      {string} string  "Temp-Verzeichnis gelöscht"
+// @Failure      400      {string} string  "Temp-Verzeichnis nicht angegeben oder ungültig"
+// @Failure      500      {string} string  "Fehler beim Löschen"
+// @Router       /delete-zip [delete]
+func DeleteDataHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodDelete {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Relativer Pfad ./data
+	dataDir := common.DATA_PATH
+
+	// Prüfen, ob das Verzeichnis existiert
+	if _, err := os.Stat(dataDir); os.IsNotExist(err) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Data directory does not exist, nothing to delete"))
+		return
+	}
+
+	entries, err := os.ReadDir(dataDir)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	for _, entry := range entries {
+		path := filepath.Join(dataDir, entry.Name())
+		fmt.Println("Removing entry:", path)
+		err := os.RemoveAll(path)
+		if err != nil {
+			// Fehler nur loggen, nicht abbrechen
+			fmt.Printf("Failed to remove entry %s: %v\n", path, err)
+			continue
+		}
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("All files and directories in ./data deleted"))
+}
 
 // UploadZipHandler godoc
 //
@@ -72,7 +121,7 @@ func UploadZipHandler(w http.ResponseWriter, r *http.Request) {
 	defer zr.Close()
 
 	// Relatives data-Verzeichnis
-	destDir := "./data"
+	destDir := common.DATA_PATH
 	err = os.MkdirAll(destDir, 0755) // Ordner erstellen, falls nicht vorhanden
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -135,52 +184,4 @@ func UploadZipHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("ZIP successfully extracted to ./data"))
-}
-
-// DeleteTempDirHandler godoc
-//
-// @Summary      Löscht ein temporäres Verzeichnis
-// @Description  Löscht ein angegebenes temporäres Verzeichnis rekursiv
-// @Tags         upload
-// @Accept       json
-// @Produce      json
-// @Success      200      {string} string  "Temp-Verzeichnis gelöscht"
-// @Failure      400      {string} string  "Temp-Verzeichnis nicht angegeben oder ungültig"
-// @Failure      500      {string} string  "Fehler beim Löschen"
-// @Router       /delete-zip [delete]
-func DeleteDataHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodDelete {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	// Relativer Pfad ./data
-	dataDir := "./data"
-
-	// Prüfen, ob das Verzeichnis existiert
-	if _, err := os.Stat(dataDir); os.IsNotExist(err) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Data directory does not exist, nothing to delete"))
-		return
-	}
-
-	entries, err := os.ReadDir(dataDir)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	for _, entry := range entries {
-		path := filepath.Join(dataDir, entry.Name())
-		fmt.Println("Removing entry:", path)
-		err := os.RemoveAll(path)
-		if err != nil {
-			// Fehler nur loggen, nicht abbrechen
-			fmt.Printf("Failed to remove entry %s: %v\n", path, err)
-			continue
-		}
-	}
-
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("All files and directories in ./data deleted"))
 }
