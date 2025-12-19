@@ -44,7 +44,6 @@ paths:
           description: Image
           schema:
             type: file
-      summary: Avatar Endpoint
   /delete-zip:
     delete:
       consumes:
@@ -78,7 +77,6 @@ paths:
           description: Test OK
           schema:
             type: string
-      summary: Test Endpoint
   /upload-zip:
     post:
       consumes:
@@ -120,7 +118,7 @@ paths:
       - upload
   /users:
     get:
-      description: Gibt alle User aus dem identity.csv zurück
+      description: Returns all identities from identity.csv
       produces:
       - application/json
       responses:
@@ -130,5 +128,31 @@ paths:
             items:
               $ref: '#/definitions/models.Identity'
             type: array
-      summary: User list
+  /wordcloud:
+    get:
+      description: |-
+        Reads all CSV files named `message_*.csv` from `/data`, analyzes the `body` column,
+        counts all words across all rows and returns the most frequent words as JSON.
+      parameters:
+      - description: Maximum number of words to return (default 100)
+        in: query
+        minimum: 1
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: Invalid request parameters
+          schema:
+            type: string
+        "404":
+          description: No message files found
+          schema:
+            type: string
+        "500":
+          description: Internal server error while reading or parsing files
+          schema:
+            type: string
+      summary: Get most frequent words
 swagger: "2.0"

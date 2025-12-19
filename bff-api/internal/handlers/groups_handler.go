@@ -7,7 +7,7 @@ import (
 	groupService "github.com/maxiking445/bff-api/internal/services"
 )
 
-// @Summary Test Endpoint
+// GroupsHandler @Summary Test Endpoint
 // @Description Einfacher Test
 // @Produce plain
 // @Success 200 {string} string "Test OK"

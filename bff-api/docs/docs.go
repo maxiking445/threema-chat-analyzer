@@ -22,7 +22,6 @@ const docTemplate = `{
                 "produces": [
                     "image/png"
                 ],
-                "summary": "Avatar Endpoint",
                 "parameters": [
                     {
                         "enum": [
@@ -95,7 +94,6 @@ const docTemplate = `{
                 "produces": [
                     "text/plain"
                 ],
-                "summary": "Test Endpoint",
                 "responses": {
                     "200": {
                         "description": "Test OK",
@@ -165,11 +163,10 @@ const docTemplate = `{
         },
         "/users": {
             "get": {
-                "description": "Gibt alle User aus dem identity.csv zurück",
+                "description": "Returns all identities from identity.csv",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "User list",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -178,6 +175,44 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/models.Identity"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/wordcloud": {
+            "get": {
+                "description": "Reads all CSV files named ` + "`" + `message_*.csv` + "`" + ` from ` + "`" + `/data` + "`" + `, analyzes the ` + "`" + `body` + "`" + ` column,\ncounts all words across all rows and returns the most frequent words as JSON.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get most frequent words",
+                "parameters": [
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "Maximum number of words to return (default 100)",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No message files found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error while reading or parsing files",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }

@@ -32,3 +32,11 @@ go.work.sum
 # .idea/
 # .vscode/
 bff-api/data/*
+
+
+# IntelliJ IDEA
+.idea/*
+*.iml
+*.ipr
+*.iws
+out/

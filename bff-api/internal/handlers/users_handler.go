@@ -7,8 +7,8 @@ import (
 	service "github.com/maxiking445/bff-api/internal/services"
 )
 
-// @Summary User list
-// @Description Gibt alle User aus dem identity.csv zurück
+// UserHandler @Summary User list
+// @Description Returns all identities from identity.csv
 // @Produce json
 // @Success 200 {array} models.Identity
 // @Router /users [get]

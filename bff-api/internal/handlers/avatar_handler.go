@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// @Summary Avatar Endpoint
+// AvatarHandler @Summary Avatar Endpoint
 // @Description Gets Avatar for CONTACT, Group or Avatar by ID
 // @Produce image/png
 // @Param       type  query    string  true  "CONTACT, GROUP or AVATAR"  Enums(CONTACT,GROUP,AVATAR)
