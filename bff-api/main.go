@@ -19,6 +19,7 @@ func main() {
 	http.Handle("/delete-zip", cors(http.HandlerFunc(handlers.DeleteDataHandler)))
 
 	http.HandleFunc("/avatar/", handlers.AvatarHandler)
+	http.HandleFunc("/wordcloud/", handlers.WordsHandler)
 	http.HandleFunc("/groups", handlers.GroupsHandler)
 	http.HandleFunc("/users", handlers.UserHandler)
 	http.HandleFunc("/swagger/", httpSwagger.WrapHandler)
