@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/maxiking445/bff-api/internal/common"
+	"github.com/maxiking445/bff-api/internal/models"
 )
 
 // AvatarHandler @Summary Avatar Endpoint
@@ -23,7 +24,7 @@ func AvatarHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id := pathParts[len(pathParts)-1] // Letzter Teil = ID
+	id := pathParts[len(pathParts)-1]
 	if id == "" {
 		http.Error(w, "ID required", http.StatusBadRequest)
 		return
@@ -36,21 +37,21 @@ func AvatarHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dir := typ // "CONTACT", "GROUP" or "AVATAR"
+	dir, err := models.ParseAvatarType(typ) // "CONTACT", "GROUP" or "AVATAR"
 	avatarPath := ""
-	if dir == "CONTACT" {
+	if dir == models.AvatarTypeContact {
 		avatarPath = common.ProfilePicContact + id
 	}
-	if dir == "GROUP" {
+	if dir == models.AvatarTypeGroup {
 		avatarPath = common.ProfilePicGroup + id
 	}
-	if dir == "AVATAR" {
+	if dir == models.AvatarTypeAvatar {
 		avatarPath = common.ProfilePicAvatar
 	}
 
 	avatarData, err := os.ReadFile(avatarPath)
 	if err != nil {
-		if typ == "AVATAR" {
+		if dir == models.AvatarTypeAvatar {
 			avatarData, err = os.ReadFile(common.ProfilePicPlaceholder)
 			if err != nil {
 				http.Error(w, "Placeholder not found", http.StatusInternalServerError)
