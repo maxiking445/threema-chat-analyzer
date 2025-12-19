@@ -29,7 +29,7 @@ func DeleteDataHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Relativer Pfad ./data
-	dataDir := common.DATA_PATH
+	dataDir := common.DataPath
 
 	// Prüfen, ob das Verzeichnis existiert
 	if _, err := os.Stat(dataDir); os.IsNotExist(err) {
@@ -121,7 +121,7 @@ func UploadZipHandler(w http.ResponseWriter, r *http.Request) {
 	defer zr.Close()
 
 	// Relatives data-Verzeichnis
-	destDir := common.DATA_PATH
+	destDir := common.DataPath
 	err = os.MkdirAll(destDir, 0755) // Ordner erstellen, falls nicht vorhanden
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

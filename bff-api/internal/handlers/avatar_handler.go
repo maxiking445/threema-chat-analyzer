@@ -39,19 +39,19 @@ func AvatarHandler(w http.ResponseWriter, r *http.Request) {
 	dir := typ // "CONTACT", "GROUP" or "AVATAR"
 	avatarPath := ""
 	if dir == "CONTACT" {
-		avatarPath = common.PROFILE_PIC_CONTACT + id
+		avatarPath = common.ProfilePicContact + id
 	}
 	if dir == "GROUP" {
-		avatarPath = common.PROFILE_PIC_GROUP + id
+		avatarPath = common.ProfilePicGroup + id
 	}
 	if dir == "AVATAR" {
-		avatarPath = common.PROFILE_PIC_AVATAR
+		avatarPath = common.ProfilePicAvatar
 	}
 
 	avatarData, err := os.ReadFile(avatarPath)
 	if err != nil {
 		if typ == "AVATAR" {
-			avatarData, err = os.ReadFile(common.PROFILE_PIC_PLACEHOLDER)
+			avatarData, err = os.ReadFile(common.ProfilePicPlaceholder)
 			if err != nil {
 				http.Error(w, "Placeholder not found", http.StatusInternalServerError)
 				return

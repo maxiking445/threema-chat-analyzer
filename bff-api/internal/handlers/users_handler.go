@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/maxiking445/bff-api/internal/common"
 	service "github.com/maxiking445/bff-api/internal/services"
 )
 
@@ -13,7 +14,7 @@ import (
 // @Success 200 {array} models.Identity
 // @Router /users [get]
 func UserHandler(w http.ResponseWriter, r *http.Request) {
-	identities, err := service.LoadIdentitiesFromCSV("data/contacts.csv")
+	identities, err := service.LoadIdentitiesFromCSV(common.UserContactsPath)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
