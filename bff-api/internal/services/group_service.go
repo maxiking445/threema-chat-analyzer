@@ -8,16 +8,17 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/maxiking445/bff-api/internal/common"
 	model "github.com/maxiking445/bff-api/internal/models"
 )
 
-func LoadGroupsWithMessageCounts(groupsPath string, groupChatPath string) ([]model.Group, error) {
+func LoadGroupsWithMessageCounts(groupsPath string) ([]model.Group, error) {
 	groups, err := loadGroupsFromCSV(groupsPath)
 	if err != nil {
 		return nil, err
 	}
 
-	files, err := filepath.Glob("data/group_message_*.csv")
+	files, err := filepath.Glob(common.GroupMessagePath)
 	if err != nil {
 		panic(err)
 	}
@@ -144,8 +145,8 @@ func loadGroupMessagesFromCSV(path string) ([]GroupMessageRow, error) {
 		}
 
 		base := filepath.Base(path)
-		base = strings.TrimSuffix(base, ".csv")
-		groupUUID := strings.TrimPrefix(base, "group_message_")
+		base = strings.TrimSuffix(base, common.CSV)
+		groupUUID := strings.TrimPrefix(base, common.GroupMessage)
 
 		rows = append(rows, GroupMessageRow{
 			GroupUID: groupUUID, // uid = group_uid

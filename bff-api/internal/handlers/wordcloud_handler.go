@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"github.com/maxiking445/bff-api/internal/common"
 	service "github.com/maxiking445/bff-api/internal/services"
 )
 
@@ -28,7 +29,7 @@ func WordsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	files, err := filepath.Glob("data/message_*.csv")
+	files, err := filepath.Glob(common.UserMessagesPath)
 	if err != nil {
 		http.Error(w, "failed to list data files", http.StatusInternalServerError)
 		return
