@@ -29,13 +29,14 @@
           placeholder="Enter ZIP password" />
       </div>
       <div class="upload-button-wrapper">
-        <button class="upload-button"   :disabled="!selectedFile || !password" @click="onUpload">Analyze</button>
+        <button class="upload-button" :disabled="!selectedFile || !password" @click="onUpload">Analyze</button>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script  setup >
+import { UploadApi } from '@/generated/api'
 import { ref } from 'vue'
 
 const isActive = ref(false)
@@ -49,8 +50,17 @@ const onDragLeave = () => {
   isActive.value = false
 }
 
+
+const uploadApi = new UploadApi()
+
 const onUpload = () => {
   console.log('UPLOAD', selectedFile.value, password.value)
+  uploadApi.uploadZipPost({
+    file: selectedFile.value,
+    xZipPassword: password.value,
+  }).then((response) => {
+    console.log('Upload successful:', response)
+  })
 }
 
 const handleFiles = (files) => {
@@ -174,6 +184,7 @@ const onFileSelect = (e) => {
   white-space: nowrap;
   color: #e5e7eb;
 }
+
 .password-row {
   margin-top: 1.25rem;
   display: flex;

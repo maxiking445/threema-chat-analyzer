@@ -1,0 +1,11 @@
+.openapi-generator-ignore
+apis/DefaultApi.ts
+apis/UploadApi.ts
+apis/index.ts
+docs/DefaultApi.md
+docs/ModelsIdentity.md
+docs/UploadApi.md
+index.ts
+models/ModelsIdentity.ts
+models/index.ts
+runtime.ts
