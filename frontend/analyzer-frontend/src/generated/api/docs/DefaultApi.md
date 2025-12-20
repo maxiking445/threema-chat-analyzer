@@ -1,6 +1,6 @@
 # DefaultApi
 
-All URIs are relative to *http://localhost:8080*
+All URIs are relative to */api*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -201,7 +201,7 @@ No authorization required
 
 ## wordcloudGet
 
-> wordcloudGet(limit)
+> Array&lt;ModelsWordCount&gt; wordcloudGet(limit)
 
 Get most frequent words
 
@@ -246,7 +246,7 @@ example().catch(console.error);
 
 ### Return type
 
-`void` (Empty response body)
+[**Array&lt;ModelsWordCount&gt;**](ModelsWordCount.md)
 
 ### Authorization
 
@@ -261,6 +261,7 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Most frequent words |  -  |
 | **400** | Invalid request parameters |  -  |
 | **404** | No message files found |  -  |
 | **500** | Internal server error while reading or parsing files |  -  |
