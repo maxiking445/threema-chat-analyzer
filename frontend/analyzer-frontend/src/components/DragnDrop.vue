@@ -35,9 +35,10 @@
   </div>
 </template>
 
-<script  setup >
+<script setup>
 import { UploadApi } from '@/generated/api'
 import { ref } from 'vue'
+import { pushErrorToast } from '@/service/ToastService'
 
 const isActive = ref(false)
 const selectedFile = ref(null)
@@ -60,6 +61,11 @@ const onUpload = () => {
     xZipPassword: password.value,
   }).then((response) => {
     console.log('Upload successful:', response)
+    router.push('/view')
+  }).catch((error) => {
+    if (error?.response) {
+      error.response.text().then((t) => pushErrorToast(t || 'Upload failed'))
+    }
   })
 }
 
