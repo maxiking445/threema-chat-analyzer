@@ -39,6 +39,10 @@
 import { UploadApi } from '@/generated/api'
 import { ref } from 'vue'
 import { pushErrorToast } from '@/service/ToastService'
+import { pushSuccessToast } from '@/service/ToastService'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const isActive = ref(false)
 const selectedFile = ref(null)
@@ -60,6 +64,7 @@ const onUpload = () => {
     file: selectedFile.value,
     xZipPassword: password.value,
   }).then((response) => {
+    pushSuccessToast('Upload successful')
     console.log('Upload successful:', response)
     router.push('/view')
   }).catch((error) => {

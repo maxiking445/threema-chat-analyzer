@@ -1,8 +1,9 @@
 <template>
     <div class="toast-container">
         <transition-group name="toast-fade">
-            <div v-for="toast in toasts" :key="toast.id" class="toast">
-                {{ toast.message }}
+            <div v-for="toast in toasts" :key="toast.id" :class="['toast', toast.type]">
+                <strong>{{ toast.type === 'success' ? 'Success' : 'Failure' }}</strong>
+                <p>{{ toast.message }}</p>
             </div>
         </transition-group>
     </div>
@@ -31,10 +32,20 @@ const toasts = useErrorToasts()
     max-width: 320px;
     padding: 0.6rem 0.9rem;
     border-radius: 8px;
-    background: #b91c1c;
     color: #f9fafb;
     font-size: 0.85rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.toast.success {
+    background: #16a34a;
+}
+
+.toast.error {
+    background: #b91c1c;
 }
 
 .toast-fade-enter-active,
