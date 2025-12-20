@@ -197,6 +197,15 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "Most frequent words",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.WordCount"
+                            }
+                        }
+                    },
                     "400": {
                         "description": "Invalid request parameters",
                         "schema": {
@@ -236,6 +245,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "nickName": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.WordCount": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "word": {
                     "type": "string"
                 }
             }

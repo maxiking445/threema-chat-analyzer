@@ -16,10 +16,13 @@
 import * as runtime from '../runtime';
 import type {
   ModelsIdentity,
+  ModelsWordCount,
 } from '../models/index';
 import {
     ModelsIdentityFromJSON,
     ModelsIdentityToJSON,
+    ModelsWordCountFromJSON,
+    ModelsWordCountToJSON,
 } from '../models/index';
 
 export interface AvatarIdGetRequest {
@@ -150,7 +153,7 @@ export class DefaultApi extends runtime.BaseAPI {
      * Reads all CSV files named `message_*.csv` from `/data`, analyzes the `body` column, counts all words across all rows and returns the most frequent words as JSON.
      * Get most frequent words
      */
-    async wordcloudGetRaw(requestParameters: WordcloudGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async wordcloudGetRaw(requestParameters: WordcloudGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ModelsWordCount>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -169,15 +172,16 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ModelsWordCountFromJSON));
     }
 
     /**
      * Reads all CSV files named `message_*.csv` from `/data`, analyzes the `body` column, counts all words across all rows and returns the most frequent words as JSON.
      * Get most frequent words
      */
-    async wordcloudGet(requestParameters: WordcloudGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.wordcloudGetRaw(requestParameters, initOverrides);
+    async wordcloudGet(requestParameters: WordcloudGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ModelsWordCount>> {
+        const response = await this.wordcloudGetRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }

@@ -13,6 +13,13 @@ definitions:
       nickName:
         type: string
     type: object
+  models.WordCount:
+    properties:
+      count:
+        type: integer
+      word:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -142,6 +149,12 @@ paths:
       produces:
       - application/json
       responses:
+        "200":
+          description: Most frequent words
+          schema:
+            items:
+              $ref: '#/definitions/models.WordCount'
+            type: array
         "400":
           description: Invalid request parameters
           schema:

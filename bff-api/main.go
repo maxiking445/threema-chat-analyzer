@@ -15,25 +15,29 @@ import (
 // @BasePath /
 
 func main() {
-	http.Handle("/upload-zip", cors(http.HandlerFunc(handlers.UploadZipHandler)))
-	http.Handle("/delete-zip", cors(http.HandlerFunc(handlers.DeleteDataHandler)))
+	mux := http.NewServeMux()
 
-	http.HandleFunc("/avatar/", handlers.AvatarHandler)
-	http.HandleFunc("/wordcloud/", handlers.WordsHandler)
-	http.HandleFunc("/groups", handlers.GroupsHandler)
-	http.HandleFunc("/users", handlers.UserHandler)
-	http.HandleFunc("/swagger/", httpSwagger.WrapHandler)
+	mux.HandleFunc("/wordcloud", handlers.WordsHandler)
+	mux.HandleFunc("/wordcloud/", handlers.WordsHandler)
+
+	mux.HandleFunc("/upload-zip", handlers.UploadZipHandler)
+	mux.HandleFunc("/delete-zip", handlers.DeleteDataHandler)
+	mux.HandleFunc("/avatar/", handlers.AvatarHandler)
+	mux.HandleFunc("/groups", handlers.GroupsHandler)
+	mux.HandleFunc("/users", handlers.UserHandler)
+	mux.Handle("/swagger/", httpSwagger.WrapHandler)
+
 	fmt.Println("Server: http://localhost:8080/swagger/index.html")
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", cors(mux))
 }
 
 func cors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Vary", "Origin")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE")
 		w.Header().Set("Access-Control-Allow-Headers",
-			"Content-Type, Authorization, X-Zip-Password")
+			"Content-Type, Authorization, X-Zip-Password, X-Requested-With")
 
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusOK)
