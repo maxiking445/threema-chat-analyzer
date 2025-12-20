@@ -80,11 +80,10 @@ const onFileSelect = (e) => {
 
 <style scoped>
 .page {
-  min-height: 100vh;
+  padding: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #111317;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #f9fafb;
 }

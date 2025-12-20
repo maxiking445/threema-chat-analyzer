@@ -1,5 +1,6 @@
 <script setup>
 import DragnDrop from "./components/DragnDrop.vue";
+import HowTo from "./components/HowTo.vue";
 </script>
 
 <template>
@@ -25,10 +26,12 @@ import DragnDrop from "./components/DragnDrop.vue";
         <img src="./assets/github.svg" alt="GitHub" class="github-icon" />
       </a>
     </header>
-
+ 
     <main class="app-main">
       <div class="content">
+        <HowTo />
         <DragnDrop />
+       
       </div>
     </main>
   </div>
