@@ -27,8 +27,9 @@ const groups = ref<ModelsGroup[]>([]);
 
 const handleGroupSelected = (groupKey) => {
     selectedGroup.value = undefined;
-    selectedGroup.value = groups.value.find(group => group.groupUid === groupKey);
-    console.log("Group clicked", groupKey);
+    var selected: ModelsGroup = groups.value.find(group => group.groupUid === groupKey);
+    selected.groupMember.sort((a, b) => b.messageCount - a.messageCount);
+    selectedGroup.value = selected
 }
 
 

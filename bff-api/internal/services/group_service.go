@@ -37,7 +37,7 @@ func LoadGroupsWithMessageCounts(groupsPath string) ([]model.Group, error) {
 	groupByUID := countIdentitiesPerGroup(msgs)
 	// Create GroupMemebr sub Object
 	for i := range groups {
-		g := &groups[i] // Pointer auf das Original
+		g := &groups[i]
 		m := groupByUID[g.GroupUID]
 		for identity := range m {
 			groupMember := model.GroupMember{
@@ -47,7 +47,6 @@ func LoadGroupsWithMessageCounts(groupsPath string) ([]model.Group, error) {
 			g.GroupMember = append(g.GroupMember, groupMember)
 		}
 	}
-	fmt.Println(groups)
 	//TOTAL COUND CALC
 	for i := range groups {
 		g := &groups[i]
