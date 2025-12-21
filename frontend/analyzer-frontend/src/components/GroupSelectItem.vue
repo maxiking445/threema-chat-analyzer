@@ -4,7 +4,7 @@
             <Avatar :imageID="props.identity.identityID"
                 :avatarType="props.identity.identityID.includes('You') ? AvatarIdGetTypeEnum.Avatar : AvatarIdGetTypeEnum.Contact">
             </Avatar>
-            <span class="name">
+            <span  v-if="props.identity.nickName" class="name">
                 {{ props.identity.nickName }}
             </span>
             <span v-if="!props.identity.nickName" class="name">
