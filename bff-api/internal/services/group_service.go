@@ -52,7 +52,7 @@ func LoadGroupsWithMessageCounts(groupsPath string) ([]model.Group, error) {
 			continue
 		}
 		if m.Identity == "" {
-			g.MessageCountByUser["ADMIN"]++
+			g.MessageCountByUser["YOU"]++
 			continue
 		}
 		g.MessageCountByUser[m.Identity]++
