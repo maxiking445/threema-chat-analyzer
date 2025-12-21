@@ -4,7 +4,7 @@
       <GroupItem
         v-for="group in groups"
         :groupKey="group.groupUid"
-        :groupName="group.groupname"
+        :groupName="group.groupName"
         :messageCount="group.messageCount"
         @click="handleItemClick"
       />

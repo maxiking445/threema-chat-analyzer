@@ -1,34 +1,24 @@
 
-# ModelsGroup
+# ModelsGroupMember
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`archived` | boolean
-`creator` | string
-`groupMember` | [Array&lt;ModelsGroupMember&gt;](ModelsGroupMember.md)
-`groupName` | string
-`groupUid` | string
-`id` | string
+`identity` | [ModelsIdentity](ModelsIdentity.md)
 `messageCount` | number
 
 ## Example
 
 ```typescript
-import type { ModelsGroup } from ''
+import type { ModelsGroupMember } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "archived": null,
-  "creator": null,
-  "groupMember": null,
-  "groupName": null,
-  "groupUid": null,
-  "id": null,
+  "identity": null,
   "messageCount": null,
-} satisfies ModelsGroup
+} satisfies ModelsGroupMember
 
 console.log(example)
 
@@ -37,7 +27,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as ModelsGroup
+const exampleParsed = JSON.parse(exampleJSON) as ModelsGroupMember
 console.log(exampleParsed)
 ```
 

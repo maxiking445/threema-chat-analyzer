@@ -6,22 +6,25 @@ definitions:
         type: boolean
       creator:
         type: string
-      group_uid:
+      group_member:
+        items:
+          $ref: '#/definitions/models.GroupMember'
+        type: array
+      group_name:
         type: string
-      groupname:
+      group_uid:
         type: string
       id:
         type: string
-      members:
-        items:
-          type: string
-        type: array
       message_count:
         type: integer
-      message_count_by_user:
-        additionalProperties:
-          type: integer
-        type: object
+    type: object
+  models.GroupMember:
+    properties:
+      identity:
+        $ref: '#/definitions/models.Identity'
+      message_count:
+        type: integer
     type: object
   models.Identity:
     properties:

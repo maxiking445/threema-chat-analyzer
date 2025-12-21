@@ -1,9 +1,9 @@
 package models
 
 type Identity struct {
-	Identity   string `csv:"identity"`
-	FirstName  string `csv:"firstname"`
-	LastName   string `csv:"lastname"`
-	NickName   string `csv:"nick_name"`
-	IdentityID string `csv:"identity_id"`
+	Identity   string `json:"identity" csv:"identity"`
+	FirstName  string `json:"firstName" csv:"firstname"`
+	LastName   string `json:"lastName" csv:"lastname"`
+	NickName   string `json:"nickName" csv:"nick_name"`
+	IdentityID string `json:"identityID" csv:"identity_id"`
 }

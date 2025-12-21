@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { ModelsGroupMember } from './ModelsGroupMember';
+import {
+    ModelsGroupMemberFromJSON,
+    ModelsGroupMemberFromJSONTyped,
+    ModelsGroupMemberToJSON,
+    ModelsGroupMemberToJSONTyped,
+} from './ModelsGroupMember';
+
 /**
  * 
  * @export
@@ -33,6 +41,18 @@ export interface ModelsGroup {
     creator?: string;
     /**
      * 
+     * @type {Array<ModelsGroupMember>}
+     * @memberof ModelsGroup
+     */
+    groupMember?: Array<ModelsGroupMember>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ModelsGroup
+     */
+    groupName?: string;
+    /**
+     * 
      * @type {string}
      * @memberof ModelsGroup
      */
@@ -42,31 +62,13 @@ export interface ModelsGroup {
      * @type {string}
      * @memberof ModelsGroup
      */
-    groupname?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelsGroup
-     */
     id?: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof ModelsGroup
-     */
-    members?: Array<string>;
     /**
      * 
      * @type {number}
      * @memberof ModelsGroup
      */
     messageCount?: number;
-    /**
-     * 
-     * @type {{ [key: string]: number; }}
-     * @memberof ModelsGroup
-     */
-    messageCountByUser?: { [key: string]: number; };
 }
 
 /**
@@ -88,12 +90,11 @@ export function ModelsGroupFromJSONTyped(json: any, ignoreDiscriminator: boolean
         
         'archived': json['archived'] == null ? undefined : json['archived'],
         'creator': json['creator'] == null ? undefined : json['creator'],
+        'groupMember': json['group_member'] == null ? undefined : ((json['group_member'] as Array<any>).map(ModelsGroupMemberFromJSON)),
+        'groupName': json['group_name'] == null ? undefined : json['group_name'],
         'groupUid': json['group_uid'] == null ? undefined : json['group_uid'],
-        'groupname': json['groupname'] == null ? undefined : json['groupname'],
         'id': json['id'] == null ? undefined : json['id'],
-        'members': json['members'] == null ? undefined : json['members'],
         'messageCount': json['message_count'] == null ? undefined : json['message_count'],
-        'messageCountByUser': json['message_count_by_user'] == null ? undefined : json['message_count_by_user'],
     };
 }
 
@@ -110,12 +111,11 @@ export function ModelsGroupToJSONTyped(value?: ModelsGroup | null, ignoreDiscrim
         
         'archived': value['archived'],
         'creator': value['creator'],
+        'group_member': value['groupMember'] == null ? undefined : ((value['groupMember'] as Array<any>).map(ModelsGroupMemberToJSON)),
+        'group_name': value['groupName'],
         'group_uid': value['groupUid'],
-        'groupname': value['groupname'],
         'id': value['id'],
-        'members': value['members'],
         'message_count': value['messageCount'],
-        'message_count_by_user': value['messageCountByUser'],
     };
 }
 
