@@ -2,9 +2,9 @@
     <vue-word-cloud style="
     height: 680px;
     width: 1040px;
-  " :words="words" :color="([, weight]) => weight > 10 ? '#1abc5b' : weight > 5 ? 'RoyalBlue' : 'Indigo'"
-        font-family="Righteous"
-         />
+  " :words="words" :color="([, weight]) => {
+    if (weight > 900) return '#1abc5b';
+}" font-family="Righteous" />
 </template>
 
 <script setup>
@@ -27,7 +27,7 @@ onMounted(async () => {
     try {
         const response = await defaultApi.wordcloudGet();
         allWords.value = response.map(item => [item.word, item.count]);
-
+        allWords.value.reverse();
         let index = 0;
         const addBatch = () => {
             const batch = allWords.value.slice(index, index + batchSize);
@@ -38,7 +38,7 @@ onMounted(async () => {
             }
         };
 
-        addBatch(); // Ersten Batch hinzufügen
+        addBatch();
         const timer = setInterval(addBatch, intervalTime);
     } catch (error) {
         pushErrorToast('Error during loading wordCloud.', error);
