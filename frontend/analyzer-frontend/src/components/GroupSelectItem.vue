@@ -1,7 +1,9 @@
 <template>
     <div class="user-bar">
         <div class="left">
-            <Avatar :imageID="props.identity.identityID" :avatarType="AvatarIdGetTypeEnum.Contact"></Avatar>
+            <Avatar :imageID="props.identity.identityID"
+                :avatarType="props.identity.identityID.includes('You') ? AvatarIdGetTypeEnum.Avatar : AvatarIdGetTypeEnum.Contact">
+            </Avatar>
             <span class="name">
                 {{ props.identity.nickName }}
             </span>
