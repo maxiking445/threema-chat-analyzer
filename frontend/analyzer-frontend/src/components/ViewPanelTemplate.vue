@@ -17,8 +17,8 @@ const props = defineProps({
 <style scoped>
 .panel {
     margin: 20px;
-    width: 100%;
-    max-width: 420px;
+    width: fit-content;
+    min-width: 300px;
     padding: 1.75rem 1.75rem 2rem;
     border-radius: 16px;
     background: #181b20;
@@ -27,6 +27,7 @@ const props = defineProps({
     color: #f9fafb;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
+
 
 .title {
     margin: 0 0 0.25rem;
