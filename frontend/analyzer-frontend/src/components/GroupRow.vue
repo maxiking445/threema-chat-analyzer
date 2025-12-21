@@ -26,6 +26,7 @@ const groups = ref<ModelsGroup[]>([]);
 
 
 const handleGroupSelected = (groupKey) => {
+    selectedGroup.value = undefined;
     selectedGroup.value = groups.value.find(group => group.groupUid === groupKey);
     console.log("Group clicked", groupKey);
 }
