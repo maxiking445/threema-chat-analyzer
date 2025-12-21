@@ -19,6 +19,7 @@ const props = defineProps({
     margin: 20px;
     width: fit-content;
     min-width: 300px;
+    min-height: 500px;
     padding: 1.75rem 1.75rem 2rem;
     border-radius: 16px;
     background: #181b20;
