@@ -8,10 +8,10 @@ import (
 	groupService "github.com/maxiking445/bff-api/internal/services"
 )
 
-// GroupsHandler @Summary Test Endpoint
-// @Description Einfacher Test
-// @Produce plain
-// @Success 200 {string} string "Test OK"
+// GroupsHandler @Summary Groups Endpoint
+// @Description Returns Groups and count of how many messages a user has
+// @Produce json
+// @Success 200 {array} models.Group "List of groups wiht message count"
 // @Router /groups [get]
 func GroupsHandler(w http.ResponseWriter, r *http.Request) {
 	groups, err := groupService.LoadGroupsWithMessageCounts(common.GroupPath)

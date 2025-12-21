@@ -1,12 +1,13 @@
-.openapi-generator-ignore
 apis/DefaultApi.ts
 apis/UploadApi.ts
 apis/index.ts
 docs/DefaultApi.md
+docs/ModelsGroup.md
 docs/ModelsIdentity.md
 docs/ModelsWordCount.md
 docs/UploadApi.md
 index.ts
+models/ModelsGroup.ts
 models/ModelsIdentity.ts
 models/ModelsWordCount.ts
 models/index.ts

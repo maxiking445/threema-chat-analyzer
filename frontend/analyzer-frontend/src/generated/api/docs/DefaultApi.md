@@ -83,11 +83,11 @@ No authorization required
 
 ## groupsGet
 
-> string groupsGet()
+> Array&lt;ModelsGroup&gt; groupsGet()
 
 
 
-Einfacher Test
+Returns Groups and count of how many messages a user has
 
 ### Example
 
@@ -120,7 +120,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-**string**
+[**Array&lt;ModelsGroup&gt;**](ModelsGroup.md)
 
 ### Authorization
 
@@ -129,13 +129,13 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: `text/plain`
+- **Accept**: `application/json`
 
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Test OK |  -  |
+| **200** | List of groups wiht message count |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

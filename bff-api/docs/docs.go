@@ -90,15 +90,18 @@ const docTemplate = `{
         },
         "/groups": {
             "get": {
-                "description": "Einfacher Test",
+                "description": "Returns Groups and count of how many messages a user has",
                 "produces": [
-                    "text/plain"
+                    "application/json"
                 ],
                 "responses": {
                     "200": {
-                        "description": "Test OK",
+                        "description": "List of groups wiht message count",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Group"
+                            }
                         }
                     }
                 }
@@ -229,6 +232,41 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.Group": {
+            "type": "object",
+            "properties": {
+                "archived": {
+                    "type": "boolean"
+                },
+                "creator": {
+                    "type": "string"
+                },
+                "group_uid": {
+                    "type": "string"
+                },
+                "groupname": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "members": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "message_count": {
+                    "type": "integer"
+                },
+                "message_count_by_user": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
         "models.Identity": {
             "type": "object",
             "properties": {

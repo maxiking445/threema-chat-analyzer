@@ -15,10 +15,13 @@
 
 import * as runtime from '../runtime';
 import type {
+  ModelsGroup,
   ModelsIdentity,
   ModelsWordCount,
 } from '../models/index';
 import {
+    ModelsGroupFromJSON,
+    ModelsGroupToJSON,
     ModelsIdentityFromJSON,
     ModelsIdentityToJSON,
     ModelsWordCountFromJSON,
@@ -88,9 +91,9 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Einfacher Test
+     * Returns Groups and count of how many messages a user has
      */
-    async groupsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+    async groupsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ModelsGroup>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -105,17 +108,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        if (this.isJsonMime(response.headers.get('content-type'))) {
-            return new runtime.JSONApiResponse<string>(response);
-        } else {
-            return new runtime.TextApiResponse(response) as any;
-        }
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ModelsGroupFromJSON));
     }
 
     /**
-     * Einfacher Test
+     * Returns Groups and count of how many messages a user has
      */
-    async groupsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+    async groupsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ModelsGroup>> {
         const response = await this.groupsGetRaw(initOverrides);
         return await response.value();
     }

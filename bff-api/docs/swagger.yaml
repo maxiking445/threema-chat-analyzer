@@ -1,5 +1,28 @@
 basePath: /
 definitions:
+  models.Group:
+    properties:
+      archived:
+        type: boolean
+      creator:
+        type: string
+      group_uid:
+        type: string
+      groupname:
+        type: string
+      id:
+        type: string
+      members:
+        items:
+          type: string
+        type: array
+      message_count:
+        type: integer
+      message_count_by_user:
+        additionalProperties:
+          type: integer
+        type: object
+    type: object
   models.Identity:
     properties:
       firstName:
@@ -76,14 +99,16 @@ paths:
       - upload
   /groups:
     get:
-      description: Einfacher Test
+      description: Returns Groups and count of how many messages a user has
       produces:
-      - text/plain
+      - application/json
       responses:
         "200":
-          description: Test OK
+          description: List of groups wiht message count
           schema:
-            type: string
+            items:
+              $ref: '#/definitions/models.Group'
+            type: array
   /upload-zip:
     post:
       consumes:
