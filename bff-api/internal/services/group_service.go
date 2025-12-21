@@ -58,6 +58,15 @@ func LoadGroupsWithMessageCounts(groupsPath string) ([]model.Group, error) {
 		g.MessageCountByUser[m.Identity]++
 	}
 
+	for i := range groups {
+		g := &groups[i]
+		g.MessageCount = 0
+		for s := range g.MessageCountByUser {
+			m := g.MessageCountByUser[s]
+			g.MessageCount += int64(m)
+		}
+	}
+
 	return groups, nil
 }
 
