@@ -34,40 +34,45 @@ func LoadGroupsWithMessageCounts(groupsPath string) ([]model.Group, error) {
 
 	}
 
-	// Index
-	groupByUID := make(map[string]*model.Group)
+	groupByUID := countIdentitiesPerGroup(msgs)
+	// Create GroupMemebr sub Object
 	for i := range groups {
-		g := &groups[i]
-		if g.MessageCountByUser == nil {
-			g.MessageCountByUser = make(map[string]int)
+		g := &groups[i] // Pointer auf das Original
+		m := groupByUID[g.GroupUID]
+		for identity := range m {
+			groupMember := model.GroupMember{
+				MessageCount: int64(m[identity]),
+				Identity:     LoadIdentity(identity),
+			}
+			g.GroupMember = append(g.GroupMember, groupMember)
 		}
-		groupByUID[g.GroupUID] = g
 	}
-
-	// Count Messages
-	for _, m := range msgs {
-		g := groupByUID[m.GroupUID]
-		if g == nil {
-			//fmt.Println("No Group found for GroupUID:", m.GroupUID)
-			continue
-		}
-		if m.Identity == "" {
-			g.MessageCountByUser["YOU"]++
-			continue
-		}
-		g.MessageCountByUser[m.Identity]++
-	}
-
+	fmt.Println(groups)
+	//TOTAL COUND CALC
 	for i := range groups {
 		g := &groups[i]
 		g.MessageCount = 0
-		for s := range g.MessageCountByUser {
-			m := g.MessageCountByUser[s]
-			g.MessageCount += int64(m)
+		for _, s := range g.GroupMember {
+			g.MessageCount += int64(s.MessageCount)
 		}
 	}
 
 	return groups, nil
+}
+
+// Count Messages
+func countIdentitiesPerGroup(rows []GroupMessageRow) map[string]map[string]int {
+	result := make(map[string]map[string]int)
+
+	for _, r := range rows {
+		if result[r.GroupUID] == nil {
+			result[r.GroupUID] = make(map[string]int)
+		}
+
+		result[r.GroupUID][r.Identity]++
+	}
+
+	return result
 }
 
 func loadGroupsFromCSV(path string) ([]model.Group, error) {
@@ -98,16 +103,11 @@ func loadGroupsFromCSV(path string) ([]model.Group, error) {
 		}
 
 		archived, _ := strconv.ParseBool(r[6])
-		members := []string{}
-		if r[5] != "" {
-			members = strings.Split(r[5], ";")
-		}
 
 		groupItem := model.Group{
 			ID:        r[0],
 			Creator:   r[1],
 			GroupName: r[2],
-			Members:   members,
 			Archived:  archived,
 			GroupUID:  r[9],
 		}

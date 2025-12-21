@@ -5,8 +5,28 @@ import (
 	"io"
 	"os"
 
+	"github.com/maxiking445/bff-api/internal/common"
 	model "github.com/maxiking445/bff-api/internal/models"
 )
+
+func LoadIdentity(userID string) model.Identity {
+	if userID == "" {
+		return model.Identity{
+			Identity:   "You",
+			IdentityID: "You",
+		}
+	}
+	identities, err := LoadIdentitiesFromCSV(common.UserContactsPath)
+	if err != nil {
+		return model.Identity{}
+	}
+	for _, ident := range identities {
+		if ident.Identity == userID {
+			return ident
+		}
+	}
+	return model.Identity{}
+}
 
 func LoadIdentitiesFromCSV(path string) ([]model.Identity, error) {
 	f, err := os.Open(path)

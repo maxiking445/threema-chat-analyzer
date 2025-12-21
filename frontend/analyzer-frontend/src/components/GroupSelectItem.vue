@@ -1,8 +1,13 @@
 <template>
     <div class="user-bar">
         <div class="left">
-            <Avatar :imageID="props.name" :avatarType="AvatarIdGetTypeEnum.Contact"></Avatar>
-            <span class="name">{{ name }}</span>
+            <Avatar :imageID="props.identity.identityID" :avatarType="AvatarIdGetTypeEnum.Contact"></Avatar>
+            <span class="name">
+                {{ props.identity.nickName }}
+            </span>
+            <span v-if="!props.identity.nickName" class="name">
+                {{ props.identity.firstName || props.identity.lastName || props.identity.identity }}
+            </span>
         </div>
 
         <div class="bar-wrapper">
@@ -17,58 +22,22 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ref, onMounted } from 'vue'
-import { Configuration, DefaultApi, AvatarIdGetTypeEnum, AvatarIdGetRequest } from '@/generated/api';
+import { AvatarIdGetTypeEnum, ModelsIdentity } from '@/generated/api';
 import Avatar from './Avatar.vue';
 
-const placeholder = new URL('../assets/avatar_placeholder.png', import.meta.url).href
-const config = new Configuration({
-    basePath: '/api',
-})
 
-const defaultApi = new DefaultApi(config)
-
-
-function loadAvatar(name: string) {
-    var params: AvatarIdGetRequest = { type: AvatarIdGetTypeEnum.Contact, id: name };
-    if (props.name.match("YOU")) {
-        params = {
-            type: AvatarIdGetTypeEnum.Avatar,
-            id: name
-        }
-    } else {
-        params = {
-            type: AvatarIdGetTypeEnum.Contact,
-            id: name
-        }
-    }
-
-    console.log("Loading avatar with params", params)
-    defaultApi.avatarIdGet(params).then((response) => {
-        console.log("Loaded avatar for", response)
-        avatarSrc.value = URL.createObjectURL(response);
-    }).catch((error) => {
-        console.log("Failed to load avatar for", error, ", using placeholder")
-        avatarSrc.value = placeholder;
-    });
-}
-const avatarSrc = ref<string>(placeholder)
-
-const props = defineProps({
-    name: String,
+const props = defineProps<{
+    identity: ModelsIdentity,
     value: Number,
     max: Number
-})
+}>()
 
 const max = computed(() => props.max ?? props.value)
 const fillWidth = computed(() => {
     if (!max.value || max.value <= 0) return '0%'
     return Math.min(100, (props.value / max.value) * 100) + '%'
 })
-
-onMounted(() => {
-    loadAvatar(props.name)
-})
+console.log(props.identity)
 </script>
 
 <style scoped>

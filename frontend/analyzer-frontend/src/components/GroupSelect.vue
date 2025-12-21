@@ -1,11 +1,11 @@
 <template>
     <div>
-        <ViewPanelTemplate :title="`Group Activity: ${props.selectedGroup.groupname}`">
+        <ViewPanelTemplate :title="`Group Activity: ${props.selectedGroup.groupName}`" :key="props.selectedGroup?.id">
       <GroupSelectItem
-        v-for="(count, username) in selectedGroup.messageCountByUser"
-        :name="username"
+        v-for="groupMember in selectedGroup.groupMember"
+        :identity="groupMember.identity"
         :max="props.selectedGroup.messageCount"
-        :value="count"
+        :value="groupMember.messageCount"
       />
         </ViewPanelTemplate>
     </div>
@@ -19,13 +19,16 @@ import { watch } from 'vue'
 import { PropType } from 'vue'
 import GroupSelectItem from './GroupSelectItem.vue';
 
+
 const props = defineProps({
       selectedGroup: { type: Object as PropType<ModelsGroup>, required: false, default: () => [] }
 })
 
-
 watch(() => props.selectedGroup, (newGroupName) => {
     console.log("Selected group changed to", newGroupName)
-})
+    newGroupName.groupMember.forEach(member => {
+        console.log("Member:", member.identity, "Messages:", member.messageCount)
+    });
 
+})
 </script>

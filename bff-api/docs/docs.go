@@ -241,29 +241,34 @@ const docTemplate = `{
                 "creator": {
                     "type": "string"
                 },
-                "group_uid": {
+                "group_member": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.GroupMember"
+                    }
+                },
+                "group_name": {
                     "type": "string"
                 },
-                "groupname": {
+                "group_uid": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
-                "members": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                "message_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.GroupMember": {
+            "type": "object",
+            "properties": {
+                "identity": {
+                    "$ref": "#/definitions/models.Identity"
                 },
                 "message_count": {
                     "type": "integer"
-                },
-                "message_count_by_user": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "integer"
-                    }
                 }
             }
         },
