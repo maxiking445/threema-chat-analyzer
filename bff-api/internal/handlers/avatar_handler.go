@@ -58,8 +58,7 @@ func AvatarHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		} else {
-			http.Error(w, "No Picture Found", http.StatusNotFound)
-			return
+			avatarData, err = os.ReadFile(common.ProfilePicPlaceholder)
 		}
 	}
 
