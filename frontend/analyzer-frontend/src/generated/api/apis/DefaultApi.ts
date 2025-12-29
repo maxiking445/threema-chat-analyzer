@@ -16,12 +16,15 @@
 import * as runtime from '../runtime';
 import type {
   ModelsGroup,
+  ModelsGroupTimeline,
   ModelsIdentity,
   ModelsWordCount,
 } from '../models/index';
 import {
     ModelsGroupFromJSON,
     ModelsGroupToJSON,
+    ModelsGroupTimelineFromJSON,
+    ModelsGroupTimelineToJSON,
     ModelsIdentityFromJSON,
     ModelsIdentityToJSON,
     ModelsWordCountFromJSON,
@@ -31,6 +34,10 @@ import {
 export interface AvatarIdGetRequest {
     type: AvatarIdGetTypeEnum;
     id: string;
+}
+
+export interface GroupsTimelineGetRequest {
+    group: string;
 }
 
 export interface WordcloudGetRequest {
@@ -116,6 +123,48 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async groupsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ModelsGroup>> {
         const response = await this.groupsGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Returns the daily number of messages per user for a group.
+     * Sums up messages from each person in group during one day
+     */
+    async groupsTimelineGetRaw(requestParameters: GroupsTimelineGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ModelsGroupTimeline>>> {
+        if (requestParameters['group'] == null) {
+            throw new runtime.RequiredError(
+                'group',
+                'Required parameter "group" was null or undefined when calling groupsTimelineGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['group'] != null) {
+            queryParameters['group'] = requestParameters['group'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/groups/timeline`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ModelsGroupTimelineFromJSON));
+    }
+
+    /**
+     * Returns the daily number of messages per user for a group.
+     * Sums up messages from each person in group during one day
+     */
+    async groupsTimelineGet(requestParameters: GroupsTimelineGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ModelsGroupTimeline>> {
+        const response = await this.groupsTimelineGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
