@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/maxiking445/bff-api/internal/models"
 )
@@ -11,13 +12,11 @@ func BuildGroupTimelinesFromCSV(
 	groupName string,
 ) ([]models.GroupTimeline, error) {
 
-	var msgs []GroupMessageRow
 	fmt.Println("Analyse Groupe File: " + csvPath)
 	rows, err := loadGroupMessagesFromCSV(csvPath)
 	if err != nil {
 		return nil, err
 	}
-	msgs = append(msgs, rows...)
 
 	// Map[user]map[date]count
 	userDayCounts := make(map[string]map[string]int)
@@ -42,7 +41,11 @@ func BuildGroupTimelinesFromCSV(
 				Count: count,
 			})
 		}
-		
+
+		sort.Slice(timeline, func(i, j int) bool {
+			return timeline[i].Date < timeline[j].Date
+		})
+
 		timelines = append(timelines, models.GroupTimeline{
 			Group:    groupName,
 			User:     user,

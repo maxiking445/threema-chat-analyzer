@@ -165,9 +165,14 @@ func loadGroupMessagesFromCSV(path string) ([]GroupMessageRow, error) {
 		}
 		timestamp := time.UnixMilli(createdAtMillis)
 
+		identity := r[2]
+		if identity == "" {
+			identity = "YOU"
+		}
+
 		rows = append(rows, GroupMessageRow{
 			GroupUID:  groupUUID, // uid = group_uid
-			Identity:  r[2],      // identity = user
+			Identity:  identity,  // identity = user
 			Timestamp: timestamp, //Timestamp
 		})
 	}
