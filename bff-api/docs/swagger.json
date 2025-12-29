@@ -99,6 +99,50 @@
                 }
             }
         },
+        "/groups/timeline": {
+            "get": {
+                "description": "Returns the daily number of messages per user for a group.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Sums up messages from each person in group during one day",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Name of group (CSV-Name)",
+                        "name": "group",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.GroupTimeline"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "group missing",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/upload-zip": {
             "post": {
                 "description": "Nimmt eine passwortgeschützte ZIP-Datei entgegen, entpackt sie in das relative Verzeichnis ./data",
@@ -224,6 +268,17 @@
         }
     },
     "definitions": {
+        "models.DayCount": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "date": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Group": {
             "type": "object",
             "properties": {
@@ -261,6 +316,23 @@
                 },
                 "message_count": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.GroupTimeline": {
+            "type": "object",
+            "properties": {
+                "group": {
+                    "type": "string"
+                },
+                "timeline": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.DayCount"
+                    }
+                },
+                "user": {
+                    "type": "string"
                 }
             }
         },

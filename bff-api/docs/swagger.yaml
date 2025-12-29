@@ -1,5 +1,12 @@
 basePath: /
 definitions:
+  models.DayCount:
+    properties:
+      count:
+        type: integer
+      date:
+        type: string
+    type: object
   models.Group:
     properties:
       archived:
@@ -25,6 +32,17 @@ definitions:
         $ref: '#/definitions/models.Identity'
       message_count:
         type: integer
+    type: object
+  models.GroupTimeline:
+    properties:
+      group:
+        type: string
+      timeline:
+        items:
+          $ref: '#/definitions/models.DayCount'
+        type: array
+      user:
+        type: string
     type: object
   models.Identity:
     properties:
@@ -112,6 +130,35 @@ paths:
             items:
               $ref: '#/definitions/models.Group'
             type: array
+  /groups/timeline:
+    get:
+      consumes:
+      - application/json
+      description: Returns the daily number of messages per user for a group.
+      parameters:
+      - description: Name of group (CSV-Name)
+        in: query
+        name: group
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.GroupTimeline'
+            type: array
+        "400":
+          description: group missing
+          schema:
+            type: string
+        "500":
+          description: internal server error
+          schema:
+            type: string
+      summary: Sums up messages from each person in group during one day
   /upload-zip:
     post:
       consumes:

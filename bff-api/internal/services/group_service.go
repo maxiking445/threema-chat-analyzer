@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/maxiking445/bff-api/internal/common"
 	model "github.com/maxiking445/bff-api/internal/models"
@@ -37,7 +38,7 @@ func LoadGroupsWithMessageCounts(groupsPath string) ([]model.Group, error) {
 	groupByUID := countIdentitiesPerGroup(msgs)
 	// Create GroupMemebr sub Object
 	for i := range groups {
-		g := &groups[i]
+		g := &groups[i] // Pointer auf das Original
 		m := groupByUID[g.GroupUID]
 		for identity := range m {
 			groupMember := model.GroupMember{
@@ -118,8 +119,9 @@ func loadGroupsFromCSV(path string) ([]model.Group, error) {
 }
 
 type GroupMessageRow struct {
-	GroupUID string
-	Identity string
+	GroupUID  string
+	Identity  string
+	Timestamp time.Time
 }
 
 func loadGroupMessagesFromCSV(path string) ([]GroupMessageRow, error) {
@@ -156,9 +158,17 @@ func loadGroupMessagesFromCSV(path string) ([]GroupMessageRow, error) {
 		base = strings.TrimSuffix(base, common.CSV)
 		groupUUID := strings.TrimPrefix(base, common.GroupMessage)
 
+		createdAtMillis, err := strconv.ParseInt(r[7], 10, 64)
+		if err != nil {
+			fmt.Println("Error loading created_at:", r[7], "Error:", err)
+			continue
+		}
+		timestamp := time.UnixMilli(createdAtMillis)
+
 		rows = append(rows, GroupMessageRow{
-			GroupUID: groupUUID, // uid = group_uid
-			Identity: r[2],      // identity = user
+			GroupUID:  groupUUID, // uid = group_uid
+			Identity:  r[2],      // identity = user
+			Timestamp: timestamp, //Timestamp
 		})
 	}
 
