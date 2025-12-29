@@ -6,6 +6,7 @@ All URIs are relative to */api*
 |------------- | ------------- | -------------|
 | [**avatarIdGet**](DefaultApi.md#avataridget) | **GET** /avatar/{id} |  |
 | [**groupsGet**](DefaultApi.md#groupsget) | **GET** /groups |  |
+| [**groupsTimelineGet**](DefaultApi.md#groupstimelineget) | **GET** /groups/timeline | Sums up messages from each person in group during one day |
 | [**usersGet**](DefaultApi.md#usersget) | **GET** /users |  |
 | [**wordcloudGet**](DefaultApi.md#wordcloudget) | **GET** /wordcloud | Get most frequent words |
 
@@ -136,6 +137,75 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | List of groups wiht message count |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## groupsTimelineGet
+
+> Array&lt;ModelsGroupTimeline&gt; groupsTimelineGet(group)
+
+Sums up messages from each person in group during one day
+
+Returns the daily number of messages per user for a group.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  DefaultApi,
+} from '';
+import type { GroupsTimelineGetRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new DefaultApi();
+
+  const body = {
+    // string | Name of group (CSV-Name)
+    group: group_example,
+  } satisfies GroupsTimelineGetRequest;
+
+  try {
+    const data = await api.groupsTimelineGet(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **group** | `string` | Name of group (CSV-Name) | [Defaults to `undefined`] |
+
+### Return type
+
+[**Array&lt;ModelsGroupTimeline&gt;**](ModelsGroupTimeline.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | group missing |  -  |
+| **500** | internal server error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

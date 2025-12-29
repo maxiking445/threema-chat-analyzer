@@ -2,7 +2,9 @@
     <div class="group-container">
         <GroupPanel :groups="groups" @groupSelected="handleGroupSelected"></GroupPanel>
         <GroupSelect :selectedGroup="selectedGroup"></GroupSelect>
+        <GroupTimeline :groupName="selectedGroup?.groupUid" userID="FJV55F2X"></GroupTimeline>
     </div>
+    
 </template>
 
 <script setup lang="ts">
@@ -10,6 +12,7 @@ import { Configuration, DefaultApi, ModelsGroup } from '@/generated/api';
 import GroupPanel from './GroupPanel.vue';
 import GroupSelect from './GroupSelect.vue';
 import { ref } from 'vue'
+import GroupTimeline from './GroupTimeline.vue';
 
 
 const defaultApi = new DefaultApi({
