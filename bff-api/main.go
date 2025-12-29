@@ -23,6 +23,8 @@ func main() {
 	mux.HandleFunc("/upload-zip", handlers.UploadZipHandler)
 	mux.HandleFunc("/delete-zip", handlers.DeleteDataHandler)
 	mux.HandleFunc("/avatar/", handlers.AvatarHandler)
+
+	mux.HandleFunc("/groups/timeline", handlers.GroupTimelineHandler)
 	mux.HandleFunc("/groups", handlers.GroupsHandler)
 	mux.HandleFunc("/users", handlers.UserHandler)
 	mux.Handle("/swagger/", httpSwagger.WrapHandler)
