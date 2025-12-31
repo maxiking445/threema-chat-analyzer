@@ -1,46 +1,53 @@
 <template>
-    <div class="user-bar">
-        <div class="left">
-            <Avatar :imageID="props.identity.identityID"
-                :avatarType="props.identity.identityID.includes('You') ? AvatarIdGetTypeEnum.Avatar : AvatarIdGetTypeEnum.Contact">
-            </Avatar>
-            <span  v-if="props.identity.nickName" class="name">
-                {{ props.identity.nickName }}
-            </span>
-            <span v-if="!props.identity.nickName" class="name">
-                {{ props.identity.firstName || props.identity.lastName || props.identity.identity }}
-            </span>
-        </div>
-
-        <div class="bar-wrapper">
-            <div class="bar-fill" :style="{ width: fillWidth }"></div>
-        </div>
-
-        <div class="value">
-            {{ value }}
-        </div>
+  <div class="user-bar" :class="{ selected }" @click="handleClick">
+    <div class="left">
+      <Avatar
+        :imageID="identity.identityID"
+        :avatarType="identity.identityID.includes('You') ? AvatarIdGetTypeEnum.Avatar : AvatarIdGetTypeEnum.Contact"
+      />
+      <span v-if="identity.nickName" class="name">
+        {{ identity.nickName }}
+      </span>
+      <span v-else class="name">
+        {{ identity.firstName || identity.lastName || identity.identity }}
+      </span>
     </div>
+
+    <div class="bar-wrapper">
+      <div class="bar-fill" :style="{ width: fillWidth }"></div>
+    </div>
+
+    <div class="value">{{ value }}</div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { AvatarIdGetTypeEnum, ModelsIdentity } from '@/generated/api';
-import Avatar from './Avatar.vue';
-
+import { ModelsIdentity, AvatarIdGetTypeEnum } from '@/generated/api'
+import Avatar from './Avatar.vue'
 
 const props = defineProps<{
-    identity: ModelsIdentity,
-    value: Number,
-    max: Number
+  identity: ModelsIdentity
+  value: number
+  max: number
+  selected?: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'click', identityID: string): void
 }>()
 
 const max = computed(() => props.max ?? props.value)
 const fillWidth = computed(() => {
-    if (!max.value || max.value <= 0) return '0%'
-    return Math.min(100, (props.value / max.value) * 100) + '%'
+  if (!max.value || max.value <= 0) return '0%'
+  return `${Math.min(100, (props.value / max.value) * 100)}%`
 })
-console.log(props.identity)
+
+function handleClick() {
+  emit('click', props.identity.identity)
+}
 </script>
+
 
 <style scoped>
 .user-bar {
@@ -48,8 +55,10 @@ console.log(props.identity)
     align-items: center;
     gap: 0.75rem;
     padding: 0.4rem 0.75rem;
-    background: #1b2228;
     border-radius: 3px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #20242b;
 }
 
 .left {
@@ -93,12 +102,26 @@ console.log(props.identity)
 .bar-fill {
     height: 100%;
     background: #3bb54a;
+      pointer-events: none;
 }
 
 .value {
-    min-width: 60px;
-    text-align: right;
-    color: #ffffff;
+    background: #ffffff;
+    color: #181b20;
+    font-size: 0.875rem;
     font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    pointer-events: none;
+    user-select: none; 
+}
+
+
+.user-bar:hover {
+    background-color: #2a2e35;
+}
+
+.user-bar.selected {
+    background-color: #2d3138;
 }
 </style>

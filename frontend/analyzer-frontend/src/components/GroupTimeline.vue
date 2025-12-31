@@ -14,10 +14,12 @@ import { loadGroupTimeline } from "@/service/ApiService";
 import { ModelsDayCount, ModelsGroupTimeline } from '@/generated/api';
 const props = defineProps<{
     groupName: string
-    userID: string
+    userIDs: Set<string>
 }>()
 
 const series = ref<any[]>([])
+
+
 const chartOptions = ref({
     chart: {
         type: 'bar',
@@ -29,9 +31,20 @@ const chartOptions = ref({
             columnWidth: '50%',
         },
     },
+    tooltip: {
+        enabled: true,
+
+    },
     xaxis: {
-        type: 'category',
-        categories: [] as string[],
+        type: 'datetime',
+        labels: {
+            formatter: (value: number) => {
+                return new Date(value).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                })
+            },
+        }
     },
     yaxis: {
         min: 0,
@@ -42,7 +55,7 @@ const chartOptions = ref({
 })
 
 watch(
-    () => [props.groupName, props.userID], // beobachte beide Props
+    () => [props.groupName, props.userIDs],
     ([newGroup, newUser], [oldGroup, oldUser]) => {
         console.log('Group changed from', oldGroup, 'to', newGroup);
         console.log('User changed from', oldUser, 'to', newUser);
@@ -55,20 +68,44 @@ onMounted(async () => {
     loadTimeline();
 })
 
-async function loadTimeline(){
-    console.log("Loading timeline for group:", props.groupName, "and user:", props.userID);
-    const timeline: ModelsDayCount[] = await loadGroupTimeline(props.groupName, props.userID)
+async function loadTimeline() {
+    console.log("Loading timeline for group:", props.groupName, "and user:", props.userIDs);
+    const timelineResponse: ModelsGroupTimeline[] = await loadGroupTimeline(props.groupName)
+    const filteredRes: Map<string, ModelsDayCount[]> = filterByUserIdsMap(timelineResponse, props.userIDs);
 
-    chartOptions.value.xaxis.categories = timeline.map(t => t.date)
+    series.value = Array.from(filteredRes.entries()).map(([userId, timeline]) => ({
+        name: userId,
+        data: timeline.map(t => ({
+            x: new Date(t.date).getTime(),
+            y: t.count,
+        })),
+    }))
 
-    series.value = [
-        {
-            name: `${props.userID} in Group ${props.groupName}`,
-            data: timeline.map(t => t.count),
-        },
-    ]
+    chartOptions.value.title.text = `Messages Timeline: ${props.userIDs} in Group ${props.groupName}`
 
-    chartOptions.value.title.text = `Messages Timeline: ${props.userID} in Group ${props.groupName}`
+
+}
+
+function filterByUserIdsMap(
+    timelineResponse: ModelsGroupTimeline[],
+    userIds: Set<string>
+): Map<string, ModelsDayCount[]> {
+    console.log("Filtering timeline for user IDs:", userIds)
+    const result = new Map<string, ModelsDayCount[]>()
+    const userIdsSet = new Set(userIds) 
+    timelineResponse.forEach(t => {
+        if (userIdsSet.has(t.user)) {
+            result.set(t.user, t.timeline)
+        }
+    })
+
+    return result
 }
 
 </script>
+<style>
+.apexcharts-tooltip {
+    color: black !important;
+    background-color: black;
+}
+</style>

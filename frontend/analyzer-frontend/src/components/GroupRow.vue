@@ -1,10 +1,10 @@
 <template>
     <div class="group-container">
         <GroupPanel :groups="groups" @groupSelected="handleGroupSelected"></GroupPanel>
-        <GroupSelect :selectedGroup="selectedGroup"></GroupSelect>
-        <GroupTimeline :groupName="selectedGroup?.groupUid" userID="FJV55F2X"></GroupTimeline>
+        <GroupSelect :selectedGroup="selectedGroup" @update:selectedMembers="onSelectedMembersChanged"></GroupSelect>
+        <GroupTimeline :groupName="selectedGroup?.groupUid" :userIDs="selectedUserIds"></GroupTimeline>
     </div>
-    
+
 </template>
 
 <script setup lang="ts">
@@ -26,13 +26,18 @@ const defaultApi = new DefaultApi({
 
 const selectedGroup = ref<ModelsGroup>();
 const groups = ref<ModelsGroup[]>([]);
-
+const selectedUserIds = ref<Set<string>>(new Set());
 
 const handleGroupSelected = (groupKey) => {
     selectedGroup.value = undefined;
     var selected: ModelsGroup = groups.value.find(group => group.groupUid === groupKey);
     selected.groupMember.sort((a, b) => b.messageCount - a.messageCount);
     selectedGroup.value = selected
+}
+
+function onSelectedMembersChanged(newSelection: Set<string>) {
+    console.log("Selected members changed:", newSelection);
+    selectedUserIds.value = newSelection;
 }
 
 
