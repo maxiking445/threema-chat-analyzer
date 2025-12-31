@@ -40,5 +40,10 @@ function handleItemClick(identityID: string) {
   }
   selectedMembers.value = new Set(selectedMembers.value)
   console.log("Clicked on member with ID:", selectedMembers)
+  emit('update:selectedMembers', selectedMembers.value)
 }
+
+const emit = defineEmits<{
+  (e: 'update:selectedMembers', value: Set<string>): void
+}>()
 </script>

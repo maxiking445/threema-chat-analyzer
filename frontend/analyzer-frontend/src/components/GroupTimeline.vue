@@ -14,7 +14,7 @@ import { loadGroupTimeline } from "@/service/ApiService";
 import { ModelsDayCount, ModelsGroupTimeline } from '@/generated/api';
 const props = defineProps<{
     groupName: string
-    userID: string
+    userIDs: Set<string>
 }>()
 
 const series = ref<any[]>([])
@@ -55,7 +55,7 @@ const chartOptions = ref({
 })
 
 watch(
-    () => [props.groupName, props.userID],
+    () => [props.groupName, props.userIDs],
     ([newGroup, newUser], [oldGroup, oldUser]) => {
         console.log('Group changed from', oldGroup, 'to', newGroup);
         console.log('User changed from', oldUser, 'to', newUser);
@@ -69,40 +69,43 @@ onMounted(async () => {
 })
 
 async function loadTimeline() {
-    console.log("Loading timeline for group:", props.groupName, "and user:", props.userID);
+    console.log("Loading timeline for group:", props.groupName, "and user:", props.userIDs);
     const timelineResponse: ModelsGroupTimeline[] = await loadGroupTimeline(props.groupName)
-    const filteredRes: ModelsDayCount[] = filterByUserId(timelineResponse, props.userID);
+    const filteredRes: Map<string, ModelsDayCount[]> = filterByUserIdsMap(timelineResponse, props.userIDs);
 
-    series.value = [
-        {
-            name: props.userID,
-            data: filteredRes.map(t => ({
-                x: new Date(t.date).getTime(),
-                y: t.count,
-            })),
-        },
-    ]
+    series.value = Array.from(filteredRes.entries()).map(([userId, timeline]) => ({
+        name: userId,
+        data: timeline.map(t => ({
+            x: new Date(t.date).getTime(),
+            y: t.count,
+        })),
+    }))
 
-    chartOptions.value.title.text = `Messages Timeline: ${props.userID} in Group ${props.groupName}`
+    chartOptions.value.title.text = `Messages Timeline: ${props.userIDs} in Group ${props.groupName}`
 
 
 }
 
-function filterByUserId(timelineResponse: ModelsGroupTimeline[], userId: string): ModelsDayCount[] {
-    const filteredRes = timelineResponse.filter(t => t.user === userId);
-    if (filteredRes.length > 0) {
-        console.log("Filtered Timeline Data:", filteredRes[0].timeline);
-        return filteredRes[0].timeline;
-    }
-    return [];
+function filterByUserIdsMap(
+    timelineResponse: ModelsGroupTimeline[],
+    userIds: Set<string>
+): Map<string, ModelsDayCount[]> {
+    console.log("Filtering timeline for user IDs:", userIds)
+    const result = new Map<string, ModelsDayCount[]>()
+    const userIdsSet = new Set(userIds) 
+    timelineResponse.forEach(t => {
+        if (userIdsSet.has(t.user)) {
+            result.set(t.user, t.timeline)
+        }
+    })
+
+    return result
 }
 
 </script>
 <style>
 .apexcharts-tooltip {
-  color: black !important;
-  background-color: black;
+    color: black !important;
+    background-color: black;
 }
 </style>
-
-

@@ -44,7 +44,7 @@ const fillWidth = computed(() => {
 })
 
 function handleClick() {
-  emit('click', props.identity.identityID)
+  emit('click', props.identity.identity)
 }
 </script>
 
