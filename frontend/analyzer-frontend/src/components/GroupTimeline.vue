@@ -33,6 +33,7 @@ const chartOptions = ref({
     },
     tooltip: {
         enabled: true,
+
     },
     xaxis: {
         type: 'datetime',
@@ -97,3 +98,11 @@ function filterByUserId(timelineResponse: ModelsGroupTimeline[], userId: string)
 }
 
 </script>
+<style>
+.apexcharts-tooltip {
+  color: black !important;
+  background-color: black;
+}
+</style>
+
+
