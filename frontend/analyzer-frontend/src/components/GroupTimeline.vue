@@ -42,7 +42,7 @@ const chartOptions = ref({
 })
 
 watch(
-    () => [props.groupName, props.userID], // beobachte beide Props
+    () => [props.groupName, props.userID],
     ([newGroup, newUser], [oldGroup, oldUser]) => {
         console.log('Group changed from', oldGroup, 'to', newGroup);
         console.log('User changed from', oldUser, 'to', newUser);
@@ -55,20 +55,31 @@ onMounted(async () => {
     loadTimeline();
 })
 
-async function loadTimeline(){
+async function loadTimeline() {
     console.log("Loading timeline for group:", props.groupName, "and user:", props.userID);
-    const timeline: ModelsDayCount[] = await loadGroupTimeline(props.groupName, props.userID)
-
-    chartOptions.value.xaxis.categories = timeline.map(t => t.date)
+    const timelineResponse: ModelsGroupTimeline[] = await loadGroupTimeline(props.groupName)
+    const filteredRes: ModelsDayCount[] = filterByUserId(timelineResponse, props.userID);
+    chartOptions.value.xaxis.categories = filteredRes.map(t => t.date)
 
     series.value = [
         {
             name: `${props.userID} in Group ${props.groupName}`,
-            data: timeline.map(t => t.count),
+            data: filteredRes.map(t => t.count),
         },
     ]
 
     chartOptions.value.title.text = `Messages Timeline: ${props.userID} in Group ${props.groupName}`
+
+
+}
+
+function filterByUserId(timelineResponse: ModelsGroupTimeline[], userId: string): ModelsDayCount[] {
+    const filteredRes = timelineResponse.filter(t => t.user === userId);
+    if (filteredRes.length > 0) {
+        console.log("Filtered Timeline Data:", filteredRes[0].timeline);
+        return filteredRes[0].timeline;
+    }
+    return [];
 }
 
 </script>
