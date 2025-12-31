@@ -18,6 +18,8 @@ const props = defineProps<{
 }>()
 
 const series = ref<any[]>([])
+
+
 const chartOptions = ref({
     chart: {
         type: 'bar',
@@ -29,9 +31,19 @@ const chartOptions = ref({
             columnWidth: '50%',
         },
     },
+    tooltip: {
+        enabled: true,
+    },
     xaxis: {
-        type: 'category',
-        categories: [] as string[],
+        type: 'datetime',
+        labels: {
+            formatter: (value: number) => {
+                return new Date(value).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                })
+            },
+        }
     },
     yaxis: {
         min: 0,
@@ -59,12 +71,14 @@ async function loadTimeline() {
     console.log("Loading timeline for group:", props.groupName, "and user:", props.userID);
     const timelineResponse: ModelsGroupTimeline[] = await loadGroupTimeline(props.groupName)
     const filteredRes: ModelsDayCount[] = filterByUserId(timelineResponse, props.userID);
-    chartOptions.value.xaxis.categories = filteredRes.map(t => t.date)
 
     series.value = [
         {
-            name: `${props.userID} in Group ${props.groupName}`,
-            data: filteredRes.map(t => t.count),
+            name: props.userID,
+            data: filteredRes.map(t => ({
+                x: new Date(t.date).getTime(),
+                y: t.count,
+            })),
         },
     ]
 
