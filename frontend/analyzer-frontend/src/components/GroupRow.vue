@@ -1,8 +1,14 @@
 <template>
     <div class="group-container">
-        <GroupPanel :groups="groups" @groupSelected="handleGroupSelected"></GroupPanel>
-        <GroupSelect :selectedGroup="selectedGroup" @update:selectedMembers="onSelectedMembersChanged"></GroupSelect>
-        <GroupTimeline :groupName="selectedGroup?.groupUid" :userIDs="selectedUserIds"></GroupTimeline>
+        <ViewPanelTemplate class="flexItem" title="Groups" direction="horizontal">
+            <GroupPanel :groups="groups" @groupSelected="handleGroupSelected"></GroupPanel>
+            <GroupSelect :selectedGroup="selectedGroup" @update:selectedMembers="onSelectedMembersChanged">
+            </GroupSelect>
+            <GroupTimeline class="flexItem" :groupName="selectedGroup?.groupName" :groupID="selectedGroup?.groupUid"
+                :userIDs="selectedUserIds"></GroupTimeline>
+
+        </ViewPanelTemplate>
+
     </div>
 
 </template>
@@ -13,6 +19,7 @@ import GroupPanel from './GroupPanel.vue';
 import GroupSelect from './GroupSelect.vue';
 import { ref } from 'vue'
 import GroupTimeline from './GroupTimeline.vue';
+import ViewPanelTemplate from './ViewPanelTemplate.vue';
 
 
 const defaultApi = new DefaultApi({
@@ -51,7 +58,12 @@ defaultApi.groupsGet().then((response) => {
 
 <style scoped>
 .group-container {
+    padding: 2em;
     display: flex;
     gap: 3rem;
+}
+
+.flexItem {
+    flex: 1;
 }
 </style>
