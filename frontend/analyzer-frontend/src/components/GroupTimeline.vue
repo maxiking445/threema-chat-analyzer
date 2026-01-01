@@ -27,9 +27,10 @@ import { watch } from 'vue';
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import { loadGroupTimeline } from "@/service/ApiService";
 import { ModelsDayCount, ModelsGroupTimeline } from '@/generated/api';
-import { A } from 'vue-router/dist/router-CWoNjPRp.mjs';
+
 const props = defineProps<{
     groupName: string
+    groupID: string
     userIDs: Set<string>
 }>()
 
@@ -83,7 +84,7 @@ const chartOptions = ref({
 })
 
 watch(
-    () => [props.groupName, props.userIDs],
+    () => [props.groupID, props.userIDs],
     ([newGroup, newUser], [oldGroup, oldUser]) => {
         console.log('Group changed from', oldGroup, 'to', newGroup);
         console.log('User changed from', oldUser, 'to', newUser);
@@ -97,13 +98,13 @@ onMounted(async () => {
 })
 
 async function loadTimeline() {
-    console.log("Loading timeline for group:", props.groupName, "and user:", props.userIDs);
-    const timelineResponse: ModelsGroupTimeline[] = await loadGroupTimeline(props.groupName)
+    console.log("Loading timeline for group:", props.groupID, "and user:", props.userIDs);
+    const timelineResponse: ModelsGroupTimeline[] = await loadGroupTimeline(props.groupID)
     rawSeries = filterByUserIdsMap(timelineResponse, props.userIDs);
     buildSeries(rawSeries)
 
 
-    chartOptions.value.title.text = `Messages Timeline: ${props.userIDs} in Group ${props.groupName}`
+    chartOptions.value.title.text = `Messages Timeline: ${props.userIDs} in Group ${props.groupID}`
 
 
 }

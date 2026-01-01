@@ -2,7 +2,7 @@
     <div class="group-container">
         <GroupPanel :groups="groups" @groupSelected="handleGroupSelected"></GroupPanel>
         <GroupSelect :selectedGroup="selectedGroup" @update:selectedMembers="onSelectedMembersChanged"></GroupSelect>
-        <GroupTimeline :groupName="selectedGroup?.groupUid" :userIDs="selectedUserIds"></GroupTimeline>
+        <GroupTimeline :groupName="selectedGroup?.groupName" :groupID="selectedGroup?.groupUid":userIDs="selectedUserIds"></GroupTimeline>
     </div>
 
 </template>
