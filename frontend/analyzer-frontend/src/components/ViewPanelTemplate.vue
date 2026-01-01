@@ -2,16 +2,27 @@
     <div class="panel">
         <h1 class="title">{{ title }}</h1>
         <div class="accent-line"></div>
-        <div class="content">
+        <div class="content" :class="directionClass">
             <slot />
         </div>
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { computed } from 'vue';
+
 const props = defineProps({
-    title: String
+    title: String,
+    direction: {
+        type: String,
+        default: 'vertical',
+        validator: (v: string) => ['vertical', 'horizontal'].includes(v)
+    }
 })
+
+const directionClass = computed(() =>
+    props.direction === 'horizontal' ? 'horizontal' : 'vertical'
+)
 </script>
 
 <style scoped>
@@ -45,7 +56,18 @@ const props = defineProps({
     margin-bottom: 1rem;
 }
 
+
 .content {
-    display: left;
+    display: flex;   
+    gap: 1rem;      
+}
+
+.content.vertical {
+    flex-direction: column; 
+}
+
+.content.horizontal {
+    flex-direction: row;   
+    flex-wrap: wrap;
 }
 </style>

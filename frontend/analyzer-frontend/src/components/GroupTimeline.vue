@@ -1,7 +1,7 @@
 <template>
     <ViewPanelTemplate :title="`Group Messages: ${props.groupName}`" - {{ props.userID }}>
-        <div>
-            <apexchart type="bar" height="300" :options="chartOptions" :series="series" />
+        <div class="chart-container">
+            <apexchart type="bar" height="300"  :options="chartOptions" :series="series" />
         </div>
         <div class="time-navigation">
             <button @click="prevPeriod">◀</button>
@@ -136,6 +136,10 @@ function aggregateToMonths(
     const monthMap = new Map<number, number>()
     chartOptions.value.tooltip.x.format = 'MMMM yyyy'
 
+    for (let m = 0; m < 12; m++) {
+        monthMap.set(m, 0)
+    }
+
     timeline.forEach(t => {
         const date = new Date(t.date)
 
@@ -186,5 +190,10 @@ function nextPeriod() {
 <style>
 .apexcharts-tooltip {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+.chart-container {
+  width: 100%;       
+  max-width: 100%;  
+  display: block;   
 }
 </style>
