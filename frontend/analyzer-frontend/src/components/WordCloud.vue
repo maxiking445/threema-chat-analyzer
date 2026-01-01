@@ -7,25 +7,22 @@
 }" font-family="Righteous" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import VueWordCloud from 'vuewordcloud';
 import { ref, onMounted } from 'vue';
 import { DefaultApi } from '@/generated/api';
 import { pushErrorToast } from '@/service/ToastService';
-
+import { loadWordCloudData } from "@/service/ApiService";
 const words = ref([]);
 const allWords = ref([]);
 const batchSize = 10;
 const intervalTime = 3000;
 
-const defaultApi = new DefaultApi({
-    basePath: '/api',
-    middleware: []
-});
+
 
 onMounted(async () => {
     try {
-        const response = await defaultApi.wordcloudGet();
+        const response = await loadWordCloudData();
         allWords.value = response.map(item => [item.word, item.count]);
         allWords.value.reverse();
         let index = 0;
