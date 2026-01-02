@@ -1,7 +1,7 @@
 <template>
     <ViewPanelTemplate :title="`Group Messages: ${props.groupName}`" - {{ props.userID }}>
         <div class="chart-container">
-            <apexchart type="bar" height="300"  :options="chartOptions" :series="series" />
+            <apexchart type="bar" height="300" :options="chartOptions" :series="series" />
         </div>
         <div class="time-navigation">
             <button @click="prevPeriod">◀</button>
@@ -15,7 +15,7 @@
                 </template>
             </span>
 
-            <button @click="nextPeriod">▶</button>
+            <button class="peroidButton" @click="nextPeriod">▶</button>
         </div>
     </ViewPanelTemplate>
 
@@ -191,9 +191,17 @@ function nextPeriod() {
 .apexcharts-tooltip {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
+
 .chart-container {
-  width: 100%;       
-  max-width: 100%;  
-  display: block;   
+    width: 100%;
+    max-width: 100%;
+    display: block;
+}
+
+.time-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
 }
 </style>
