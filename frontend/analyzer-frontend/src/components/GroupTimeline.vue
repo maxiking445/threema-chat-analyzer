@@ -71,7 +71,7 @@ const chartOptions = ref({
         zoom: { enabled: true }
     },
     dataLabels: {
-        enabled: false,     
+        enabled: false,
     },
     plotOptions: {
         bar: {
@@ -124,10 +124,17 @@ async function loadTimeline() {
 function filterByUserIdsMap(timelineResponse: ModelsGroupTimeline[], userIds: Set<string>): Map<string, ModelsDayCount[]> {
     console.log("Filtering timeline for user IDs:", userIds)
     const result = new Map<string, ModelsDayCount[]>()
-    const userIdsSet = new Set(userIds)
     timelineResponse.forEach(t => {
-        if (userIdsSet.has(t.user)) {
-            result.set(t.user, t.timeline)
+        if (userIds.has(t.identity.identity)) {
+
+            let key = t.identity.nickName
+            if (!key || result.has(key)) {
+                key = t.identity.firstName
+            }
+            if (!key || result.has(key)) {
+                key = t.identity.identity
+            }
+            result.set(key, t.timeline)
         }
     })
 

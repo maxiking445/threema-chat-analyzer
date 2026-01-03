@@ -7,6 +7,6 @@ type DayCount struct {
 
 type GroupTimeline struct {
 	Group    string     `json:"group"`
-	User     string     `json:"user"`
+	User     Identity   `json:"identity"`
 	Timeline []DayCount `json:"timeline"`
 }

@@ -37,12 +37,12 @@ definitions:
     properties:
       group:
         type: string
+      identity:
+        $ref: '#/definitions/models.Identity'
       timeline:
         items:
           $ref: '#/definitions/models.DayCount'
         type: array
-      user:
-        type: string
     type: object
   models.Identity:
     properties:

@@ -7,8 +7,8 @@
 Name | Type
 ------------ | -------------
 `group` | string
+`identity` | [ModelsIdentity](ModelsIdentity.md)
 `timeline` | [Array&lt;ModelsDayCount&gt;](ModelsDayCount.md)
-`user` | string
 
 ## Example
 
@@ -18,8 +18,8 @@ import type { ModelsGroupTimeline } from ''
 // TODO: Update the object below with actual values
 const example = {
   "group": null,
+  "identity": null,
   "timeline": null,
-  "user": null,
 } satisfies ModelsGroupTimeline
 
 console.log(example)
