@@ -24,6 +24,8 @@ func main() {
 	mux.HandleFunc("/delete-zip", handlers.DeleteDataHandler)
 	mux.HandleFunc("/avatar/", handlers.AvatarHandler)
 
+	mux.HandleFunc("/contacts/", handlers.ContactsHandler)
+
 	mux.HandleFunc("/groups/timeline", handlers.GroupTimelineHandler)
 	mux.HandleFunc("/groups", handlers.GroupsHandler)
 	mux.HandleFunc("/users", handlers.UserHandler)
