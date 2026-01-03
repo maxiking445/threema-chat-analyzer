@@ -2,22 +2,32 @@
     <ViewPanelTemplate :title="`Group Messages: ${props.groupName}`" - {{ props.userID }}>
         <!-- Switch Button -->
         <div class="view-mode-switch">
-            <button :class="{ active: viewMode === 'year' }" @click="switchView('year')">
+            <button :class="{ active: viewMode === 'year' }" @click="switchView('year')"
+                :disabled="series.length === 0">
                 Year
             </button>
-            <button :class="{ active: viewMode === 'month' }" @click="switchView('month')">
+            <button :class="{ active: viewMode === 'month' }" @click="switchView('month')"
+                :disabled="series.length === 0">
                 Month
             </button>
         </div>
 
         <!-- Chart -->
         <div class="chart-container">
-            <apexchart type="bar" height="300" :options="chartOptions" :series="series" />
+            <template v-if="series.length === 0">
+                <div class="no-data">
+                    Please select group members to see the timeline data.
+                </div>
+            </template>
+            <template v-else>
+                <apexchart type="bar" height="300" :options="chartOptions" :series="series" />
+            </template>
+
         </div>
 
         <!-- Time Navigation -->
         <div class="time-navigation">
-            <button class="period-button" @click="prevPeriod">◀</button>
+            <button class="period-button" @click="prevPeriod" :disabled="series.length === 0">◀</button>
 
             <span class="time-label">
                 <template v-if="viewMode === 'year'">
@@ -28,7 +38,7 @@
                 </template>
             </span>
 
-            <button class="period-button" @click="nextPeriod">▶</button>
+            <button class="period-button" @click="nextPeriod" :disabled="series.length === 0">▶</button>
         </div>
     </ViewPanelTemplate>
 </template>
@@ -89,9 +99,6 @@ const chartOptions = ref({
     yaxis: {
         min: 0,
     },
-    title: {
-        text: 'Messages Timeline',
-    },
 })
 
 watch(
@@ -114,11 +121,6 @@ async function loadTimeline() {
     const timelineResponse: ModelsGroupTimeline[] = await loadGroupTimeline(props.groupID)
     rawSeries = filterByUserIdsMap(timelineResponse, props.userIDs);
     buildSeries(rawSeries)
-
-
-    chartOptions.value.title.text = `Messages Timelines: ${props.userIDs} in Group ${props.groupID}`
-
-
 }
 
 function filterByUserIdsMap(timelineResponse: ModelsGroupTimeline[], userIds: Set<string>): Map<string, ModelsDayCount[]> {
@@ -307,5 +309,13 @@ function switchView(mode: ViewMode) {
 
 .view-mode-switch button:hover {
     background-color: #44484f;
+}
+
+
+.no-data {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
 }
 </style>
