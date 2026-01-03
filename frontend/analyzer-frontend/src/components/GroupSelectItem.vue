@@ -1,5 +1,5 @@
 <template>
-  <div class="user-bar" :class="{ selected }" @click="handleClick">
+  <div class="user-bar" :class="{ selected: isSelected }" @click="handleClick">
     <div class="left">
       <Avatar
         :imageID="identity.identityID"
@@ -32,6 +32,8 @@ const props = defineProps<{
   max: number
   selected?: boolean
 }>()
+
+const isSelected = computed(() => props.selected === true)
 
 const emit = defineEmits<{
   (e: 'click', identityID: string): void
