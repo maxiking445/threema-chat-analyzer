@@ -51,7 +51,6 @@ function onSelectedMembersChanged(newSelection: Array<string>) {
 defaultApi.groupsGet().then((response) => {
     console.log("Groups:", response);
     groups.value = response;
-    handleGroupSelected(response[0].groupUid);
 });
 
 </script>
