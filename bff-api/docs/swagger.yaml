@@ -1,5 +1,12 @@
 basePath: /
 definitions:
+  models.Contact:
+    properties:
+      identity:
+        $ref: '#/definitions/models.Identity'
+      message_count:
+        type: integer
+    type: object
   models.DayCount:
     properties:
       count:
@@ -95,6 +102,23 @@ paths:
           description: Image
           schema:
             type: file
+  /contacts:
+    get:
+      consumes:
+      - application/json
+      description: Fetches all contacts along with their message counts from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully loaded contacts
+          schema:
+            items:
+              $ref: '#/definitions/models.Contact'
+            type: array
+      summary: Get all contacts with message counts
+      tags:
+      - Contacts
   /delete-zip:
     delete:
       consumes:

@@ -53,6 +53,32 @@ const docTemplate = `{
                 }
             }
         },
+        "/contacts": {
+            "get": {
+                "description": "Fetches all contacts along with their message counts from the database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Contacts"
+                ],
+                "summary": "Get all contacts with message counts",
+                "responses": {
+                    "200": {
+                        "description": "Successfully loaded contacts",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Contact"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/delete-zip": {
             "delete": {
                 "description": "Löscht ein angegebenes temporäres Verzeichnis rekursiv",
@@ -276,6 +302,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.Contact": {
+            "type": "object",
+            "properties": {
+                "identity": {
+                    "$ref": "#/definitions/models.Identity"
+                },
+                "message_count": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.DayCount": {
             "type": "object",
             "properties": {
