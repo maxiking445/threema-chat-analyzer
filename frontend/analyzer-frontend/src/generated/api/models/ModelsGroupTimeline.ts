@@ -20,6 +20,13 @@ import {
     ModelsDayCountToJSON,
     ModelsDayCountToJSONTyped,
 } from './ModelsDayCount';
+import type { ModelsIdentity } from './ModelsIdentity';
+import {
+    ModelsIdentityFromJSON,
+    ModelsIdentityFromJSONTyped,
+    ModelsIdentityToJSON,
+    ModelsIdentityToJSONTyped,
+} from './ModelsIdentity';
 
 /**
  * 
@@ -35,16 +42,16 @@ export interface ModelsGroupTimeline {
     group?: string;
     /**
      * 
+     * @type {ModelsIdentity}
+     * @memberof ModelsGroupTimeline
+     */
+    identity?: ModelsIdentity;
+    /**
+     * 
      * @type {Array<ModelsDayCount>}
      * @memberof ModelsGroupTimeline
      */
     timeline?: Array<ModelsDayCount>;
-    /**
-     * 
-     * @type {string}
-     * @memberof ModelsGroupTimeline
-     */
-    user?: string;
 }
 
 /**
@@ -65,8 +72,8 @@ export function ModelsGroupTimelineFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'group': json['group'] == null ? undefined : json['group'],
+        'identity': json['identity'] == null ? undefined : ModelsIdentityFromJSON(json['identity']),
         'timeline': json['timeline'] == null ? undefined : ((json['timeline'] as Array<any>).map(ModelsDayCountFromJSON)),
-        'user': json['user'] == null ? undefined : json['user'],
     };
 }
 
@@ -82,8 +89,8 @@ export function ModelsGroupTimelineToJSONTyped(value?: ModelsGroupTimeline | nul
     return {
         
         'group': value['group'],
+        'identity': ModelsIdentityToJSON(value['identity']),
         'timeline': value['timeline'] == null ? undefined : ((value['timeline'] as Array<any>).map(ModelsDayCountToJSON)),
-        'user': value['user'],
     };
 }
 

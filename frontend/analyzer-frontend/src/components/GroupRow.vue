@@ -1,6 +1,6 @@
 <template>
     <div class="group-container">
-        <ViewPanelTemplate class="flexItem" title="Groups" direction="horizontal">
+        <ViewPanelTemplate class="flexItem" title="Groups Panel" direction="horizontal">
             <GroupPanel :groups="groups" @groupSelected="handleGroupSelected"></GroupPanel>
             <GroupSelect :selectedGroup="selectedGroup" @update:selectedMembers="onSelectedMembersChanged">
             </GroupSelect>
@@ -42,16 +42,15 @@ const handleGroupSelected = (groupKey) => {
     selectedGroup.value = selected
 }
 
-function onSelectedMembersChanged(newSelection: Set<string>) {
+function onSelectedMembersChanged(newSelection: Array<string>) {
     console.log("Selected members changed:", newSelection);
-    selectedUserIds.value = newSelection;
+    selectedUserIds.value = new Set(newSelection);
 }
 
 
 defaultApi.groupsGet().then((response) => {
     console.log("Groups:", response);
     groups.value = response;
-    handleGroupSelected(response[0].groupUid);
 });
 
 </script>

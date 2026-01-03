@@ -3,7 +3,7 @@
     <ViewPanelTemplate :title="`Group Activity: ${props.selectedGroup.groupName}`" :key="props.selectedGroup?.id">
       <GroupSelectItem v-for="groupMember in selectedGroup.groupMember" :identity="groupMember.identity"
         :max="props.selectedGroup.messageCount" :value="groupMember.messageCount"
-        :selected="selectedMembers.has(groupMember.identity.identityID)" @click="handleItemClick" />
+        :selected="isSelected(groupMember.identity.identity)" @click="handleItemClick" />
     </ViewPanelTemplate>
   </div>
 </template>
@@ -16,7 +16,7 @@ import { watch, ref } from 'vue'
 import { PropType } from 'vue'
 import GroupSelectItem from './GroupSelectItem.vue';
 
-const selectedMembers = ref<Set<string>>(new Set())
+const selectedMembers = ref<string[]>([])
 
 
 const props = defineProps({
@@ -31,19 +31,21 @@ watch(() => props.selectedGroup, (newGroupName) => {
 
 })
 
+function isSelected(identityID: string): boolean {
+  return selectedMembers.value.includes(identityID)
+}
+
 function handleItemClick(identityID: string) {
-  console.log("Handling click for identityID:", identityID)
-  if (selectedMembers.value.has(identityID)) {
-    selectedMembers.value.delete(identityID)
+  const index = selectedMembers.value.indexOf(identityID)
+  if (index !== -1) {
+    selectedMembers.value.splice(index, 1)
   } else {
-    selectedMembers.value.add(identityID)
+    selectedMembers.value.push(identityID)
   }
-  selectedMembers.value = new Set(selectedMembers.value)
-  console.log("Clicked on member with ID:", selectedMembers)
   emit('update:selectedMembers', selectedMembers.value)
 }
 
 const emit = defineEmits<{
-  (e: 'update:selectedMembers', value: Set<string>): void
+  (e: 'update:selectedMembers', value: Array<string>): void
 }>()
 </script>

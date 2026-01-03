@@ -1,13 +1,15 @@
 <template>
     <div class="group-item" :class="{ selected: selected }" @click="$emit('click', groupKey)">
         <span class="group-name">{{ groupName }}</span>
-        <span class="message-count">{{ messageCount }}</span>
+        <MessageCountLabel :message-count="messageCount"></MessageCountLabel>
     </div>
 </template>
 
 <script setup>
+import MessageCountLabel from './MessageCountLabel.vue';
+
 defineProps({
-    groupKey : String,
+    groupKey: String,
     groupName: String,
     messageCount: Number,
     selected: Boolean
@@ -41,12 +43,4 @@ defineEmits(['click'])
     font-weight: 600;
 }
 
-.message-count {
-    background: #ffffff;
-    color: #181b20;
-    font-size: 0.875rem;
-    font-weight: 600;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.5rem;
-}
 </style>

@@ -45,10 +45,12 @@ func BuildGroupTimelinesFromCSV(
 		sort.Slice(timeline, func(i, j int) bool {
 			return timeline[i].Date < timeline[j].Date
 		})
-
+		if user == "" {
+			user = "You"
+		}
 		timelines = append(timelines, models.GroupTimeline{
 			Group:    groupName,
-			User:     user,
+			User:     LoadIdentity(user),
 			Timeline: timeline,
 		})
 	}

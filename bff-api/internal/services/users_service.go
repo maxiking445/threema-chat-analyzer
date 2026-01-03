@@ -10,7 +10,7 @@ import (
 )
 
 func LoadIdentity(userID string) model.Identity {
-	if userID == "" {
+	if userID == "" || userID == "You" {
 		return model.Identity{
 			Identity:   "You",
 			IdentityID: "You",

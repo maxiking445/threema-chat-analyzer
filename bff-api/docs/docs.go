@@ -333,14 +333,14 @@ const docTemplate = `{
                 "group": {
                     "type": "string"
                 },
+                "identity": {
+                    "$ref": "#/definitions/models.Identity"
+                },
                 "timeline": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.DayCount"
                     }
-                },
-                "user": {
-                    "type": "string"
                 }
             }
         },
