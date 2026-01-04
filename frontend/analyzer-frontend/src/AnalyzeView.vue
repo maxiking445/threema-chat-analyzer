@@ -10,14 +10,13 @@ import ContactRow from './components/ContactRow.vue';
     <div class="app">
         <Header></Header>
         <main class="app-main">
-            <div class="content">
+            <div class="contentWrapper">
                 <GroupRow></GroupRow>
                 <ContactRow></ContactRow>
                 <ViewPanelTemplate class="wordCloudWrapper" title="Wordcloud">
                     <div class="wordCloudContainer">
                         <WordCloud />
                     </div>
-
                 </ViewPanelTemplate>
             </div>
         </main>
@@ -25,7 +24,7 @@ import ContactRow from './components/ContactRow.vue';
 </template>
 
 <style>
-.content {
+.contentWrapper {
     padding: 2em;
     width: 100%;
     box-sizing: border-box;

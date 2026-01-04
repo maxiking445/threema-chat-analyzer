@@ -18,10 +18,7 @@ const defaultApi = new DefaultApi(config)
 
 function loadAvatar(imageID: string, avatarType: AvatarIdGetTypeEnum) {
     var params: AvatarIdGetRequest = { type: avatarType, id: imageID };
-
-    console.log("Loading avatar with params", params)
     defaultApi.avatarIdGet(params).then((response) => {
-        console.log("Loaded avatar for", response)
         avatarSrc.value = URL.createObjectURL(response);
     }).catch((error) => {
         pushErrorToast('Failed to load avatar image.', error);
@@ -57,6 +54,4 @@ onMounted(() => {
     object-position: center;
     display: block;
 }
-
-
 </style>

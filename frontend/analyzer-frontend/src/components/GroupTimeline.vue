@@ -1,5 +1,6 @@
 <template>
-    <Timeline :title="'Group Timeline: ' + groupName" :data="data" :users="userIDs"></Timeline>
+    <Timeline :title="groupName ? 'Group Timeline: ' + groupName : 'Group Timeline:'" :data="data" :users="userIDs">
+    </Timeline>
 </template>
 
 <script setup lang="ts">
@@ -26,8 +27,11 @@ watch(
 );
 
 async function loadTimeline() {
+    if (props.userIDs.length === 0) {
+        data.value = []
+        return
+    }
     const response = await loadGroupTimeline(props.groupID);
-
     data.value = response;
 }
 </script>

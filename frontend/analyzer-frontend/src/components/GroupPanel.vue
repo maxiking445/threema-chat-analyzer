@@ -2,7 +2,7 @@
   <div>
     <ViewPanelTemplate title="Your Groups">
       <PanelItem v-for="group in groups" :uuid="group.groupUid":id="group.groupUid" :displayName="group.groupName" :showAvatar="false" :showBar="false"
-        :value="group.messageCount" :selected="group.groupUid === selectedGroupKey" @click="handleItemClick" />
+        :value="group.messageCount" :selected="group.groupUid === selectedGroupKey" @click="handleItemClick"  class="panelItem"/>
     </ViewPanelTemplate>
   </div>
 </template>
@@ -27,3 +27,4 @@ function handleItemClick(groupKey) {
   emit('groupSelected', groupKey)
 }
 </script>
+
