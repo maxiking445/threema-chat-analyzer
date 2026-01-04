@@ -1,17 +1,24 @@
 <template>
     <ViewPanelTemplate :title="title">
         <!-- Switch Button -->
-        <div class="view-mode-switch">
-            <button :class="{ active: viewMode === 'year' }" @click="switchView('year')"
-                :disabled="series.length === 0">
-                Year
-            </button>
-            <button :class="{ active: viewMode === 'month' }" @click="switchView('month')"
-                :disabled="series.length === 0">
-                Month
-            </button>
-        </div>
+        <div class="button-row">
+            <div class="button-left"></div>
 
+            <div class="view-mode-switch">
+                <button :class="{ active: viewMode === 'year' }" @click="switchView('year')"
+                    :disabled="series.length === 0">
+                    Year
+                </button>
+                <button :class="{ active: viewMode === 'month' }" @click="switchView('month')"
+                    :disabled="series.length === 0">
+                    Month
+                </button>
+            </div>
+
+            <div class="button-right">
+                <MessageCountLabel :message-count="calcMessageCount()" />
+            </div>
+        </div>
         <!-- Chart -->
         <div class="chart-container">
             <template v-if="series.length === 0">
@@ -48,6 +55,7 @@ import { ref, onMounted } from 'vue'
 import { watch } from 'vue';
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import { ModelsDayCount, ModelsGroupTimeline } from '@/generated/api';
+import MessageCountLabel from './MessageCountLabel.vue';
 
 const props = defineProps<{
     title: string
@@ -140,12 +148,11 @@ function filterByUserIdsMap(timelineResponse: ModelsGroupTimeline[], userIds: Se
                 key = t.identity.identity
             }
             if (result.has(key)) {
-                console.log("HEY YO!")
                 const oldValue = result.get(key);
                 const mergedArray = [
                     ...oldValue,
                     ...t.timeline
-                    
+
                 ];
                 result.set(key, mergedArray)
                 return
@@ -153,7 +160,6 @@ function filterByUserIdsMap(timelineResponse: ModelsGroupTimeline[], userIds: Se
             result.set(key, t.timeline)
         }
     })
-    console.log("RES: ", result)
     return result
 }
 
@@ -186,7 +192,7 @@ function aggregateToMonths(
     })
 
     return Array.from(monthMap.entries()).map(([month, count]) => ({
-        x: new Date(selectedYear.value, month, 1).getTime(),
+        x: Date.UTC(selectedYear.value, month, 1),
         y: count
     }))
 }
@@ -210,7 +216,7 @@ function aggregateToDays(timeline: ModelsDayCount[]) {
     })
 
     return Array.from(dayMap.entries()).map(([day, count]) => ({
-        x: new Date(year, month, day).getTime(),
+        x: Date.UTC(year, month, day),
         y: count
     }))
 }
@@ -241,6 +247,16 @@ function nextPeriod() {
         }
     }
     buildSeries(rawSeries)
+}
+
+function calcMessageCount() {
+    var sum: number = 0
+    series.value.forEach(user => {
+        user.data.forEach(x => {
+            sum += x.y
+        })
+    })
+    return sum
 }
 
 function switchView(mode: ViewMode) {
@@ -297,12 +313,22 @@ function switchView(mode: ViewMode) {
     text-align: center;
 }
 
+.button-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
 .view-mode-switch {
     display: flex;
     justify-content: center;
-    align-items: center;
     gap: 8px;
-    margin-bottom: 0.5rem;
+}
+
+.button-right {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .view-mode-switch button {
