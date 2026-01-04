@@ -137,7 +137,6 @@ async function loadTimeline() {
 
 function filterByUserIdsMap(timelineResponse: ModelsGroupTimeline[], userIds: Set<string>): Map<string, ModelsDayCount[]> {
     const valuesArray = Array.from(userIds);
-    valuesArray.push("You")
     const result = new Map<string, ModelsDayCount[]>()
     timelineResponse.forEach(t => {
         if (valuesArray.includes(t.identity.identity)) {
