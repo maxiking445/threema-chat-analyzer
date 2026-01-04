@@ -30,7 +30,7 @@ const directionClass = computed(() =>
     margin: 20px;
     width: fit-content;
     min-width: 300px;
-    min-height: 500px;
+    min-height: 600px;
     padding: 1.75rem 1.75rem 2rem;
     border-radius: 16px;
     background: #181b20;

@@ -1,16 +1,15 @@
 <template>
     <div class="contact-container">
-        <ViewPanelTemplate class="flexItem" title="Contacts Panel" direction="horizontal">
+        <ViewPanelTemplate class="flexItem" title="Contacts" direction="horizontal">
             <ContactPanel :contacts="contacts" @contactSelected="handleContactSelected"></ContactPanel>
             <ContactTimeline class="flexItem" :users="selectedContacts?.map(contact => contact.identity.identity) || []"></ContactTimeline>
         </ViewPanelTemplate>
-
     </div>
 
 </template>
 
 <script setup lang="ts">
-import { ModelsContact, ModelsGroup } from '@/generated/api';
+import { ModelsContact } from '@/generated/api';
 import { onMounted, ref } from 'vue'
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import ContactPanel from './ContactPanel.vue';
@@ -36,7 +35,6 @@ onMounted(async () => {
 
 <style scoped>
 .contact-container {
-    padding: 2em;
     display: flex;
     gap: 3rem;
 }

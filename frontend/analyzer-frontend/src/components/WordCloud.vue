@@ -1,16 +1,13 @@
 <template>
-    <vue-word-cloud style="
-    height: 680px;
-    width: 1040px;
-  " :words="words" :color="([, weight]) => {
-    if (weight > 900) return '#1abc5b';
-}" font-family="Righteous" />
+    <div class="wordCloudContainer">
+        <vue-word-cloud class="wordCloud" :words="words" :color="([, weight]) => weight > 900 ? '#1abc5b' : '#ffffff'"
+            font-family="Righteous" />
+    </div>
 </template>
 
 <script setup lang="ts">
 import VueWordCloud from 'vuewordcloud';
 import { ref, onMounted } from 'vue';
-import { DefaultApi } from '@/generated/api';
 import { pushErrorToast } from '@/service/ToastService';
 import { loadWordCloudData } from "@/service/ApiService";
 const words = ref([]);
@@ -43,3 +40,19 @@ onMounted(async () => {
 });
 
 </script>
+
+<style>
+.wordCloudContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 680px;
+}
+
+.wordCloud {
+    width: 100%;
+    max-width: 1040px;
+    height: 100%;
+}
+</style>

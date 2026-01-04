@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ViewPanelTemplate title="Contacts">
+    <ViewPanelTemplate title="Your Contacts">
       <div class="contacts-list" :style="{ maxHeight: '400px', overflow: 'auto' }">
         <PanelItem v-for="contact in filteredContacts" :id="contact.identity.identity"
           :uuid="contact.identity.identityID" :showAvatar="true" :showBar="false"

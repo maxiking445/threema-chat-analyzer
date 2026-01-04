@@ -23,7 +23,7 @@
         <div class="chart-container">
             <template v-if="series.length === 0">
                 <div class="no-data">
-                    Please select users to see the timeline data.
+                    <NoData></NoData>
                 </div>
             </template>
             <template v-else>
@@ -56,6 +56,7 @@ import { watch } from 'vue';
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import { ModelsDayCount, ModelsGroupTimeline } from '@/generated/api';
 import MessageCountLabel from './MessageCountLabel.vue';
+import NoData from './NoData.vue';
 
 const props = defineProps<{
     title: string

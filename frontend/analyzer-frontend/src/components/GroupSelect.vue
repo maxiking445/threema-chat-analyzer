@@ -1,8 +1,11 @@
 <template>
   <div>
     <ViewPanelTemplate :title="`Group Activity: ${props.selectedGroup.groupName}`" :key="props.selectedGroup?.id">
+      <div v-if="selectedGroup.groupMember == undefined">
+       <NoData></NoData>
+      </div>
       <PanelItem v-for="groupMember in selectedGroup.groupMember" :display-name="resolveUserName(groupMember.identity)"
-        :id="groupMember.identity.identity"  :uuid="groupMember.identity.identityID" :show-avatar="true" :show-bar="true"
+        :id="groupMember.identity.identity" :uuid="groupMember.identity.identityID" :show-avatar="true" :show-bar="true"
         :max="props.selectedGroup.messageCount" :value="groupMember.messageCount"
         :selected="isSelected(groupMember.identity.identity)" @click="handleItemClick" />
     </ViewPanelTemplate>
@@ -16,6 +19,7 @@ import ViewPanelTemplate from './ViewPanelTemplate.vue'
 import { watch, ref } from 'vue'
 import { PropType } from 'vue'
 import PanelItem from './PanelItem.vue';
+import NoData from './NoData.vue';
 
 const selectedMembers = ref<string[]>([])
 
