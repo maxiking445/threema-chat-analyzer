@@ -2,6 +2,7 @@
     <div class="contact-container">
         <ViewPanelTemplate class="flexItem" title="Contacts Panel" direction="horizontal">
             <ContactPanel :contacts="contacts" @contactSelected="handleContactSelected"></ContactPanel>
+            <ContactTimeline class="flexItem" :users="selectedContacts?.map(contact => contact.identity.identity) || []"></ContactTimeline>
         </ViewPanelTemplate>
 
     </div>
@@ -13,6 +14,7 @@ import { ModelsContact, ModelsGroup } from '@/generated/api';
 import { onMounted, ref } from 'vue'
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import ContactPanel from './ContactPanel.vue';
+import ContactTimeline from './ContactTimeline.vue';
 import { loadContacts } from "@/service/ApiService";
 
 const selectedContacts = ref<ModelsContact[]>();

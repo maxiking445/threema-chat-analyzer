@@ -43,7 +43,7 @@ func LoadGroupsWithMessageCounts(groupsPath string) ([]model.Group, error) {
 		for identity := range m {
 			groupMember := model.GroupMember{
 				MessageCount: int64(m[identity]),
-				Identity:     LoadIdentity(identity),
+				Identity:     LoadIdentityByUserID(identity),
 			}
 			g.GroupMember = append(g.GroupMember, groupMember)
 		}

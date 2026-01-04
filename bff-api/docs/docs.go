@@ -76,6 +76,50 @@ const docTemplate = `{
                 }
             }
         },
+        "/contacts/timeline": {
+            "get": {
+                "description": "Returns the daily number of messages per user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Sums up messages from each person in contact during one day",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID of contact (CSV-Name)",
+                        "name": "userId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.ContactTimeline"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "contact missing",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/delete-zip": {
             "delete": {
                 "description": "Löscht ein angegebenes temporäres Verzeichnis rekursiv",
@@ -313,6 +357,20 @@ const docTemplate = `{
                 },
                 "yourMessageCount": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.ContactTimeline": {
+            "type": "object",
+            "properties": {
+                "identity": {
+                    "$ref": "#/definitions/models.Identity"
+                },
+                "timeline": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.DayCount"
+                    }
                 }
             }
         },

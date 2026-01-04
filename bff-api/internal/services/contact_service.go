@@ -79,7 +79,7 @@ func countMessagesFrom(path string) (int64, int64) {
 		if len(record) < 2 {
 			continue
 		}
-		fmt.Println(record[5])
+
 		isOutbox := false
 		if record[5] == "READ" {
 			isOutbox = true

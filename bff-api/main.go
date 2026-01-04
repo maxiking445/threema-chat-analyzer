@@ -25,6 +25,7 @@ func main() {
 	mux.HandleFunc("/avatar/", handlers.AvatarHandler)
 
 	mux.HandleFunc("/contacts", handlers.ContactsHandler)
+	mux.HandleFunc("/contacts/timeline", handlers.ContactTimelineHandler)
 
 	mux.HandleFunc("/groups/timeline", handlers.GroupTimelineHandler)
 	mux.HandleFunc("/groups", handlers.GroupsHandler)

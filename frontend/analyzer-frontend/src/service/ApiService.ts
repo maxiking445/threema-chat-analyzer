@@ -1,5 +1,10 @@
 import { Configuration, DefaultApi } from "@/generated/api";
-import { ModelsWordCount, ModelsGroupTimeline, ModelsContact } from "@/generated/api/models";
+import {
+  ModelsWordCount,
+  ModelsGroupTimeline,
+  ModelsContact,
+  ModelsContactTimeline,
+} from "@/generated/api/models";
 
 const configuration = new Configuration({
   basePath: "/api",
@@ -21,13 +26,29 @@ export async function loadGroupTimeline(
   }
 }
 
+export async function loadContactTimeline(
+  userId: string
+): Promise<ModelsContactTimeline[]> {
+  console.log("Loading timeline data for contact:", userId);
+
+  try {
+    const response = await defaultApi.contactsTimelineGet({
+      userId: userId,
+    });
+    return response;
+  } catch (err) {
+    console.error("Error loading timeline:", err);
+    return [];
+  }
+}
+
 export async function loadWordCloudData(): Promise<ModelsWordCount[]> {
   return await defaultApi.wordcloudGet();
 }
 
 export async function loadContacts(): Promise<ModelsContact[]> {
   try {
-    const response = await fetch('http://localhost:8080/contacts');
+    const response = await fetch("http://localhost:8080/contacts");
     console.log("Contacts response:", response);
     return response.json();
   } catch (err) {

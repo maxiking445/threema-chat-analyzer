@@ -16,6 +16,7 @@
 import * as runtime from '../runtime';
 import type {
   ModelsContact,
+  ModelsContactTimeline,
   ModelsGroup,
   ModelsGroupTimeline,
   ModelsIdentity,
@@ -24,6 +25,8 @@ import type {
 import {
     ModelsContactFromJSON,
     ModelsContactToJSON,
+    ModelsContactTimelineFromJSON,
+    ModelsContactTimelineToJSON,
     ModelsGroupFromJSON,
     ModelsGroupToJSON,
     ModelsGroupTimelineFromJSON,
@@ -37,6 +40,10 @@ import {
 export interface AvatarIdGetRequest {
     type: AvatarIdGetTypeEnum;
     id: string;
+}
+
+export interface ContactsTimelineGetRequest {
+    userId: string;
 }
 
 export interface GroupsTimelineGetRequest {
@@ -128,6 +135,48 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async contactsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ModelsContact>> {
         const response = await this.contactsGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Returns the daily number of messages per user.
+     * Sums up messages from each person in contact during one day
+     */
+    async contactsTimelineGetRaw(requestParameters: ContactsTimelineGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ModelsContactTimeline>>> {
+        if (requestParameters['userId'] == null) {
+            throw new runtime.RequiredError(
+                'userId',
+                'Required parameter "userId" was null or undefined when calling contactsTimelineGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['userId'] != null) {
+            queryParameters['userId'] = requestParameters['userId'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/contacts/timeline`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ModelsContactTimelineFromJSON));
+    }
+
+    /**
+     * Returns the daily number of messages per user.
+     * Sums up messages from each person in contact during one day
+     */
+    async contactsTimelineGet(requestParameters: ContactsTimelineGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ModelsContactTimeline>> {
+        const response = await this.contactsTimelineGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

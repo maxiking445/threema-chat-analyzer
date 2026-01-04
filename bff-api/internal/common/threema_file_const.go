@@ -22,4 +22,5 @@ const (
 	// MESSAGES
 	UserMessagesPath = "data/message_*.csv"
 	UserMessagePath  = "data/message_"
+	UserMessage      = "message_"
 )
