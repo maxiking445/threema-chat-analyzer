@@ -1,11 +1,11 @@
 <template>
   <div>
     <ViewPanelTemplate title="Contacts">
-      <div class="contacts-list" :style="{ maxHeight: '300px', overflow: 'auto' }">
+      <div class="contacts-list" :style="{ maxHeight: '400px', overflow: 'auto' }">
         <PanelItem v-for="contact in filteredContacts" :id="contact.identity.identity"
           :uuid="contact.identity.identityID" :showAvatar="true" :showBar="false"
           :displayName="resolveUserName(contact)" :value="contact.messageCount || 0"
-          :selected="contact.identity.identityID === selectedContactKey" @click="handleItemClick" />
+          :selected="isSelected(contact.identity.identity)" @click="handleItemClick" />
       </div>
 
     </ViewPanelTemplate>
@@ -21,19 +21,24 @@ import PanelItem from './PanelItem.vue';
 const props = defineProps({
   contacts: { type: Array as PropType<ModelsContact[]>, required: false, default: () => [] }
 })
-
-const selectedContactKey = ref<string | null>(null)
-
+const selectedContacts = ref<string[]>([])
 
 
 const emit = defineEmits(['contactSelected'])
 
-function handleItemClick(userId) {
-  selectedContactKey.value = userId
-  emit('contactSelected', userId)
+function isSelected(identityID: string): boolean {
+  return selectedContacts.value.includes(identityID)
 }
 
-
+function handleItemClick(id: string) {
+  const index = selectedContacts.value.indexOf(id)
+  if (index !== -1) {
+    selectedContacts.value.splice(index, 1)
+  } else {
+    selectedContacts.value.push(id)
+  }
+  emit('contactSelected', selectedContacts.value)
+}
 
 const filteredContacts = computed(() => {
   return props.contacts.filter(contact => contact.messageCount > 0)
@@ -56,6 +61,6 @@ function resolveUserName(contact: ModelsContact): string {
 }
 
 :deep(.contacts-list::-webkit-scrollbar-thumb) {
-  background-color: rgba(0, 150, 136, 0.6);
+  background-color: #3bb54a;
 }
 </style>
