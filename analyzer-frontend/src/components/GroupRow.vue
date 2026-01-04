@@ -43,13 +43,11 @@ const handleGroupSelected = (groupKey) => {
 }
 
 function onSelectedMembersChanged(newSelection: Array<string>) {
-    console.log("Selected members changed:", newSelection);
     selectedUserIds.value = new Set(newSelection);
 }
 
 
 defaultApi.groupsGet().then((response) => {
-    console.log("Groups:", response);
     groups.value = response;
 });
 
