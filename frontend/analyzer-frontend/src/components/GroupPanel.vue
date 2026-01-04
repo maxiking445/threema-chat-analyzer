@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ViewPanelTemplate title="Groups">
+    <ViewPanelTemplate title="Your Groups">
       <PanelItem v-for="group in groups" :uuid="group.groupUid":id="group.groupUid" :displayName="group.groupName" :showAvatar="false" :showBar="false"
         :value="group.messageCount" :selected="group.groupUid === selectedGroupKey" @click="handleItemClick" />
     </ViewPanelTemplate>

@@ -1,6 +1,6 @@
 <template>
     <div class="group-container">
-        <ViewPanelTemplate class="flexItem" title="Groups Panel" direction="horizontal">
+        <ViewPanelTemplate class="flexItem" title="Groups" direction="horizontal">
             <GroupPanel :groups="groups" @groupSelected="handleGroupSelected"></GroupPanel>
             <GroupSelect :selectedGroup="selectedGroup" @update:selectedMembers="onSelectedMembersChanged">
             </GroupSelect>
@@ -57,7 +57,6 @@ defaultApi.groupsGet().then((response) => {
 
 <style scoped>
 .group-container {
-    padding: 2em;
     display: flex;
     gap: 3rem;
 }

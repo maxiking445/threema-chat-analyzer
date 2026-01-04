@@ -13,11 +13,32 @@ import ContactRow from './components/ContactRow.vue';
             <div class="content">
                 <GroupRow></GroupRow>
                 <ContactRow></ContactRow>
-                <ViewPanelTemplate title="Wordcloud">
-                    <WordCloud></WordCloud>
-                </ViewPanelTemplate>
+                <ViewPanelTemplate class="wordCloudWrapper" title="Wordcloud">
+                    <div class="wordCloudContainer">
+                        <WordCloud />
+                    </div>
 
+                </ViewPanelTemplate>
             </div>
         </main>
     </div>
 </template>
+
+<style>
+.content {
+    padding: 2em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.wordCloudWrapper {
+    width: auto !important;
+    padding-right: 2em;
+}
+
+.wordCloudContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>
