@@ -302,10 +302,16 @@ const docTemplate = `{
         "models.Contact": {
             "type": "object",
             "properties": {
+                "contactMessageCount": {
+                    "type": "integer"
+                },
                 "identity": {
                     "$ref": "#/definitions/models.Identity"
                 },
-                "messageCount": {
+                "totalMessageCount": {
+                    "type": "integer"
+                },
+                "yourMessageCount": {
                     "type": "integer"
                 }
             }

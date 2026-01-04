@@ -1,7 +1,7 @@
 <template>
     <div class="contact-container">
         <ViewPanelTemplate class="flexItem" title="Contacts Panel" direction="horizontal">
-            <ContactPanel :contacts="contacts" @groupSelected="handleGroupSelected"></ContactPanel>
+            <ContactPanel :contacts="contacts" @contactSelected="handleContactSelected"></ContactPanel>
         </ViewPanelTemplate>
 
     </div>
@@ -15,20 +15,19 @@ import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import ContactPanel from './ContactPanel.vue';
 import { loadContacts } from "@/service/ApiService";
 
-const selectedContact = ref<ModelsContact>();
+const selectedContacts = ref<ModelsContact[]>();
 const contacts = ref<ModelsContact[]>([]);
 
-const handleGroupSelected = (identityID) => {
-    selectedContact.value = undefined;
-    var selected: ModelsGroup = contacts.value.find(contact => contact.identity.identity === identityID);
-    selected.groupMember.sort((a, b) => b.messageCount - a.messageCount);
-    selectedContact.value = selected
+const handleContactSelected = (userIds) => {
+    selectedContacts.value = undefined;
+    var selected: ModelsContact[] = contacts.value.filter(contact => userIds.includes(contact.identity.identity));
+    selectedContacts.value = selected
 }
 
 onMounted(async () => {
     loadContacts().then((response) => {
         contacts.value = response;
-        contacts.value = contacts.value.sort((a, b) => (b.messageCount || 0) - (a.messageCount || 0));
+        contacts.value = contacts.value.sort((a, b) => (b.totalMessageCount || 0) - (a.totalMessageCount || 0));
     });
 });
 </script>

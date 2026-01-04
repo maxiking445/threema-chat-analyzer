@@ -4,7 +4,7 @@
       <div class="contacts-list" :style="{ maxHeight: '400px', overflow: 'auto' }">
         <PanelItem v-for="contact in filteredContacts" :id="contact.identity.identity"
           :uuid="contact.identity.identityID" :showAvatar="true" :showBar="false"
-          :displayName="resolveUserName(contact)" :value="contact.messageCount || 0"
+          :displayName="resolveUserName(contact)" :value="contact.totalMessageCount || 0"
           :selected="isSelected(contact.identity.identity)" @click="handleItemClick" />
       </div>
 
@@ -41,7 +41,7 @@ function handleItemClick(id: string) {
 }
 
 const filteredContacts = computed(() => {
-  return props.contacts.filter(contact => contact.messageCount > 0)
+  return props.contacts.filter(contact => contact.totalMessageCount > 0)
 })
 
 function resolveUserName(contact: ModelsContact): string {

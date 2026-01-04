@@ -29,6 +29,12 @@ import {
 export interface ModelsContact {
     /**
      * 
+     * @type {number}
+     * @memberof ModelsContact
+     */
+    contactMessageCount?: number;
+    /**
+     * 
      * @type {ModelsIdentity}
      * @memberof ModelsContact
      */
@@ -38,7 +44,13 @@ export interface ModelsContact {
      * @type {number}
      * @memberof ModelsContact
      */
-    messageCount?: number;
+    totalMessageCount?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ModelsContact
+     */
+    yourMessageCount?: number;
 }
 
 /**
@@ -58,8 +70,10 @@ export function ModelsContactFromJSONTyped(json: any, ignoreDiscriminator: boole
     }
     return {
         
+        'contactMessageCount': json['contactMessageCount'] == null ? undefined : json['contactMessageCount'],
         'identity': json['identity'] == null ? undefined : ModelsIdentityFromJSON(json['identity']),
-        'messageCount': json['messageCount'] == null ? undefined : json['messageCount'],
+        'totalMessageCount': json['totalMessageCount'] == null ? undefined : json['totalMessageCount'],
+        'yourMessageCount': json['yourMessageCount'] == null ? undefined : json['yourMessageCount'],
     };
 }
 
@@ -74,8 +88,10 @@ export function ModelsContactToJSONTyped(value?: ModelsContact | null, ignoreDis
 
     return {
         
+        'contactMessageCount': value['contactMessageCount'],
         'identity': ModelsIdentityToJSON(value['identity']),
-        'messageCount': value['messageCount'],
+        'totalMessageCount': value['totalMessageCount'],
+        'yourMessageCount': value['yourMessageCount'],
     };
 }
 

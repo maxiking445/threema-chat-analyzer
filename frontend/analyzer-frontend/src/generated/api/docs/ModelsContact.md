@@ -6,8 +6,10 @@
 
 Name | Type
 ------------ | -------------
+`contactMessageCount` | number
 `identity` | [ModelsIdentity](ModelsIdentity.md)
-`messageCount` | number
+`totalMessageCount` | number
+`yourMessageCount` | number
 
 ## Example
 
@@ -16,8 +18,10 @@ import type { ModelsContact } from ''
 
 // TODO: Update the object below with actual values
 const example = {
+  "contactMessageCount": null,
   "identity": null,
-  "messageCount": null,
+  "totalMessageCount": null,
+  "yourMessageCount": null,
 } satisfies ModelsContact
 
 console.log(example)
