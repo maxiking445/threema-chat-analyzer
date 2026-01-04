@@ -1,11 +1,9 @@
 <template>
   <div>
     <ViewPanelTemplate title="Contacts">
-      <button @click="toggleShowUnreadOnly" :class="{ 'active': !showUnreadOnly }">
-        {{ showUnreadOnly ? 'All Contacts' : 'Only with messages' }}
-      </button>
       <div class="contacts-list" :style="{ maxHeight: '300px', overflow: 'auto' }">
-        <PanelItem  v-for="contact in filteredContacts" :id="contact.identity.identity" :uuid="contact.identity.identityID" :showAvatar="true" :showBar="false"
+        <PanelItem v-for="contact in filteredContacts" :id="contact.identity.identity"
+          :uuid="contact.identity.identityID" :showAvatar="true" :showBar="false"
           :displayName="resolveUserName(contact)" :value="contact.messageCount || 0"
           :selected="contact.identity.identityID === selectedContactKey" @click="handleItemClick" />
       </div>
@@ -25,7 +23,7 @@ const props = defineProps({
 })
 
 const selectedContactKey = ref<string | null>(null)
-const showUnreadOnly = ref(false)
+
 
 
 const emit = defineEmits(['contactSelected'])
@@ -36,15 +34,9 @@ function handleItemClick(userId) {
 }
 
 
-function toggleShowUnreadOnly() {
-  showUnreadOnly.value = !showUnreadOnly.value
-}
 
 const filteredContacts = computed(() => {
-  if (showUnreadOnly.value) {
-    return props.contacts.filter(contact => contact.messageCount > 0)
-  }
-  return props.contacts
+  return props.contacts.filter(contact => contact.messageCount > 0)
 })
 
 function resolveUserName(contact: ModelsContact): string {
