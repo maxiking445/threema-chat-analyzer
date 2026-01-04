@@ -5,7 +5,7 @@
             <GroupSelect :selectedGroup="selectedGroup" @update:selectedMembers="onSelectedMembersChanged">
             </GroupSelect>
             <GroupTimeline class="flexItem" :groupName="selectedGroup?.groupName" :groupID="selectedGroup?.groupUid"
-                :userIDs="selectedUserIds"></GroupTimeline>
+                :userIDs="Array.from(selectedUserIds)"></GroupTimeline>
 
         </ViewPanelTemplate>
 
