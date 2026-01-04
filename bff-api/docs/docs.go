@@ -62,9 +62,6 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
-                "tags": [
-                    "Contacts"
-                ],
                 "summary": "Get all contacts with message counts",
                 "responses": {
                     "200": {
@@ -308,7 +305,7 @@ const docTemplate = `{
                 "identity": {
                     "$ref": "#/definitions/models.Identity"
                 },
-                "message_count": {
+                "messageCount": {
                     "type": "integer"
                 }
             }

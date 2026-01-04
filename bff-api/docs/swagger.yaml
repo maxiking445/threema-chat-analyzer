@@ -4,7 +4,7 @@ definitions:
     properties:
       identity:
         $ref: '#/definitions/models.Identity'
-      message_count:
+      messageCount:
         type: integer
     type: object
   models.DayCount:
@@ -117,8 +117,6 @@ paths:
               $ref: '#/definitions/models.Contact'
             type: array
       summary: Get all contacts with message counts
-      tags:
-      - Contacts
   /delete-zip:
     delete:
       consumes:

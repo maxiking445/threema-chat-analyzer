@@ -2,6 +2,7 @@ apis/DefaultApi.ts
 apis/UploadApi.ts
 apis/index.ts
 docs/DefaultApi.md
+docs/ModelsContact.md
 docs/ModelsDayCount.md
 docs/ModelsGroup.md
 docs/ModelsGroupMember.md
@@ -10,6 +11,7 @@ docs/ModelsIdentity.md
 docs/ModelsWordCount.md
 docs/UploadApi.md
 index.ts
+models/ModelsContact.ts
 models/ModelsDayCount.ts
 models/ModelsGroup.ts
 models/ModelsGroupMember.ts

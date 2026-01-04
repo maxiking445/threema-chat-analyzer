@@ -1,5 +1,5 @@
 import { Configuration, DefaultApi } from "@/generated/api";
-import { ModelsWordCount, ModelsGroupTimeline } from "@/generated/api/models";
+import { ModelsWordCount, ModelsGroupTimeline, ModelsContact } from "@/generated/api/models";
 
 const configuration = new Configuration({
   basePath: "/api",
@@ -23,4 +23,15 @@ export async function loadGroupTimeline(
 
 export async function loadWordCloudData(): Promise<ModelsWordCount[]> {
   return await defaultApi.wordcloudGet();
+}
+
+export async function loadContacts(): Promise<ModelsContact[]> {
+  try {
+    const response = await fetch('http://localhost:8080/contacts');
+    console.log("Contacts response:", response);
+    return response.json();
+  } catch (err) {
+    console.error("Error loading contacts:", err);
+    return [];
+  }
 }

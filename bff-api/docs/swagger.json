@@ -54,9 +54,6 @@
                 "produces": [
                     "application/json"
                 ],
-                "tags": [
-                    "Contacts"
-                ],
                 "summary": "Get all contacts with message counts",
                 "responses": {
                     "200": {
@@ -300,7 +297,7 @@
                 "identity": {
                     "$ref": "#/definitions/models.Identity"
                 },
-                "message_count": {
+                "messageCount": {
                     "type": "integer"
                 }
             }

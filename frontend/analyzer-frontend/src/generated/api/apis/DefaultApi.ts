@@ -15,12 +15,15 @@
 
 import * as runtime from '../runtime';
 import type {
+  ModelsContact,
   ModelsGroup,
   ModelsGroupTimeline,
   ModelsIdentity,
   ModelsWordCount,
 } from '../models/index';
 import {
+    ModelsContactFromJSON,
+    ModelsContactToJSON,
     ModelsGroupFromJSON,
     ModelsGroupToJSON,
     ModelsGroupTimelineFromJSON,
@@ -94,6 +97,37 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async avatarIdGet(requestParameters: AvatarIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Blob> {
         const response = await this.avatarIdGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Fetches all contacts along with their message counts from the database
+     * Get all contacts with message counts
+     */
+    async contactsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ModelsContact>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/contacts`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ModelsContactFromJSON));
+    }
+
+    /**
+     * Fetches all contacts along with their message counts from the database
+     * Get all contacts with message counts
+     */
+    async contactsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ModelsContact>> {
+        const response = await this.contactsGetRaw(initOverrides);
         return await response.value();
     }
 
