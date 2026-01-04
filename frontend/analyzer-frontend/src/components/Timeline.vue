@@ -80,6 +80,14 @@ const chartOptions = ref({
         animations: { enabled: true },
         zoom: { enabled: true }
     },
+    colors: [
+        '#00A8E6',
+        '#2ECC71',
+        '#FF4757',
+        '#20B2AA',
+        '#E6F2FF'
+    ],
+
     dataLabels: {
         enabled: false,
     },
@@ -104,7 +112,6 @@ const chartOptions = ref({
 watch(
     () => [props.data, props.users],
     () => {
-        console.log('Data changed from', props.data, 'to', props.data);
         loadTimeline();
     }
 );
@@ -115,19 +122,13 @@ onMounted(async () => {
 })
 
 async function loadTimeline() {
-    console.log("Reading Data", props.data, "and user");
     rawSeries = filterByUserIdsMap(props.data, new Set(props.users));
     buildSeries(rawSeries)
 }
 
 function filterByUserIdsMap(timelineResponse: ModelsGroupTimeline[], userIds: Set<string>): Map<string, ModelsDayCount[]> {
-    console.log("Filtering timeline for user IDs:", timelineResponse)
-
     const valuesArray = Array.from(userIds);
-
-    
-
-    console.log(timelineResponse.map(t => t.identity.identity))
+    valuesArray.push("You")
     const result = new Map<string, ModelsDayCount[]>()
     timelineResponse.forEach(t => {
         if (valuesArray.includes(t.identity.identity)) {
@@ -138,15 +139,25 @@ function filterByUserIdsMap(timelineResponse: ModelsGroupTimeline[], userIds: Se
             if (!key || result.has(key)) {
                 key = t.identity.identity
             }
+            if (result.has(key)) {
+                console.log("HEY YO!")
+                const oldValue = result.get(key);
+                const mergedArray = [
+                    ...oldValue,
+                    ...t.timeline
+                    
+                ];
+                result.set(key, mergedArray)
+                return
+            }
             result.set(key, t.timeline)
         }
     })
-
+    console.log("RES: ", result)
     return result
 }
 
 function buildSeries(filteredRes: Map<string, ModelsDayCount[]>) {
-    console.log("LOG", filteredRes)
     series.value = Array.from(filteredRes.entries()).map(([userId, timeline]) => ({
         name: userId,
         data: viewMode.value === 'year' ? aggregateToMonths(timeline) : aggregateToDays(timeline)
