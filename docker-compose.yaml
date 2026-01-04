@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: threema-chat-analyzer
+    ports:
+      - "9090:80"
+      - "8080:8080"
+    restart: unless-stopped
