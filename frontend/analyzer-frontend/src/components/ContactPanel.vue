@@ -5,8 +5,8 @@
         {{ showUnreadOnly ? 'All Contacts' : 'Only with messages' }}
       </button>
       <div class="contacts-list" :style="{ maxHeight: '300px', overflow: 'auto' }">
-        <ContactPanelItem v-for="contact in filteredContacts" :userId="contact.identity.identity"
-          :userName="resolveUserName(contact)" :messageCount="contact.messageCount || 0"
+        <PanelItem  v-for="contact in filteredContacts" :id="contact.identity.identity" :uuid="contact.identity.identityID" :showAvatar="true" :showBar="false"
+          :displayName="resolveUserName(contact)" :value="contact.messageCount || 0"
           :selected="contact.identity.identityID === selectedContactKey" @click="handleItemClick" />
       </div>
 
@@ -15,10 +15,10 @@
 </template>
 
 <script setup lang="ts">
-import ContactPanelItem from './ContactPanelItem.vue'
 import { ModelsContact } from '@/generated/api';
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import { computed, PropType, ref } from 'vue'
+import PanelItem from './PanelItem.vue';
 
 const props = defineProps({
   contacts: { type: Array as PropType<ModelsContact[]>, required: false, default: () => [] }
