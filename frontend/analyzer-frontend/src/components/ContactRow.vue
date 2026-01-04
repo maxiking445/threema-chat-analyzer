@@ -2,7 +2,7 @@
     <div class="contact-container">
         <ViewPanelTemplate class="flexItem" title="Contacts" direction="horizontal">
             <ContactPanel :contacts="contacts" @contactSelected="handleContactSelected"></ContactPanel>
-            <ContactTimeline class="flexItem" :users="selectedContacts?.map(contact => contact.identity.identity) || []"></ContactTimeline>
+            <ContactTimeline class="flexItem" :users="calcUsersIds()"></ContactTimeline>
         </ViewPanelTemplate>
     </div>
 
@@ -31,6 +31,15 @@ onMounted(async () => {
         contacts.value = contacts.value.sort((a, b) => (b.totalMessageCount || 0) - (a.totalMessageCount || 0));
     });
 });
+function calcUsersIds() {
+    if (selectedContacts.value) {
+        var userIds = selectedContacts.value.map(contact => contact.identity.identity)
+        userIds.push("You")
+        return userIds
+    }
+    return []
+}
+
 </script>
 
 <style scoped>

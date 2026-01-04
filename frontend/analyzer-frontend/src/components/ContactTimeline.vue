@@ -1,5 +1,5 @@
 <template>
-    <Timeline title="Contact Timeline":data="data" :users="users"></Timeline>
+    <Timeline title="Contact Timeline" :data="data" :users="users"></Timeline>
 </template>
 
 <script setup lang="ts">
@@ -26,6 +26,9 @@ async function loadTimeline() {
     const collected: ModelsContactTimeline[] = [];
     await Promise.all(
         props.users.map(async (userID) => {
+            if (userID === "You") {
+                return
+            }
             const response = await loadContactTimeline(userID);
             collected.push(...response);
         })
