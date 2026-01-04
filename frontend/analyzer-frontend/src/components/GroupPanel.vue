@@ -1,14 +1,14 @@
 <template>
   <div>
     <ViewPanelTemplate title="Groups">
-      <GroupItem v-for="group in groups" :groupKey="group.groupUid" :groupName="group.groupName"
-        :messageCount="group.messageCount" :selected="group.groupUid === selectedGroupKey" @click="handleItemClick" />
+      <PanelItem v-for="group in groups" :uuid="group.groupUid":id="group.groupUid" :displayName="group.groupName" :showAvatar="false" :showBar="false"
+        :value="group.messageCount" :selected="group.groupUid === selectedGroupKey" @click="handleItemClick" />
     </ViewPanelTemplate>
   </div>
 </template>
 
 <script setup lang="ts">
-import GroupItem from './GroupPanelItem.vue'
+import PanelItem from './PanelItem.vue';
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import { ModelsGroup } from '@/generated/api';
 import { PropType, ref } from 'vue'

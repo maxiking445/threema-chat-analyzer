@@ -9,7 +9,7 @@ import (
 	model "github.com/maxiking445/bff-api/internal/models"
 )
 
-func LoadIdentity(userID string) model.Identity {
+func LoadIdentityByUserID(userID string) model.Identity {
 	if userID == "" || userID == "You" {
 		return model.Identity{
 			Identity:   "You",
@@ -22,6 +22,25 @@ func LoadIdentity(userID string) model.Identity {
 	}
 	for _, ident := range identities {
 		if ident.Identity == userID {
+			return ident
+		}
+	}
+	return model.Identity{}
+}
+
+func LoadIdentityByUserUUID(userID string) model.Identity {
+	if userID == "" || userID == "You" {
+		return model.Identity{
+			Identity:   "You",
+			IdentityID: "You",
+		}
+	}
+	identities, err := LoadIdentitiesFromCSV(common.UserContactsPath)
+	if err != nil {
+		return model.Identity{}
+	}
+	for _, ident := range identities {
+		if ident.IdentityID == userID {
 			return ident
 		}
 	}

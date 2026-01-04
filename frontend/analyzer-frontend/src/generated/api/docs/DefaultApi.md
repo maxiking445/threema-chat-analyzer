@@ -5,6 +5,8 @@ All URIs are relative to */api*
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
 | [**avatarIdGet**](DefaultApi.md#avataridget) | **GET** /avatar/{id} |  |
+| [**contactsGet**](DefaultApi.md#contactsget) | **GET** /contacts | Get all contacts with message counts |
+| [**contactsTimelineGet**](DefaultApi.md#contactstimelineget) | **GET** /contacts/timeline | Sums up messages from each person in contact during one day |
 | [**groupsGet**](DefaultApi.md#groupsget) | **GET** /groups |  |
 | [**groupsTimelineGet**](DefaultApi.md#groupstimelineget) | **GET** /groups/timeline | Sums up messages from each person in group during one day |
 | [**usersGet**](DefaultApi.md#usersget) | **GET** /users |  |
@@ -78,6 +80,134 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Image |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## contactsGet
+
+> Array&lt;ModelsContact&gt; contactsGet()
+
+Get all contacts with message counts
+
+Fetches all contacts along with their message counts from the database
+
+### Example
+
+```ts
+import {
+  Configuration,
+  DefaultApi,
+} from '';
+import type { ContactsGetRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new DefaultApi();
+
+  try {
+    const data = await api.contactsGet();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**Array&lt;ModelsContact&gt;**](ModelsContact.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Successfully loaded contacts |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
+
+
+## contactsTimelineGet
+
+> Array&lt;ModelsContactTimeline&gt; contactsTimelineGet(userId)
+
+Sums up messages from each person in contact during one day
+
+Returns the daily number of messages per user.
+
+### Example
+
+```ts
+import {
+  Configuration,
+  DefaultApi,
+} from '';
+import type { ContactsTimelineGetRequest } from '';
+
+async function example() {
+  console.log("🚀 Testing  SDK...");
+  const api = new DefaultApi();
+
+  const body = {
+    // string | ID of contact (CSV-Name)
+    userId: userId_example,
+  } satisfies ContactsTimelineGetRequest;
+
+  try {
+    const data = await api.contactsTimelineGet(body);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+// Run the test
+example().catch(console.error);
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **userId** | `string` | ID of contact (CSV-Name) | [Defaults to `undefined`] |
+
+### Return type
+
+[**Array&lt;ModelsContactTimeline&gt;**](ModelsContactTimeline.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: `application/json`
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **400** | contact missing |  -  |
+| **500** | internal server error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#api-endpoints) [[Back to Model list]](../README.md#models) [[Back to README]](../README.md)
 

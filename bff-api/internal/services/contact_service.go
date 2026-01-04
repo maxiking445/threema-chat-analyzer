@@ -16,16 +16,19 @@ func LoadContacts() ([]models.Contact, error) {
 	}
 	var contacts []models.Contact
 	for _, ident := range identities {
+		contactMessageCount, yourMessageCount := countMessagesFrom(common.UserMessagePath + ident.IdentityID + ".csv")
 		contact := models.Contact{
-			Identity:     ident,
-			MessageCount: countMessagesInCSV(common.UserMessagePath + ident.IdentityID + ".csv"),
+			Identity:            ident,
+			TotalMessageCount:   countTotalMessagesInCSV(common.UserMessagePath + ident.IdentityID + ".csv"),
+			ContactMessageCount: contactMessageCount,
+			YourMessageCount:    yourMessageCount,
 		}
 		contacts = append(contacts, contact)
 	}
 	return contacts, nil
 }
 
-func countMessagesInCSV(path string) int64 {
+func countTotalMessagesInCSV(path string) int64 {
 	fmt.Println("Path", path)
 	file, err := os.Open(path)
 	if err != nil {
@@ -47,4 +50,47 @@ func countMessagesInCSV(path string) int64 {
 	}
 	fmt.Println(int64(len(records) - 1))
 	return int64(len(records) - 1)
+}
+
+func countMessagesFrom(path string) (int64, int64) {
+	file, err := os.Open(path)
+	if err != nil {
+		return 0, 0
+	}
+	defer file.Close()
+
+	r := csv.NewReader(file)
+	records, err := r.ReadAll()
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return 0, 0
+	}
+
+	if len(records) <= 1 {
+		return 0, 0
+	}
+
+	records = records[1:]
+
+	yourMessages := 0
+	contactMessages := 0
+
+	for _, record := range records {
+		if len(record) < 2 {
+			continue
+		}
+
+		isOutbox := false
+		if record[5] == "READ" {
+			isOutbox = true
+		}
+
+		if isOutbox {
+			yourMessages++
+		} else {
+			contactMessages++
+		}
+	}
+
+	return int64(contactMessages), int64(yourMessages)
 }

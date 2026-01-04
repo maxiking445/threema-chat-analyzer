@@ -3,6 +3,7 @@ import Header from './components/Header.vue';
 import WordCloud from './components/WordCloud.vue';
 import GroupRow from './components/GroupRow.vue';
 import ViewPanelTemplate from './components/ViewPanelTemplate.vue';
+import ContactRow from './components/ContactRow.vue';
 </script>
 
 <template>
@@ -10,7 +11,8 @@ import ViewPanelTemplate from './components/ViewPanelTemplate.vue';
         <Header></Header>
         <main class="app-main">
             <div class="content">
-                <GroupRow title="TOP Groups"></GroupRow>
+                <GroupRow></GroupRow>
+                <ContactRow></ContactRow>
                 <ViewPanelTemplate title="Wordcloud">
                     <WordCloud></WordCloud>
                 </ViewPanelTemplate>

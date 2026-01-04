@@ -62,9 +62,6 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
-                "tags": [
-                    "Contacts"
-                ],
                 "summary": "Get all contacts with message counts",
                 "responses": {
                     "200": {
@@ -74,6 +71,50 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/models.Contact"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/contacts/timeline": {
+            "get": {
+                "description": "Returns the daily number of messages per user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Sums up messages from each person in contact during one day",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID of contact (CSV-Name)",
+                        "name": "userId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.ContactTimeline"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "contact missing",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "internal server error",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -305,11 +346,31 @@ const docTemplate = `{
         "models.Contact": {
             "type": "object",
             "properties": {
+                "contactMessageCount": {
+                    "type": "integer"
+                },
                 "identity": {
                     "$ref": "#/definitions/models.Identity"
                 },
-                "message_count": {
+                "totalMessageCount": {
                     "type": "integer"
+                },
+                "yourMessageCount": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.ContactTimeline": {
+            "type": "object",
+            "properties": {
+                "identity": {
+                    "$ref": "#/definitions/models.Identity"
+                },
+                "timeline": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.DayCount"
+                    }
                 }
             }
         },

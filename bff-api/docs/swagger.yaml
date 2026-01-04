@@ -2,10 +2,23 @@ basePath: /
 definitions:
   models.Contact:
     properties:
+      contactMessageCount:
+        type: integer
       identity:
         $ref: '#/definitions/models.Identity'
-      message_count:
+      totalMessageCount:
         type: integer
+      yourMessageCount:
+        type: integer
+    type: object
+  models.ContactTimeline:
+    properties:
+      identity:
+        $ref: '#/definitions/models.Identity'
+      timeline:
+        items:
+          $ref: '#/definitions/models.DayCount'
+        type: array
     type: object
   models.DayCount:
     properties:
@@ -117,8 +130,35 @@ paths:
               $ref: '#/definitions/models.Contact'
             type: array
       summary: Get all contacts with message counts
-      tags:
-      - Contacts
+  /contacts/timeline:
+    get:
+      consumes:
+      - application/json
+      description: Returns the daily number of messages per user.
+      parameters:
+      - description: ID of contact (CSV-Name)
+        in: query
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ContactTimeline'
+            type: array
+        "400":
+          description: contact missing
+          schema:
+            type: string
+        "500":
+          description: internal server error
+          schema:
+            type: string
+      summary: Sums up messages from each person in contact during one day
   /delete-zip:
     delete:
       consumes:

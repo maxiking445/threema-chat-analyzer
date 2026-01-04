@@ -50,7 +50,7 @@ func BuildGroupTimelinesFromCSV(
 		}
 		timelines = append(timelines, models.GroupTimeline{
 			Group:    groupName,
-			User:     LoadIdentity(user),
+			User:     LoadIdentityByUserID(user),
 			Timeline: timeline,
 		})
 	}

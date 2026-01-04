@@ -1,6 +1,8 @@
 package models
 
 type Contact struct {
-	Identity     Identity `json:"identity"`
-	MessageCount int64    `json:"message_count"`
+	Identity            Identity `json:"identity"`
+	TotalMessageCount   int64    `json:"totalMessageCount"`
+	ContactMessageCount int64    `json:"contactMessageCount"`
+	YourMessageCount    int64    `json:"yourMessageCount"`
 }
