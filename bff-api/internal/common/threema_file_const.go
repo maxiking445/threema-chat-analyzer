@@ -4,7 +4,7 @@ const (
 	// AVATAR
 	ProfilePicContact     = "data/contact_profile_pic_"
 	ProfilePicGroup       = "data/group_avatar_"
-	ProfilePicPlaceholder = "placeholder/placeholder_avatar"
+	ProfilePicPlaceholder = "placeholder/placeholder_avatar.jpg"
 	ProfilePicAvatar      = "data/contact_avatar_me"
 
 	// BACKUP

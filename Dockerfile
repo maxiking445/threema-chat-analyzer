@@ -21,10 +21,13 @@ RUN npm run build
 # ====== STAGE 3: Runtime ======
 FROM alpine:latest
 
+WORKDIR /app
+
 RUN apk add --no-cache nginx ca-certificates
 RUN mkdir -p /run/nginx
 
 COPY --from=builder /myapp /myapp
+COPY --from=builder /app/placeholder /app/placeholder
 COPY --from=vue-builder /app/dist /usr/share/nginx/html
 COPY analyzer-frontend/nginx.conf /etc/nginx/nginx.conf
 

@@ -18,7 +18,6 @@ func BuildContactTimelinesFromCSV(
 	csvPath string,
 ) ([]models.ContactTimeline, error) {
 
-	fmt.Println("Analyse Groupe File: " + csvPath)
 	rows, err := loadContactMessagesFromCSV(csvPath)
 	if err != nil {
 		return nil, err
