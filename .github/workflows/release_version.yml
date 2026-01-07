@@ -1,6 +1,12 @@
 name: Publish new Version
 on:
   workflow_dispatch
+
+
+permissions:
+  contents: read
+  packages: write 
+  
   
 jobs:
   release:
@@ -10,6 +16,6 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build and push Image
       run: |
-        docker login --username maxiking445 --password ${{secrets.GH_PAT}} ghcr.io
-        docker build . --tag ghrc.io/maxiking445/threema-chat-analyzer:latest
-        docker push ghrc.io/maxiking445/threema-chat-analyzer:latest
+        docker login --username maxiking445 --password ${{secrets.GH_PAT}} ghcr.io 
+        docker build . --tag ghcr.io/maxiking445/threema-chat-analyzer:latest
+        docker push ghcr.io/maxiking445/threema-chat-analyzer:latest
