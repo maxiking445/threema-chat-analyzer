@@ -70,6 +70,7 @@ jobs:
         echo "Version without v: $VERSION"
         docker login --username maxiking445 --password ${{secrets.GH_PAT}} ghcr.io 
         docker build . --tag ghcr.io/maxiking445/threema-chat-analyzer:latest
+        docker build . --tag ghcr.io/maxiking445/threema-chat-analyzer:$VERSION
         docker push ghcr.io/maxiking445/threema-chat-analyzer:latest
         docker push ghcr.io/maxiking445/threema-chat-analyzer:$VERSION   
     
