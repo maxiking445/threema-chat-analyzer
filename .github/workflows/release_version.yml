@@ -63,9 +63,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build and push Image
+      env:
+        RELEASE_TAG: ${{ needs.determine-version.outputs.release-tag }}
       run: |
-        VERSION="${{ needs.determine-version.outputs.release-tag #v}
+        VERSION="${RELEASE_TAG#v}"
+        echo "Version without v: $VERSION"
         docker login --username maxiking445 --password ${{secrets.GH_PAT}} ghcr.io 
         docker build . --tag ghcr.io/maxiking445/threema-chat-analyzer:latest
         docker push ghcr.io/maxiking445/threema-chat-analyzer:latest
         docker push ghcr.io/maxiking445/threema-chat-analyzer:$VERSION   
+    
