@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --production",
     "preview": "vite preview",
     "generate:api": "openapi-generator-cli generate -i ../../bff-api/docs/swagger.json -g typescript-fetch -o src/generated/api --additional-properties=typescriptThreePlus=true,basePath=/api"
   },

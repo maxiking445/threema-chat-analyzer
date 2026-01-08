@@ -23,7 +23,9 @@
 import { UploadApi } from '@/generated/api';
 import { pushErrorToast } from '@/service/ToastService'
 import { pushSuccessToast } from '@/service/ToastService'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 
   
 const uploadApi = new UploadApi();
@@ -31,7 +33,7 @@ const uploadApi = new UploadApi();
 const handleRemoveData = () => {
     uploadApi.deleteZipDelete().then(() => {
         pushSuccessToast('Data removed successfully');
-        console.log('Data removed successfully');
+        router.push('/')
     }).catch((error) => {
         pushErrorToast(error.response?.data || 'Error removing data');
         console.error('Error removing data:', error);

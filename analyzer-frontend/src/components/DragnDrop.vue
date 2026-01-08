@@ -36,8 +36,8 @@
 </template>
 
 <script setup>
-import { UploadApi } from '@/generated/api'
 import { ref } from 'vue'
+import { uploadZip } from '@/service/ApiService'
 import { pushErrorToast } from '@/service/ToastService'
 import { pushSuccessToast } from '@/service/ToastService'
 import { useRouter } from 'vue-router'
@@ -56,16 +56,10 @@ const onDragLeave = () => {
 }
 
 
-const uploadApi = new UploadApi()
 
 const onUpload = () => {
-  console.log('UPLOAD', selectedFile.value, password.value)
-  uploadApi.uploadZipPost({
-    file: selectedFile.value,
-    xZipPassword: password.value,
-  }).then((response) => {
+  uploadZip(selectedFile.value, password.value).then((response) => {
     pushSuccessToast('Upload successful')
-    console.log('Upload successful:', response)
     router.push('/view')
   }).catch((error) => {
     if (error?.response) {

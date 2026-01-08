@@ -1,4 +1,4 @@
-import { Configuration, DefaultApi } from "@/generated/api";
+import { Configuration, DefaultApi, UploadApi } from "@/generated/api";
 import {
   ModelsWordCount,
   ModelsGroupTimeline,
@@ -11,6 +11,8 @@ const configuration = new Configuration({
 });
 
 const defaultApi = new DefaultApi(configuration);
+
+const uploadApi = new UploadApi(configuration);
 
 export async function loadGroupTimeline(
   groupName: string
@@ -47,4 +49,11 @@ export async function loadContacts(): Promise<ModelsContact[]> {
   } catch (err) {
     return [];
   }
+}
+
+export async function uploadZip(selectedFile, password: string): Promise<string> {
+  return uploadApi.uploadZipPost({
+    file: selectedFile,
+    xZipPassword: password,
+  });
 }
