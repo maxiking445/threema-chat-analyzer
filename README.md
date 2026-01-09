@@ -54,7 +54,7 @@ Execute this to start frontend app in your selfhosted environment or local machi
  ```bash
 docker run -d -p 5670:80 --name threema-chat-analyzer ghcr.io/maxiking445/threema-chat-analyzer:latest
 ```
-You can now open [http://localhost:9090](http://localhost:9090)
+You can now open [http://localhost:9090](http://localhost:5670)
 ### Build yourself 
 
  ```bash
