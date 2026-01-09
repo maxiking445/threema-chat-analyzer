@@ -6,24 +6,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { Configuration, DefaultApi, AvatarIdGetTypeEnum, AvatarIdGetRequest } from '@/generated/api';
+import { AvatarIdGetTypeEnum, AvatarIdGetRequest } from '@/generated/api';
 import { pushErrorToast } from '@/service/ToastService';
+import { loadAvatar } from "@/service/ApiService";
 
-const config = new Configuration({
-    basePath: '/api',
-})
-
-const defaultApi = new DefaultApi(config)
-
-
-function loadAvatar(imageID: string, avatarType: AvatarIdGetTypeEnum) {
-    var params: AvatarIdGetRequest = { type: avatarType, id: imageID };
-    defaultApi.avatarIdGet(params).then((response) => {
-        avatarSrc.value = URL.createObjectURL(response);
-    }).catch((error) => {
-        pushErrorToast('Failed to load avatar image.', error);
-    });
-}
 const avatarSrc = ref<string>()
 
 const props = defineProps<{
@@ -33,7 +19,11 @@ const props = defineProps<{
 
 
 onMounted(() => {
-    loadAvatar(props.imageID, props.avatarType)
+    loadAvatar(props.avatarType, props.imageID).then((response) => {
+        avatarSrc.value = URL.createObjectURL(response);
+    }).catch((error) => {
+        pushErrorToast('Failed to load avatar image.', error);
+    });
 })
 </script>
 

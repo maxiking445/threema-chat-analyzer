@@ -14,22 +14,15 @@
 </template>
 
 <script setup lang="ts">
-import { Configuration, DefaultApi, ModelsGroup } from '@/generated/api';
+import { ModelsGroup } from '@/generated/api';
 import GroupPanel from './GroupPanel.vue';
 import GroupSelect from './GroupSelect.vue';
 import { ref } from 'vue'
 import GroupTimeline from './GroupTimeline.vue';
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
+import { loadGroups } from "@/service/ApiService";
 
 
-const defaultApi = new DefaultApi({
-    basePath: '/api',
-    middleware: [],
-    username: undefined,
-    password: undefined,
-    apiKey: undefined,
-    accessToken: undefined,
-} as Configuration);
 
 const selectedGroup = ref<ModelsGroup>();
 const groups = ref<ModelsGroup[]>([]);
@@ -47,7 +40,7 @@ function onSelectedMembersChanged(newSelection: Array<string>) {
 }
 
 
-defaultApi.groupsGet().then((response) => {
+loadGroups().then((response) => {
     groups.value = response;
 });
 

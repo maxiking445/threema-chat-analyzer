@@ -1,9 +1,16 @@
-import { Configuration, DefaultApi, UploadApi } from "@/generated/api";
+import {
+  AvatarIdGetRequest,
+  AvatarIdGetTypeEnum,
+  Configuration,
+  DefaultApi,
+  UploadApi,
+} from "@/generated/api";
 import {
   ModelsWordCount,
   ModelsGroupTimeline,
   ModelsContact,
   ModelsContactTimeline,
+  ModelsGroup,
 } from "@/generated/api/models";
 
 const configuration = new Configuration({
@@ -44,14 +51,28 @@ export async function loadWordCloudData(): Promise<ModelsWordCount[]> {
 
 export async function loadContacts(): Promise<ModelsContact[]> {
   try {
-    const response = await fetch("http://localhost:8080/contacts");
-    return response.json();
+    return await defaultApi.contactsGet();
   } catch (err) {
     return [];
   }
 }
 
-export async function uploadZip(selectedFile, password: string): Promise<string> {
+export async function loadAvatar(
+  avatarType: AvatarIdGetTypeEnum,
+  imageID: string
+): Promise<Blob> {
+  var params: AvatarIdGetRequest = { type: avatarType, id: imageID };
+  return await defaultApi.avatarIdGet(params);
+}
+
+export async function loadGroups(): Promise<Array<ModelsGroup>> {
+  return await defaultApi.groupsGet();
+}
+
+export async function uploadZip(
+  selectedFile,
+  password: string
+): Promise<string> {
   return uploadApi.uploadZipPost({
     file: selectedFile,
     xZipPassword: password,
