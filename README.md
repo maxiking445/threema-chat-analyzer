@@ -40,24 +40,23 @@ TODO:
 ### How to export Data from Threema?
 Detailed explanation how to create a data backup: [Threema Data Backup FAQ](https://threema.com/de/faq/data-backup)
 
-### Via Docker
+### Via Docker (recommended)
 Execute this to start frontend app in your selfhosted environment or local machine which runs docker.
 
  ```bash
 docker run -d -p 5670:80 --name threema-chat-analyzer ghcr.io/maxiking445/threema-chat-analyzer:latest
 ```
-
-### Build yourself
+You can now open [http://localhost:9090](http://localhost:9090)
+### Build yourself 
 
  ```bash
 docker build -t threema-chat-analyzer:latest .
 docker compose up
 ```
 
-### Build without Docker
+### Start without Docker
 
 Frontend&Backend
  ```bash
-npm --prefix ./analyzer-frontend run dev
-make -C ./bff-api dev
+sudo ./start_application_linux.sh
 ```
