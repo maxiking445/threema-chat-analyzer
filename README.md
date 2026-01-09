@@ -20,11 +20,19 @@ Versions:
 - 6.3
 ## About
 
-**Threema Chat Analyzer** is a tool to analyze exported Threema chats.
+Threema Chat Analyzer is a tool for analyzing exported Threema chats. I know many people are skeptical of tools like this, but I enjoy exploring data—and even more so when it’s my own. Unlike WhatsApp, which doesn’t make it easy to access your backups, Threema lets you freely create and use them, which makes analysis possible and actually I enjoy it so see trends when I write more or less during the year. So I hope you will like it too! 
+<p align="center">
+ <img src="docs/example_1.png" alt="Threema Chat Analyzer" width="700"/>
+</p>
 
+<p align="center">
+  <img src="docs/example_2.png" alt="Threema Chat Analyzer" width="700"/>
+</p>
+  
 FEATURES:
-- Message statistics
-- Group statistics
+- Contact statistics (count)
+- Group statistics (count)
+- Wordcloud ( most used words)
 - Offline analysis (your data is safe)
 
 TODO:
@@ -56,7 +64,7 @@ docker compose up
 
 ### Start without Docker
 
-Frontend&Backend
+Linux (it will install go and node)
  ```bash
 sudo ./start_application_linux.sh
 ```
