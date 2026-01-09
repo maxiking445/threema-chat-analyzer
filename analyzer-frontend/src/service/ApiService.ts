@@ -1,3 +1,4 @@
+import Toast from "@/components/Toast.vue";
 import {
   AvatarIdGetRequest,
   AvatarIdGetTypeEnum,
@@ -12,6 +13,7 @@ import {
   ModelsContactTimeline,
   ModelsGroup,
 } from "@/generated/api/models";
+import { pushErrorToast } from "./ToastService";
 
 const configuration = new Configuration({
   basePath: "/api",
@@ -53,6 +55,8 @@ export async function loadContacts(): Promise<ModelsContact[]> {
   try {
     return await defaultApi.contactsGet();
   } catch (err) {
+    console.error(err)
+    pushErrorToast('Failed to load contacts.', err);
     return [];
   }
 }

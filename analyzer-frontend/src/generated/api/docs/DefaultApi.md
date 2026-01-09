@@ -5,7 +5,7 @@ All URIs are relative to */api*
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
 | [**avatarIdGet**](DefaultApi.md#avataridget) | **GET** /avatar/{id} |  |
-| [**contactsGet**](DefaultApi.md#contactsget) | **GET** /contacts | Get all contacts with message counts |
+| [**contactsGet**](DefaultApi.md#contactsget) | **GET** /contacts/ | Get all contacts with message counts |
 | [**contactsTimelineGet**](DefaultApi.md#contactstimelineget) | **GET** /contacts/timeline | Sums up messages from each person in contact during one day |
 | [**groupsGet**](DefaultApi.md#groupsget) | **GET** /groups |  |
 | [**groupsTimelineGet**](DefaultApi.md#groupstimelineget) | **GET** /groups/timeline | Sums up messages from each person in group during one day |

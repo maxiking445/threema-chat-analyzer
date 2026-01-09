@@ -115,7 +115,7 @@ paths:
           description: Image
           schema:
             type: file
-  /contacts:
+  /contacts/:
     get:
       consumes:
       - application/json

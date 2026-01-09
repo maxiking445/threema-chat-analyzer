@@ -14,7 +14,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} []models.Contact "Successfully loaded contacts"
-// @Router /contacts [get]
+// @Router /contacts/ [get]
 func ContactsHandler(w http.ResponseWriter, r *http.Request) {
 	contacts, err := contactService.LoadContacts()
 	if err != nil {

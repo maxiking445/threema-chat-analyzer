@@ -10,7 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "generate:api": "openapi-generator-cli generate -i ../../bff-api/docs/swagger.json -g typescript-fetch -o src/generated/api --additional-properties=typescriptThreePlus=true,basePath=/api"
+    "generate:api": "openapi-generator-cli generate -i ../bff-api/docs/swagger.json -g typescript-fetch -o src/generated/api --additional-properties=typescriptThreePlus=true,basePath=/api"
   },
   "dependencies": {
     "apexcharts": "^5.3.6",

@@ -6,10 +6,13 @@
                 <h1 class="title">Threema Chat Analyzer</h1>
             </div>
             <div class="header-right">
-                <a class="additional-link" @click="handleRemoveData" target="_blank" rel="noopener noreferrer" title="Remove Data">
-                    <img src="../assets/fire.svg" alt="Additional" class="github-icon" />
-                </a>
-                <a class="github-link"  href="https://github.com/maxiking445/threema-chat-analyzer" target="_blank"
+                <div class="additional-link">
+                    <button :class="{ active: true }" @click="handleRemoveData">
+                        REMOVE DATA
+                    </button>
+                </div>
+
+                <a class="github-link" href="https://github.com/maxiking445/threema-chat-analyzer" target="_blank"
                     rel="noopener noreferrer">
                     <img src="../assets/github.svg" alt="GitHub" class="github-icon" />
                 </a>
@@ -27,7 +30,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-  
+
 const uploadApi = new UploadApi();
 
 const handleRemoveData = () => {
@@ -48,11 +51,7 @@ const handleRemoveData = () => {
     gap: 0.5rem;
 }
 
-.additional-link {
-    display: inline-flex;
-    align-items: center;
-    filter: invert(1);
-}
+
 
 
 .github-link {
@@ -93,5 +92,25 @@ const handleRemoveData = () => {
 .github-icon {
     width: 20px;
     height: 20px;
+}
+
+.additional-link button {
+    padding: 0.3rem 0.8rem;
+    font-weight: 600;
+    border-radius: 0.25rem;
+    border: none;
+    background-color: #2d3138;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.additional-link button.active {
+    background-color: #3bb54a;
+    color: #181b20;
+}
+
+.additional-link button:hover {
+    background-color: #44484f;
 }
 </style>

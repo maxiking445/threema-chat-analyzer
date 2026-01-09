@@ -117,7 +117,7 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
 
-        let urlPath = `/contacts`;
+        let urlPath = `/contacts/`;
 
         const response = await this.request({
             path: urlPath,

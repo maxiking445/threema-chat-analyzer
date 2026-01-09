@@ -53,7 +53,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/contacts": {
+        "/contacts/": {
             "get": {
                 "description": "Fetches all contacts along with their message counts from the database",
                 "consumes": [
