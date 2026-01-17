@@ -6,7 +6,7 @@ toolchain go1.24.11
 
 require (
 	github.com/swaggo/http-swagger v1.3.4
-	github.com/swaggo/swag v1.8.12
+	github.com/swaggo/swag v1.16.6
 	github.com/yeka/zip v0.0.0-20231116150916-03d6312748a9
 )
 
@@ -21,6 +21,7 @@ require (
 	github.com/stretchr/testify v1.11.1 // indirect
 	github.com/swaggo/files v1.0.1 // indirect
 	golang.org/x/crypto v0.40.0 // indirect
+	golang.org/x/mod v0.25.0 // indirect
 	golang.org/x/net v0.42.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/tools v0.34.0 // indirect
