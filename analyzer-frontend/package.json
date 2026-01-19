@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "apexcharts": "^5.3.6",
-    "vue": "^3.5.25",
+    "vue": "^3.5.27",
     "vue-router": "^4.6.4",
     "vue3-apexcharts": "^1.10.0",
     "vuewordcloud": "^19.0.0"
