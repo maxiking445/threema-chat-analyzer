@@ -1,4 +1,3 @@
-import Toast from "@/components/Toast.vue";
 import {
   AvatarIdGetRequest,
   AvatarIdGetTypeEnum,
@@ -13,14 +12,13 @@ import {
   ModelsContactTimeline,
   ModelsGroup,
 } from "@/generated/api/models";
-import { pushErrorToast } from "./ToastService";
+import { toast } from 'vue3-toastify'
 
 const configuration = new Configuration({
   basePath: "/api",
 });
 
 const defaultApi = new DefaultApi(configuration);
-
 const uploadApi = new UploadApi(configuration);
 
 export async function loadGroupTimeline(
@@ -30,6 +28,8 @@ export async function loadGroupTimeline(
     const response = await defaultApi.groupsTimelineGet({ group: groupName });
     return response;
   } catch (err) {
+    toast.error(`Failed to load group timeline for "${groupName}"`);
+    console.error(err);
     return [];
   }
 }
@@ -43,20 +43,28 @@ export async function loadContactTimeline(
     });
     return response;
   } catch (err) {
+    toast.error(`Failed to load contact timeline for user "${userId}"`);
+    console.error(err);
     return [];
   }
 }
 
 export async function loadWordCloudData(): Promise<ModelsWordCount[]> {
-  return await defaultApi.wordcloudGet();
+  try {
+    return await defaultApi.wordcloudGet();
+  } catch (err) {
+    toast.error('Failed to load word cloud data');
+    console.error(err);
+    return [];
+  }
 }
 
 export async function loadContacts(): Promise<ModelsContact[]> {
   try {
     return await defaultApi.contactsGet();
   } catch (err) {
-    console.error(err)
-    pushErrorToast('Failed to load contacts.', err);
+    toast.error('Failed to load contacts');
+    console.error(err);
     return [];
   }
 }
@@ -65,20 +73,38 @@ export async function loadAvatar(
   avatarType: AvatarIdGetTypeEnum,
   imageID: string
 ): Promise<Blob> {
-  var params: AvatarIdGetRequest = { type: avatarType, id: imageID };
-  return await defaultApi.avatarIdGet(params);
+  try {
+    var params: AvatarIdGetRequest = { type: avatarType, id: imageID };
+    return await defaultApi.avatarIdGet(params);
+  } catch (err) {
+    toast.error(`Failed to load avatar ${imageID}`);
+    console.error(err);
+    throw err; // Re-throw to maintain original behavior
+  }
 }
 
 export async function loadGroups(): Promise<Array<ModelsGroup>> {
-  return await defaultApi.groupsGet();
+  try {
+    return await defaultApi.groupsGet();
+  } catch (err) {
+    toast.error('Failed to load groups');
+    console.error(err);
+    return [];
+  }
 }
 
 export async function uploadZip(
   selectedFile,
   password: string
 ): Promise<string> {
-  return uploadApi.uploadZipPost({
-    file: selectedFile,
-    xZipPassword: password,
-  });
+  try {
+    return uploadApi.uploadZipPost({
+      file: selectedFile,
+      xZipPassword: password,
+    });
+  } catch (err) {
+    toast.error('Failed to upload ZIP file');
+    console.error(err);
+    throw err; // Re-throw to maintain original behavior
+  }
 }

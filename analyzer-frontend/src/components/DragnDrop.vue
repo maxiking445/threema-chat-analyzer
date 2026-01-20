@@ -38,9 +38,9 @@
 <script setup>
 import { ref } from 'vue'
 import { uploadZip } from '@/service/ApiService'
-import { pushErrorToast } from '@/service/ToastService'
-import { pushSuccessToast } from '@/service/ToastService'
 import { useRouter } from 'vue-router'
+import { toast } from 'vue3-toastify'
+
 
 const router = useRouter()
 
@@ -59,11 +59,11 @@ const onDragLeave = () => {
 
 const onUpload = () => {
   uploadZip(selectedFile.value, password.value).then((response) => {
-    pushSuccessToast('Upload successful')
+    toast.success('Upload successful')
     router.push('/view')
   }).catch((error) => {
     if (error?.response) {
-      error.response.text().then((t) => pushErrorToast(t || 'Upload failed'))
+      error.response.text().then((t) => toast.error(t || 'Upload failed'))
     }
   })
 }
