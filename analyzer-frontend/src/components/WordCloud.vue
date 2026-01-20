@@ -8,8 +8,8 @@
 <script setup lang="ts">
 import VueWordCloud from 'vuewordcloud';
 import { ref, onMounted } from 'vue';
-import { pushErrorToast } from '@/service/ToastService';
 import { loadWordCloudData } from "@/service/ApiService";
+import { toast } from 'vue3-toastify';
 const words = ref([]);
 const allWords = ref([]);
 const batchSize = 10;
@@ -35,7 +35,7 @@ onMounted(async () => {
         addBatch();
         const timer = setInterval(addBatch, intervalTime);
     } catch (error) {
-        pushErrorToast('Error during loading wordCloud.', error);
+        toast.error('Error during loading wordCloud.', error);
     }
 });
 

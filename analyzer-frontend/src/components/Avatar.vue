@@ -7,8 +7,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { AvatarIdGetTypeEnum, AvatarIdGetRequest } from '@/generated/api';
-import { pushErrorToast } from '@/service/ToastService';
 import { loadAvatar } from "@/service/ApiService";
+import { toast } from 'vue3-toastify'
 
 const avatarSrc = ref<string>()
 
@@ -22,7 +22,7 @@ onMounted(() => {
     loadAvatar(props.avatarType, props.imageID).then((response) => {
         avatarSrc.value = URL.createObjectURL(response);
     }).catch((error) => {
-        pushErrorToast('Failed to load avatar image.', error);
+        toast.error('Failed to load avatar image.', error);
     });
 })
 </script>
