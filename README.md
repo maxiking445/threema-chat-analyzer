@@ -37,6 +37,7 @@ FEATURES:
 
 TODO:
 - execute backend logic inside browser
+- add analysis of single contact (chat frequency, answertime, ...)
 - add chat search interface
 - script to anonymze data
 - suggestions are welcome
