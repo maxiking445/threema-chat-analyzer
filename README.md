@@ -41,6 +41,8 @@ TODO:
 - add chat search interface
 - script to anonymze data
 - suggestions are welcome
+- windows/linux desktop app
+- pdf export 
 
 ---
 
