@@ -6,6 +6,9 @@
                 <h1 class="title">Threema Chat Analyzer</h1>
             </div>
             <div class="header-right">
+                <div class="additional-link">
+                    <h4>v{{ appVersion }}</h4>
+                </div>
                 <a class="github-link" href="https://github.com/maxiking445/threema-chat-analyzer" target="_blank"
                     rel="noopener noreferrer">
                     <img src="../assets/github.svg" alt="GitHub" class="github-icon" />
@@ -16,8 +19,18 @@
 </template>
 
 <script setup>
+import { getVersion } from '@tauri-apps/api/app'
+import { ref,  onMounted } from 'vue'
 
+const appVersion = ref('0.0.0')
 
+onMounted(async () => {
+    try {
+        appVersion.value = await getVersion()
+    } catch {
+        appVersion.value = '0.0.0'
+    }
+})
 
 
 </script>
@@ -72,7 +85,7 @@
 }
 
 .additional-link button {
-    padding: 0.3rem 0.8rem;
+    padding: 1rem 0.8rem;
     font-weight: 600;
     border-radius: 0.25rem;
     border: none;
