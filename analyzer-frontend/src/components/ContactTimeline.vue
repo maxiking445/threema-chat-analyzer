@@ -1,5 +1,5 @@
 <template>
-    <Timeline title="Contact Timeline" :data="data" :users="users"></Timeline>
+    <Timeline title="Contact Timeline" :data="data" :users="users" :loading="isLoading"></Timeline>
 </template>
 
 <script setup lang="ts">
@@ -13,7 +13,7 @@ const props = defineProps<{
 }>()
 
 const data = ref<ModelsContactTimeline[]>([]);
-
+const isLoading = ref(false)
 
 watch(
     () => [props.users],
@@ -23,18 +23,24 @@ watch(
 );
 
 async function loadTimeline() {
-    const collected: ModelsContactTimeline[] = [];
+    if (props.users.length === 0) {
+        data.value = []
+        return
+    }
+
+    isLoading.value = true
+    const collected: ModelsContactTimeline[] = []
+
     await Promise.all(
         props.users.map(async (userID) => {
-            if (userID === "You") {
-                return
-            }
-            const response = await loadContactTimeline(userID);
-            collected.push(...response);
+            if (userID === "You") return
+            const response = await loadContactTimeline(userID)
+            collected.push(...response)
         })
-    );
+    )
 
-    data.value = collected;
+    data.value = collected
+    isLoading.value = false
 }
 
 

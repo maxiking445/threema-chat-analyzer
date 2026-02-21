@@ -31,7 +31,7 @@ export async function loadGroupTimeline(
   groupName: string,
 ): Promise<ModelsGroupTimeline[]> {
   try {
-    return GroupTimelineService.getGroupTimeline(groupName);
+    return await GroupTimelineService.getGroupTimeline(groupName);
   } catch (err) {
     toast.error(`Failed to load group timeline for "${groupName}"`);
     console.error(err);
@@ -43,7 +43,7 @@ export async function loadContactTimeline(
   userId: string,
 ): Promise<ModelsContactTimeline[]> {
   try {
-    return ContactTimelineService.getContactTimeline(userId);
+    return await ContactTimelineService.getContactTimeline(userId);
   } catch (err) {
     toast.error(`Failed to load contact timeline for user "${userId}"`);
     console.error(err);

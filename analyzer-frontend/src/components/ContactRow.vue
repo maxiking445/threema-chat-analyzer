@@ -1,7 +1,9 @@
 <template>
     <div class="contact-container">
         <ViewPanelTemplate class="flexItem" title="Contacts" direction="horizontal">
-            <ContactPanel :contacts="contacts" @contactSelected="handleContactSelected"></ContactPanel>
+            <div ref="loadingDiv" style="position: relative">
+                <ContactPanel :contacts="contacts" @contactSelected="handleContactSelected"></ContactPanel>
+            </div>
             <ContactTimeline class="flexItem" :users="calcUsersIds()"></ContactTimeline>
         </ViewPanelTemplate>
     </div>
@@ -15,9 +17,13 @@ import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import ContactPanel from './ContactPanel.vue';
 import ContactTimeline from './ContactTimeline.vue';
 import { loadContacts } from "@/service/ApiService";
+import { useAppLoading } from '@/composables/useAppLoading'
 
 const selectedContacts = ref<ModelsContact[]>();
 const contacts = ref<ModelsContact[]>([]);
+const loadingDiv = ref(null)
+const $loading = useAppLoading();
+
 
 const handleContactSelected = (userIds) => {
     selectedContacts.value = undefined;
@@ -26,7 +32,11 @@ const handleContactSelected = (userIds) => {
 }
 
 onMounted(async () => {
+    const loader = $loading.show({
+        container: loadingDiv.value ? loadingDiv.value : undefined,
+    })
     loadContacts().then((response) => {
+        loader.hide()
         contacts.value = response;
         contacts.value = contacts.value.sort((a, b) => (b.totalMessageCount || 0) - (a.totalMessageCount || 0));
     });

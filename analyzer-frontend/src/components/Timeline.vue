@@ -1,51 +1,54 @@
 <template>
     <ViewPanelTemplate :title="title">
-        <!-- Switch Button -->
-        <div class="button-row">
-            <div class="button-left"></div>
+        <div ref="loadingDiv" style="position: relative">
 
-            <div class="view-mode-switch">
-                <button :class="{ active: viewMode === 'year' }" @click="switchView('year')"
-                    :disabled="series.length === 0">
-                    Year
-                </button>
-                <button :class="{ active: viewMode === 'month' }" @click="switchView('month')"
-                    :disabled="series.length === 0">
-                    Month
-                </button>
-            </div>
+            <!-- Switch Button -->
+            <div class="button-row">
+                <div class="button-left"></div>
 
-            <div class="button-right">
-                <MessageCountLabel :message-count="calcMessageCount()" />
-            </div>
-        </div>
-        <!-- Chart -->
-        <div class="chart-container">
-            <template v-if="series.length === 0">
-                <div class="no-data">
-                    <NoData></NoData>
+                <div class="view-mode-switch">
+                    <button :class="{ active: viewMode === 'year' }" @click="switchView('year')"
+                        :disabled="series.length === 0">
+                        Year
+                    </button>
+                    <button :class="{ active: viewMode === 'month' }" @click="switchView('month')"
+                        :disabled="series.length === 0">
+                        Month
+                    </button>
                 </div>
-            </template>
-            <template v-else>
-                <apexchart type="bar" height="300" :options="chartOptions" :series="series" />
-            </template>
 
-        </div>
-
-        <!-- Time Navigation -->
-        <div class="time-navigation">
-            <button class="period-button" @click="prevPeriod" :disabled="series.length === 0">◀</button>
-
-            <span class="time-label">
-                <template v-if="viewMode === 'year'">
-                    {{ selectedYear }}
+                <div class="button-right">
+                    <MessageCountLabel :message-count="calcMessageCount()" />
+                </div>
+            </div>
+            <!-- Chart -->
+            <div class="chart-container">
+                <template v-if="series.length === 0">
+                    <div class="no-data">
+                        <NoData></NoData>
+                    </div>
                 </template>
                 <template v-else>
-                    {{ monthNames[selectedMonth!] }} {{ selectedYear }}
+                    <apexchart type="bar" height="300" :options="chartOptions" :series="series" />
                 </template>
-            </span>
 
-            <button class="period-button" @click="nextPeriod" :disabled="series.length === 0">▶</button>
+            </div>
+
+            <!-- Time Navigation -->
+            <div class="time-navigation">
+                <button class="period-button" @click="prevPeriod" :disabled="series.length === 0">◀</button>
+
+                <span class="time-label">
+                    <template v-if="viewMode === 'year'">
+                        {{ selectedYear }}
+                    </template>
+                    <template v-else>
+                        {{ monthNames[selectedMonth!] }} {{ selectedYear }}
+                    </template>
+                </span>
+
+                <button class="period-button" @click="nextPeriod" :disabled="series.length === 0">▶</button>
+            </div>
         </div>
     </ViewPanelTemplate>
 </template>
@@ -57,11 +60,13 @@ import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import { ModelsDayCount, ModelsGroupTimeline } from '@/generated/api';
 import MessageCountLabel from './MessageCountLabel.vue';
 import NoData from './NoData.vue';
+import { useAppLoading } from '@/composables/useAppLoading';
 
 const props = defineProps<{
     title: string
     data
     users: string[]
+    loading?: boolean
 }>()
 
 
@@ -78,7 +83,9 @@ type ViewMode = 'year' | 'month'
 const viewMode = ref<ViewMode>('year')
 const selectedYear = ref<number>(2025)
 const selectedMonth = ref<number | null>(null)
-
+const loadingDiv = ref(null)
+const $loading = useAppLoading();
+const loader = ref<ReturnType<typeof $loading.show> | null>(null)
 
 const chartOptions = ref({
     chart: {
@@ -119,14 +126,27 @@ const chartOptions = ref({
 })
 
 watch(
-    () => [props.data, props.users],
-    () => {
-        loadTimeline();
+  () => [props.data, props.users, props.loading],
+  ([, , isLoading]) => {
+    if (isLoading) {
+      if (!loadingDiv.value) return
+      loader.value = $loading.show({
+        container: loadingDiv.value,
+        isFullPage: false,
+      })
+    } else {
+      loadTimeline()
+      loader.value?.hide()
+      loader.value = null
     }
-);
+  }
+)
 
 
 onMounted(async () => {
+    loader.value =  $loading.show({
+        container: loadingDiv.value ? loadingDiv.value : undefined,
+    }) 
     loadTimeline();
 })
 
