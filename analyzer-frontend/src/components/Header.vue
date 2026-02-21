@@ -6,41 +6,19 @@
                 <h1 class="title">Threema Chat Analyzer</h1>
             </div>
             <div class="header-right">
-                <div class="additional-link">
-                    <button :class="{ active: true }" @click="handleRemoveData">
-                        REMOVE DATA
-                    </button>
-                </div>
-
                 <a class="github-link" href="https://github.com/maxiking445/threema-chat-analyzer" target="_blank"
                     rel="noopener noreferrer">
                     <img src="../assets/github.svg" alt="GitHub" class="github-icon" />
                 </a>
-
             </div>
         </header>
     </div>
 </template>
 
 <script setup>
-import { UploadApi } from '@/generated/api';
-import { useRouter } from 'vue-router'
-import { toast } from 'vue3-toastify';
-
-const router = useRouter()
 
 
-const uploadApi = new UploadApi();
 
-const handleRemoveData = () => {
-    uploadApi.deleteZipDelete().then(() => {
-        toast.success('Data removed successfully');
-        router.push('/')
-    }).catch((error) => {
-        toast.error(error.response?.data || 'Error removing data');
-        console.error('Error removing data:', error);
-    });
-}
 
 </script>
 <style scoped>

@@ -4,6 +4,7 @@ import WordCloud from './components/WordCloud.vue';
 import GroupRow from './components/GroupRow.vue';
 import ViewPanelTemplate from './components/ViewPanelTemplate.vue';
 import ContactRow from './components/ContactRow.vue';
+import BackButton from './components/BackButton.vue';
 </script>
 
 <template>
@@ -11,6 +12,7 @@ import ContactRow from './components/ContactRow.vue';
         <Header></Header>
         <main class="app-main">
             <div class="contentWrapper">
+                <BackButton></BackButton>
                 <GroupRow></GroupRow>
                 <ContactRow></ContactRow>
                 <ViewPanelTemplate class="wordCloudWrapper" title="Wordcloud">
