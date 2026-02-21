@@ -9,7 +9,7 @@ jobs:
   determine-version:
     runs-on: ubuntu-latest
     outputs:
-      release-tag: ${{ steps.set-tag.outputs.release-tag }}
+      release-tag: ${{ steps.bump_version.outputs.version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
