@@ -67,7 +67,7 @@ docker compose up
 
 ### Start without Docker
 
-Linux (it will install go and node)
+Linux (it will install node)
  ```bash
 sudo ./start_application_linux.sh
 ```

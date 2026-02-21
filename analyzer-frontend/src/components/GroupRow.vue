@@ -1,7 +1,9 @@
 <template>
     <div class="group-container">
         <ViewPanelTemplate class="flexItem" title="Groups" direction="horizontal">
-            <GroupPanel :groups="groups" @groupSelected="handleGroupSelected"></GroupPanel>
+            <div ref="loadingDiv" style="position: relative">
+                <GroupPanel :groups="groups" @groupSelected="handleGroupSelected"></GroupPanel>
+            </div>
             <GroupSelect :selectedGroup="selectedGroup" @update:selectedMembers="onSelectedMembersChanged">
             </GroupSelect>
             <GroupTimeline class="flexItem" :groupName="selectedGroup?.groupName" :groupID="selectedGroup?.groupUid"
@@ -17,16 +19,19 @@
 import { ModelsGroup } from '@/generated/api';
 import GroupPanel from './GroupPanel.vue';
 import GroupSelect from './GroupSelect.vue';
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import GroupTimeline from './GroupTimeline.vue';
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import { loadGroups } from "@/service/ApiService";
-
+import { useAppLoading } from '@/composables/useAppLoading';
 
 
 const selectedGroup = ref<ModelsGroup>();
 const groups = ref<ModelsGroup[]>([]);
 const selectedUserIds = ref<Set<string>>(new Set());
+
+const loadingDiv = ref(null)
+const $loading = useAppLoading();
 
 const handleGroupSelected = (groupKey) => {
     selectedGroup.value = undefined;
@@ -39,9 +44,14 @@ function onSelectedMembersChanged(newSelection: Array<string>) {
     selectedUserIds.value = new Set(newSelection);
 }
 
-
-loadGroups().then((response) => {
-    groups.value = response;
+onMounted(async () => {
+    const loader = $loading.show({
+        container: loadingDiv.value ? loadingDiv.value : undefined,
+    })
+    loadGroups().then((response) => {
+        groups.value = response;
+        loader.hide()
+    });
 });
 
 </script>
