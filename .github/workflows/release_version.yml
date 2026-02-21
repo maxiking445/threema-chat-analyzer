@@ -73,7 +73,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          projectPath: ./analyzer-frontend/src-tauri
+          projectPath: ./analyzer-frontend
           tagName: "v${{ steps.bump_version.outputs.version }}"
           releaseName: "Linux Release ${{ steps.bump_version.outputs.version }}"
           releaseBody: "Automated release of Linux Tauri App version ${{ steps.bump_version.outputs.version }}"
