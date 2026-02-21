@@ -53,7 +53,9 @@ jobs:
           - platform: "windows-latest"
             args: ""
     steps:
-      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
       - name: Install Linux dependencies
         if: matrix.platform == 'ubuntu-latest'
         run: |
