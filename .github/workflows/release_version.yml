@@ -64,6 +64,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: "v${{ needs.determine-version.outputs.release-tag }}"
 
       - name: Build frontend
         working-directory: ./analyzer-frontend
@@ -104,6 +106,8 @@ jobs:
       - publish-desktopApp-release
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: "v${{ needs.determine-version.outputs.release-tag }}"
       - name: Build and push Image
         env:
           RELEASE_TAG: ${{ needs.determine-version.outputs.release-tag }}
