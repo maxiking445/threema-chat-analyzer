@@ -1,5 +1,5 @@
 <template>
-    <Timeline :title="groupName ? 'Group Timeline: ' + groupName : 'Group Timeline:'" :data="data" :users="userIDs">
+    <Timeline :title="groupName ? 'Group Timeline: ' + groupName : 'Group Timeline:'" :data="data" :users="userIDs"  :loading="isLoading">
     </Timeline>
 </template>
 
@@ -18,6 +18,7 @@ const props = defineProps<{
 
 
 const data = ref<ModelsGroupTimeline[]>([]);
+const isLoading = ref(false)
 
 watch(
     () => [props.userIDs],
@@ -29,10 +30,16 @@ watch(
 async function loadTimeline() {
     if (props.userIDs.length === 0) {
         data.value = []
+        isLoading.value = false
         return
     }
-    const response = await loadGroupTimeline(props.groupID);
-    data.value = response;
+    isLoading.value = true
+    try {
+        const response = await loadGroupTimeline(props.groupID)
+        data.value = response
+    } finally {
+        isLoading.value = false
+    }
 }
 </script>
 <style></style>
