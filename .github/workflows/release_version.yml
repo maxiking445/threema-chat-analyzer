@@ -82,9 +82,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           projectPath: ./analyzer-frontend
-          beforeBuildCommand: "npm install && npm run build"
           tagName: "v${{ needs.determine-version.outputs.release-tag }}"
-          releaseName: "Release ${{ needs.determine-version.outputs.release-tag }}"
+          releaseName: "${{ needs.determine-version.outputs.release-tag }}"
           releaseBody: "Automated release version ${{ needs.determine-version.outputs.release-tag }}"
           releaseDraft: false
           prerelease: false
