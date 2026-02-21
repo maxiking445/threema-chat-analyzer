@@ -81,10 +81,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          projectPath: ./analyzer-frontend/src-tauri
-          tagName: "v${{ steps.bump_version.outputs.version }}"
-          releaseName: "Linux Release ${{ steps.bump_version.outputs.version }}"
-          releaseBody: "Automated release of Linux Tauri App version ${{ steps.bump_version.outputs.version }}"
+          projectPath: ./analyzer-frontend
+          beforeBuildCommand: "npm install && npm run build"
+          tagName: "v${{ needs.determine-version.outputs.release-tag }}"
+          releaseName: "Release ${{ needs.determine-version.outputs.release-tag }}"
+          releaseBody: "Automated release version ${{ needs.determine-version.outputs.release-tag }}"
           releaseDraft: false
           prerelease: false
 
