@@ -56,6 +56,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Build frontend
+        working-directory: ./analyzer-frontend
+        run: |
+            npm install
+            npm run build
+            
       - name: Install Linux dependencies
         if: matrix.platform == 'ubuntu-latest'
         run: |
