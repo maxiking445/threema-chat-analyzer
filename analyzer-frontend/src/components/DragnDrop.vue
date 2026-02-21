@@ -37,9 +37,10 @@
 
 <script setup>
 import { ref } from 'vue'
-import { uploadZip } from '@/service/ApiService'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
+import { uploadZip } from '@/service/ApiService'
+
 
 
 const router = useRouter()
@@ -65,8 +66,7 @@ const onUpload = () => {
     if (error?.response) {
       error.response.text().then((t) => toast.error(t || 'Upload failed'))
     }
-  })
-}
+  })}
 
 const handleFiles = (files) => {
   const file = files[0]

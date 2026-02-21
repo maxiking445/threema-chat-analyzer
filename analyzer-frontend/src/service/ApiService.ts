@@ -12,8 +12,14 @@ import {
   ModelsContactTimeline,
   ModelsGroup,
 } from "@/generated/api/models";
-import { toast } from 'vue3-toastify'
-
+import { toast } from "vue3-toastify";
+import * as groupService from "./GroupService";
+import * as AvatarService from "./AvatarService";
+import * as WordCloudService from "./WordCloudService";
+import * as ContactService from "./ContactService";
+import * as FileService from "./FileService";
+import * as GroupTimelineService from "./GroupTimelineService";
+import * as ContactTimelineService from "./ContactTimelineService";
 const configuration = new Configuration({
   basePath: "/api",
 });
@@ -22,11 +28,10 @@ const defaultApi = new DefaultApi(configuration);
 const uploadApi = new UploadApi(configuration);
 
 export async function loadGroupTimeline(
-  groupName: string
+  groupName: string,
 ): Promise<ModelsGroupTimeline[]> {
   try {
-    const response = await defaultApi.groupsTimelineGet({ group: groupName });
-    return response;
+    return GroupTimelineService.getGroupTimeline(groupName);
   } catch (err) {
     toast.error(`Failed to load group timeline for "${groupName}"`);
     console.error(err);
@@ -35,13 +40,10 @@ export async function loadGroupTimeline(
 }
 
 export async function loadContactTimeline(
-  userId: string
+  userId: string,
 ): Promise<ModelsContactTimeline[]> {
   try {
-    const response = await defaultApi.contactsTimelineGet({
-      userId: userId,
-    });
-    return response;
+    return ContactTimelineService.getContactTimeline(userId);
   } catch (err) {
     toast.error(`Failed to load contact timeline for user "${userId}"`);
     console.error(err);
@@ -51,9 +53,9 @@ export async function loadContactTimeline(
 
 export async function loadWordCloudData(): Promise<ModelsWordCount[]> {
   try {
-    return await defaultApi.wordcloudGet();
+    return await WordCloudService.getWordCount(100);
   } catch (err) {
-    toast.error('Failed to load word cloud data');
+    toast.error("Failed to load word cloud data");
     console.error(err);
     return [];
   }
@@ -61,9 +63,9 @@ export async function loadWordCloudData(): Promise<ModelsWordCount[]> {
 
 export async function loadContacts(): Promise<ModelsContact[]> {
   try {
-    return await defaultApi.contactsGet();
+    return await ContactService.loadContacts();
   } catch (err) {
-    toast.error('Failed to load contacts');
+    toast.error("Failed to load contacts");
     console.error(err);
     return [];
   }
@@ -71,11 +73,10 @@ export async function loadContacts(): Promise<ModelsContact[]> {
 
 export async function loadAvatar(
   avatarType: AvatarIdGetTypeEnum,
-  imageID: string
+  imageID: string,
 ): Promise<Blob> {
   try {
-    var params: AvatarIdGetRequest = { type: avatarType, id: imageID };
-    return await defaultApi.avatarIdGet(params);
+    return await AvatarService.getAvatar(avatarType, imageID);
   } catch (err) {
     toast.error(`Failed to load avatar ${imageID}`);
     console.error(err);
@@ -85,25 +86,24 @@ export async function loadAvatar(
 
 export async function loadGroups(): Promise<Array<ModelsGroup>> {
   try {
-    return await defaultApi.groupsGet();
+    var result = await groupService.loadGroupsWithMessageCounts("groups.csv");
+    console.info(result);
+    return result;
   } catch (err) {
-    toast.error('Failed to load groups');
+    toast.error("Failed to load groups");
     console.error(err);
     return [];
   }
 }
 
 export async function uploadZip(
-  selectedFile,
-  password: string
-): Promise<string> {
+  selectedFile: any,
+  password: string,
+): Promise<void> {
   try {
-    return uploadApi.uploadZipPost({
-      file: selectedFile,
-      xZipPassword: password,
-    });
+    await FileService.handleZipUpload(selectedFile, password);
   } catch (err) {
-    toast.error('Failed to upload ZIP file');
+    toast.error("Failed to upload ZIP file");
     console.error(err);
     throw err; // Re-throw to maintain original behavior
   }
