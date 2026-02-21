@@ -5,7 +5,7 @@ description = "Analyse your Backups"
 authors = ["maxiking445"]
 license = "MIT"
 repository = "https://github.com/maxiking445/threema-chat-analyzer"
-edition = "2026"
+edition = "2021"
 rust-version = "1.77.2"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
