@@ -42,7 +42,7 @@ jobs:
 
   publish-desktopApp-release:
     name: Create GitHub Release
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform }}
     needs: [determine-version]
     strategy:
       fail-fast: false
@@ -61,7 +61,7 @@ jobs:
         run: |
             npm install
             npm run build
-            
+
       - name: Install Linux dependencies
         if: matrix.platform == 'ubuntu-latest'
         run: |
