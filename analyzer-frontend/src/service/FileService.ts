@@ -62,16 +62,16 @@ const zipUnpackService = new ZipUnpackService();
 export async function handleZipUpload(zipFile: File, password?: string) {
   try {
     const files = await zipUnpackService.unpackZip(zipFile, password);
-
-    for (const [filename, entry] of files) {
-      console.log(`Data: ${filename}, size: ${entry.size} Bytes`);
-    }
     return files;
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
-export function getZipFile(filename: string) {
+export function getZipFile(filename: string): ZipFileEntry | undefined {
   return zipUnpackService.getFile(filename);
+}
+
+export function listFiles(): string[] {
+  return zipUnpackService.listFiles();
 }

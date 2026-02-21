@@ -37,9 +37,10 @@
 
 <script setup>
 import { ref } from 'vue'
-import { handleZipUpload } from '@/service/FileService'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
+import { uploadZip } from '@/service/ApiService'
+
 
 
 const router = useRouter()
@@ -58,8 +59,8 @@ const onDragLeave = () => {
 
 
 const onUpload = () => {
-  handleZipUpload(selectedFile.value, password.value).then((response) => {
-    toast.success('Unpack successful')
+  uploadZip(selectedFile.value, password.value).then((response) => {
+    toast.success('Upload successful')
     router.push('/view')
   }).catch((error) => {
     if (error?.response) {

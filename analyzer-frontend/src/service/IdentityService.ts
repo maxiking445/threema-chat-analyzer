@@ -1,9 +1,9 @@
 import Papa from "papaparse";
-import { getZipFile } from "./FileService"; // Dein ZIP Service
+import { getZipFile } from "./FileService";
 import { toast } from "vue3-toastify";
 import { ModelsIdentity } from "@/generated/api";
 
-const USER_CONTACTS_FILENAME = "user_contacts.csv"; // common.UserContactsPath
+const USER_CONTACTS_FILENAME = "contacts.csv";
 
 // Cache für Identities (Performance)
 const identityCache = new Map<string, ModelsIdentity>();
@@ -63,7 +63,7 @@ export async function loadIdentityByUserUUID(userID: string): Promise<ModelsIden
 }
 
 let identitiesCache: ModelsIdentity[] = [];
-async function loadIdentitiesFromCache(): Promise<ModelsIdentity[]> {
+export async function loadIdentitiesFromCache(): Promise<ModelsIdentity[]> {
   // Cache bereits geladen?
   if (identitiesCache.length > 0) {
     return identitiesCache;
@@ -97,6 +97,8 @@ async function loadIdentitiesFromCache(): Promise<ModelsIdentity[]> {
         lastName: row[5] || "",
         nickName: row[6] || "",
       };
+
+
 
       identitiesCache.push(identity);
     }
