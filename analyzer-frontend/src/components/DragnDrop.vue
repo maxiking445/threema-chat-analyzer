@@ -1,7 +1,6 @@
 <template>
-  <div class="page">
-    <div class="panel">
-      <h1 class="title">ZIP Upload</h1>
+    <div class="page">
+    <ViewPanelTemplate title="ZIP Upload">
       <p class="subtitle">
         Drop your ZIP here or select it via data browser. It will only be computed locally.
       </p>
@@ -23,6 +22,17 @@
         </div>
       </label>
 
+      <div v-if="savedZips.length > 0" class="saved-zips">
+        <p class="saved-label">Saved ZIPs</p>
+        <ul class="zip-list">
+          <li v-for="zip in savedZips" :key="zip.name" class="zip-item"
+            :class="{ 'zip-item--active': selectedFile?.name === zip.name }" @click="selectSavedZip(zip)">
+            <span class="zip-icon">🗜</span>
+            <span class="zip-name">{{ zip.name }}</span>
+          </li>
+        </ul>
+      </div>
+
       <div class="password-row">
         <label class="password-label" for="zip-password">Password</label>
         <input id="zip-password" v-model="password" type="password" class="password-input"
@@ -31,52 +41,58 @@
       <div class="upload-button-wrapper">
         <button class="upload-button" :disabled="!selectedFile || !password" @click="onUpload">Analyze</button>
       </div>
-    </div>
+    </ViewPanelTemplate>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
+import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import { uploadZip } from '@/service/ApiService'
-
-
+import { getSavedZips, saveZipToStorage } from '@/service/FileService'
 
 const router = useRouter()
 
 const isActive = ref(false)
 const selectedFile = ref(null)
 const password = ref('')
+const savedZips = ref([])
 
-const onDragEnter = () => {
-  isActive.value = true
-}
-const onDragLeave = () => {
-  isActive.value = false
-}
+onMounted(async () => {
+  savedZips.value = await getSavedZips()
+})
 
-
+const onDragEnter = () => { isActive.value = true }
+const onDragLeave = () => { isActive.value = false }
 
 const onUpload = () => {
-  uploadZip(selectedFile.value, password.value).then((response) => {
+  uploadZip(selectedFile.value, password.value).then(() => {
     toast.success('Upload successful')
     router.push('/view')
   }).catch((error) => {
     if (error?.response) {
       error.response.text().then((t) => toast.error(t || 'Upload failed'))
     }
-  })}
+  })
+}
 
-const handleFiles = (files) => {
+const handleFiles = async (files) => {
   const file = files[0]
   if (!file) return
 
   if (file.type === 'application/zip' || file.name.toLowerCase().endsWith('.zip')) {
     selectedFile.value = file
+    await saveZipToStorage(file)
+    savedZips.value = await getSavedZips()
   } else {
     alert('Please select your Backup ZIP.')
   }
+}
+
+const selectSavedZip = (zip) => {
+  selectedFile.value = zip.file
 }
 
 const onDrop = (e) => {
@@ -95,28 +111,9 @@ const onFileSelect = (e) => {
 
 <style scoped>
 .page {
-  padding: 30px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #f9fafb;
-}
-
-.panel {
-  width: 100%;
-  max-width: 420px;
-  padding: 1.75rem 1.75rem 2rem;
-  border-radius: 16px;
-  background: #181b20;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-  border: 1px solid #20242b;
-}
-
-.title {
-  margin: 0 0 0.25rem;
-  font-size: 1.4rem;
-  font-weight: 600;
+  align-items: center;
 }
 
 .subtitle {
@@ -206,6 +203,8 @@ const onFileSelect = (e) => {
   border-radius: 8px;
   border: 1px solid #303441;
   background: #111317;
+  cursor: pointer;
+  font-size: 0.875rem;
   color: #e5e7eb;
   padding: 0.45rem 0.6rem;
   font-size: 0.9rem;

@@ -75,3 +75,18 @@ export function getZipFile(filename: string): ZipFileEntry | undefined {
 export function listFiles(): string[] {
   return zipUnpackService.listFiles();
 }
+
+interface SavedZip {
+  name: string;
+  file: File;
+}
+
+const zipStore = new Map<string, File>();
+
+export async function saveZipToStorage(file: File): Promise<void> {
+  zipStore.set(file.name, file);
+}
+
+export async function getSavedZips(): Promise<SavedZip[]> {
+  return Array.from(zipStore.entries()).map(([name, file]) => ({ name, file }));
+}

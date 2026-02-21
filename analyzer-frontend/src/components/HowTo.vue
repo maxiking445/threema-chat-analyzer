@@ -1,19 +1,22 @@
 <template>
     <div class="page">
-        <section class="howto">
-            <h2 class="howto-title">How to</h2>
-
-            <article v-for="step in steps" :key="step.id" class="howto-step">
-                <div class="howto-text">
-                    <h3 class="howto-step-title">{{ step.title }}</h3>
-                    <p class="howto-step-body">{{ step.text }}</p>
-                </div>
-            </article>
-        </section>
+        <ViewPanelTemplate title="How to">
+            <section class="howto">
+                <article v-for="step in steps" :key="step.id" class="howto-step">
+                    <div class="howto-text">
+                        <h3 class="howto-step-title">{{ step.title }}</h3>
+                        <p class="howto-step-body">{{ step.text }}</p>
+                    </div>
+                </article>
+            </section>
+        </ViewPanelTemplate>
     </div>
+
 </template>
 
 <script setup>
+import ViewPanelTemplate from './ViewPanelTemplate.vue';
+
 const steps = [
     {
         id: 1,
@@ -37,13 +40,12 @@ const steps = [
 </script>
 
 <style scoped>
-
 .page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #f9fafb;
 }
 
 .howto {
