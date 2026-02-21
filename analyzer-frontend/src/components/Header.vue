@@ -19,18 +19,11 @@
 </template>
 
 <script setup>
-import { getVersion } from '@tauri-apps/api/app'
-import { ref,  onMounted } from 'vue'
+import { ref } from 'vue'
 
-const appVersion = ref('0.0.0')
+const appVersion = ref(import.meta.env.PACKAGE_VERSION)
 
-onMounted(async () => {
-    try {
-        appVersion.value = await getVersion()
-    } catch {
-        appVersion.value = '0.0.0'
-    }
-})
+
 
 
 </script>
