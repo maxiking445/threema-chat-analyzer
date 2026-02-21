@@ -48,12 +48,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: "ubuntu-22.04"
+          - platform: "ubuntu-latest"
             args: ""
           - platform: "windows-latest"
             args: ""
     steps:
+      
       - name: Install Linux dependencies
+        if: matrix.platform == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y \

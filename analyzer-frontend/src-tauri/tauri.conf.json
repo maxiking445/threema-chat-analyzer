@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "threema-chat-analyzer",
-  "identifier": "dev.maxiking445.outlookforlinux",
+  "identifier": "dev.maxiking445.analyzerFrontend",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:5173",
