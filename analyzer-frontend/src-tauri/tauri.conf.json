@@ -1,6 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "threema-chat-analyzer",
+  "version": "0.1.0",
   "identifier": "dev.maxiking445.analyzerFrontend",
   "build": {
     "frontendDist": "../dist",

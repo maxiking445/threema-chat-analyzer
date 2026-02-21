@@ -18,7 +18,7 @@ jobs:
         id: bump_version
         run: |
           PKG="./analyzer-frontend/package.json"
-          CARGO="./analyzer-frontend/src-tauri/Cargo.toml"
+          TAURI_CONF="./analyzer-frontend/src-tauri/tauri.conf.json"
 
           CURRENT=$(jq -r '.version // "0.0.0"' "$PKG")
           echo "Current Version: $CURRENT"
@@ -32,16 +32,17 @@ jobs:
           jq ".version=\"$NEW_VERSION\"" "$PKG" > "$PKG.tmp"
           mv "$PKG.tmp" "$PKG"
 
-          # Update Cargo.toml
-          sed -i "s/^version = \".*\"/version = \"$NEW_VERSION\"/" "$CARGO"
+          # Update tauri.conf.json
+          jq ".version=\"$NEW_VERSION\"" "$TAURI_CONF" > "$TAURI_CONF.tmp"
+          mv "$TAURI_CONF.tmp" "$TAURI_CONF"
 
-          echo "Updated Cargo.toml:"
-          grep '^version' "$CARGO"
+          echo "Updated tauri.conf.json:"
+          jq '.version' "$TAURI_CONF"
 
           # Git commit + Tag
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add "$PKG" "$CARGO"
+          git add "$PKG" "$TAURI_CONF"
           git commit -m "ci: bump version to $NEW_VERSION"
           git tag "v$NEW_VERSION"
           git push origin main --tags
