@@ -7,10 +7,10 @@ import VueApexCharts from "vue3-apexcharts";
 import Vue3Toastify from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faArrowLeft, faTrash, faFileZipper } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faArrowLeft);
+library.add(faArrowLeft, faTrash, faFileZipper);
 
 createApp(App)
   .use(router)

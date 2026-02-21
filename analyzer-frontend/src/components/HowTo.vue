@@ -21,7 +21,7 @@ const steps = [
     {
         id: 1,
         title: '1. Threema-Backup export',
-        text: 'Create a Threema Data Backup (Settings > Backups > Data-Backup) and export it.',
+        text: 'Create a Threema Data Backup (Settings > Backups > Data-Backup) and export it. (Without media if you only want to analyze the chat history.)',
         image: '/assets/step1.png',
     },
     {

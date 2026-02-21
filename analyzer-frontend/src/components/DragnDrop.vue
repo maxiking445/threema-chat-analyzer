@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+  <div class="page">
     <ViewPanelTemplate title="ZIP Upload">
       <p class="subtitle">
         Drop your ZIP here or select it via data browser. It will only be computed locally.
@@ -21,18 +21,6 @@
           </div>
         </div>
       </label>
-
-      <div v-if="savedZips.length > 0" class="saved-zips">
-        <p class="saved-label">Saved ZIPs</p>
-        <ul class="zip-list">
-          <li v-for="zip in savedZips" :key="zip.name" class="zip-item"
-            :class="{ 'zip-item--active': selectedFile?.name === zip.name }" @click="selectSavedZip(zip)">
-            <span class="zip-icon">🗜</span>
-            <span class="zip-name">{{ zip.name }}</span>
-          </li>
-        </ul>
-      </div>
-
       <div class="password-row">
         <label class="password-label" for="zip-password">Password</label>
         <input id="zip-password" v-model="password" type="password" class="password-input"
@@ -41,6 +29,14 @@
       <div class="upload-button-wrapper">
         <button class="upload-button" :disabled="!selectedFile || !password" @click="onUpload">Analyze</button>
       </div>
+    </ViewPanelTemplate>
+    <ViewPanelTemplate title="Saved Backups">
+      <div v-if="savedZips.length === 0" class="empty-state">
+        No saved backups yet.
+      </div>
+      <ZipItem v-for="zip in savedZips" :key="zip.name" :name="zip.name"
+        :selected="selectedFile && selectedFile.name === zip.name" @click="selectSavedZip(zip)"
+        @delete="deleteZip(zip.name)" />
     </ViewPanelTemplate>
   </div>
 </template>
@@ -51,7 +47,8 @@ import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import { uploadZip } from '@/service/ApiService'
-import { getSavedZips, saveZipToStorage } from '@/service/FileService'
+import { getSavedZips, saveZipToStorage, deleteZipFromStorage } from '@/service/FileService'
+import ZipItem from './ZipItem.vue';
 
 const router = useRouter()
 
@@ -77,7 +74,10 @@ const onUpload = () => {
     }
   })
 }
-
+const deleteZip = async (zip) => {
+  await deleteZipFromStorage(zip)
+  savedZips.value = savedZips.value.filter(z => z.name !== zip)
+}
 const handleFiles = async (files) => {
   const file = files[0]
   if (!file) return

@@ -9,11 +9,10 @@ import Header from "./components/Header.vue";
     <Header></Header>
     <main class="app-main">
       <div class="content">
-        <HowTo />
         <DragnDrop />
+        <HowTo />
+
       </div>
     </main>
   </div>
 </template>
-
-

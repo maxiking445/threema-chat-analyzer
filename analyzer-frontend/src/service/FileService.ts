@@ -1,5 +1,6 @@
 import { ZipReader, BlobReader, BlobWriter } from "@zip.js/zip.js";
 import { toast } from "vue3-toastify";
+import { openDB } from 'idb';
 export interface ZipFileEntry {
   filename: string;
   content: Blob;
@@ -81,12 +82,29 @@ interface SavedZip {
   file: File;
 }
 
-const zipStore = new Map<string, File>();
+const DB_NAME = 'zip-storage';
+const STORE_NAME = 'zips';
+
+async function getDB() {
+  return openDB(DB_NAME, 1, {
+    upgrade(db) {
+      db.createObjectStore(STORE_NAME, { keyPath: 'name' });
+    },
+  });
+}
 
 export async function saveZipToStorage(file: File): Promise<void> {
-  zipStore.set(file.name, file);
+  const db = await getDB();
+  await db.put(STORE_NAME, { name: file.name, file });
 }
 
 export async function getSavedZips(): Promise<SavedZip[]> {
-  return Array.from(zipStore.entries()).map(([name, file]) => ({ name, file }));
+  const db = await getDB();
+  return await db.getAll(STORE_NAME);
 }
+
+export async function deleteZipFromStorage(name: string): Promise<void> {
+  const db = await getDB();
+  await db.delete(STORE_NAME, name);
+}
+
