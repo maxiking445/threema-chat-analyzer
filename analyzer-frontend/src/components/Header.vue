@@ -23,23 +23,11 @@
 </template>
 
 <script setup>
-import { UploadApi } from '@/generated/api';
-import { useRouter } from 'vue-router'
-import { toast } from 'vue3-toastify';
-
-const router = useRouter()
 
 
-const uploadApi = new UploadApi();
 
 const handleRemoveData = () => {
-    uploadApi.deleteZipDelete().then(() => {
-        toast.success('Data removed successfully');
-        router.push('/')
-    }).catch((error) => {
-        toast.error(error.response?.data || 'Error removing data');
-        console.error('Error removing data:', error);
-    });
+
 }
 
 </script>
