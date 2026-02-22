@@ -1,6 +1,14 @@
 <template>
   <div class="page">
-    <ViewPanelTemplate title="ZIP Upload">
+    <ViewPanelTemplate title="Saved Backups">
+      <div v-if="savedZips.length === 0" class="empty-state">
+        No saved backups yet.
+      </div>
+      <ZipItem v-for="zip in savedZips" :key="zip.name" :name="zip.name"
+        :selected="selectedFile && selectedFile.name === zip.name" @click="selectSavedZip(zip)"
+        @delete="deleteZip(zip.name)" />
+    </ViewPanelTemplate>
+    <ViewPanelTemplate title="Analyse Backup">
       <p class="subtitle">
         Drop your ZIP here or select it via data browser. It will only be computed locally.
       </p>
@@ -30,14 +38,7 @@
         <button class="upload-button" :disabled="!selectedFile || !password" @click="onUpload">Analyze</button>
       </div>
     </ViewPanelTemplate>
-    <ViewPanelTemplate title="Saved Backups">
-      <div v-if="savedZips.length === 0" class="empty-state">
-        No saved backups yet.
-      </div>
-      <ZipItem v-for="zip in savedZips" :key="zip.name" :name="zip.name"
-        :selected="selectedFile && selectedFile.name === zip.name" @click="selectSavedZip(zip)"
-        @delete="deleteZip(zip.name)" />
-    </ViewPanelTemplate>
+
   </div>
 </template>
 
