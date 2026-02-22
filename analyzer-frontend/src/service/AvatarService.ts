@@ -1,6 +1,6 @@
-import { AvatarIdGetTypeEnum } from "@/generated/api";
 import { getZipFile, listFiles } from "./FileService";
 import placeholderImageUrl from "../assets/placeholder_avatar.jpg";
+import { AvatarIdGetTypeEnum } from "../models/AvatarIdGetTypeEnum";
 
 const ProfilePicContact = "contact_profile_pic_";
 const ProfilePicGroup = "group_avatar_";

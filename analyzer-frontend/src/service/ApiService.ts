@@ -1,13 +1,3 @@
-import {
-  AvatarIdGetTypeEnum,
-} from "@/generated/api";
-import {
-  ModelsWordCount,
-  ModelsGroupTimeline,
-  ModelsContact,
-  ModelsContactTimeline,
-  ModelsGroup,
-} from "@/generated/api/models";
 import { toast } from "vue3-toastify";
 import * as groupService from "./GroupService";
 import * as AvatarService from "./AvatarService";
@@ -16,6 +6,9 @@ import * as ContactService from "./ContactService";
 import * as FileService from "./FileService";
 import * as GroupTimelineService from "./GroupTimelineService";
 import * as ContactTimelineService from "./ContactTimelineService";
+import { AvatarIdGetTypeEnum } from "../models/AvatarIdGetTypeEnum";
+import { ModelsContactTimeline } from "@/models/ModelsContactTimeline";
+import { ModelsContact, ModelsGroup, ModelsGroupTimeline, ModelsWordCount } from "@/models";
 
 export async function loadGroupTimeline(
   groupName: string,

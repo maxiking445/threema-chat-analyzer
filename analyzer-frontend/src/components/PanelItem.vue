@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { AvatarIdGetTypeEnum } from '@/generated/api'
+import { AvatarIdGetTypeEnum } from '../models/AvatarIdGetTypeEnum';
 import Avatar from './Avatar.vue'
 import MessageCountLabel from './MessageCountLabel.vue';
 

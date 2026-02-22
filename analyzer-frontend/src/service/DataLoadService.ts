@@ -1,13 +1,3 @@
-import {
-  AvatarIdGetTypeEnum,
-} from "@/generated/api";
-import {
-  ModelsWordCount,
-  ModelsGroupTimeline,
-  ModelsContact,
-  ModelsContactTimeline,
-  ModelsGroup,
-} from "@/generated/api/models";
 
 import {
   loadGroups,
@@ -17,6 +7,9 @@ import {
   loadAvatar,
   loadWordCloudData,
 } from "./ApiService"; 
+import { AvatarIdGetTypeEnum } from "../models/AvatarIdGetTypeEnum";
+import { ModelsContact, ModelsGroup, ModelsGroupTimeline, ModelsWordCount } from "@/models";
+import { ModelsContactTimeline } from "@/models/ModelsContactTimeline";
 
 export interface LoadedData {
   groups: ModelsGroup[];
