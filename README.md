@@ -6,13 +6,20 @@
 
 <p align="center">
   <a href="https://github.com/maxiking445/threema-chat-analyzer/actions/workflows/release_version.yml">
-    <img src="https://github.com/maxiking445/threema-chat-analyzer/actions/workflows/release_version.yml/badge.svg?branch=main" alt="Build Status">
+    <img src="https://github.com/maxiking445/threema-chat-analyzer/actions/workflows/release_version.yml/badge.svg?branch=main">
   </a>
-  <img src="https://img.shields.io/github/license/maxiking445/threema-chat-analyzer" alt="License">
-  <img src="https://img.shields.io/github/v/release/maxiking445/threema-chat-analyzer" alt="Latest Release">
+  <img src="https://img.shields.io/github/license/maxiking445/threema-chat-analyzer">
+  <img src="https://img.shields.io/github/v/release/maxiking445/threema-chat-analyzer">
+
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/-Windows-blue?style=flat&logo=windows&logoColor=white">
+  <img src="https://img.shields.io/badge/-Linux-green?style=flat&logo=linux&logoColor=black">
+  <img src="https://img.shields.io/badge/Docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white">
 </p>
 
 ---
+
 ## Supported Versions
 This tool has been tested and developed for Android/Threema exports.  IOS users are welcome to report whether the data export can be extracted and works or not. 
 
@@ -36,13 +43,13 @@ FEATURES:
 - Offline analysis (your data is safe)
 
 TODO:
-- execute backend logic inside browser
+- ~~execute backend logic inside browser~~
 - add analysis of single contact (chat frequency, answertime, ...)
 - add chat search interface
 - script to anonymze data
+- ~~windows/linux desktop app~~
+- pdf export
 - suggestions are welcome
-- windows/linux desktop app
-- pdf export 
 
 ---
 
@@ -51,7 +58,15 @@ TODO:
 ### How to export Data from Threema?
 Detailed explanation how to create a data backup: [Threema Data Backup FAQ](https://threema.com/de/faq/data-backup)
 
-### Via Docker (recommended)
+
+### Desktop app (recommended)
+[→ Get latest version](https://github.com/maxiking445/threema-chat-analyzer/releases/latest)
+
+**Available for:**
+- **Ubuntu/Debian**: `Threema-Chat-Analyzer_amd64.deb`
+- **Windows**: `Threema-Chat-Analyzer_x64-setup.exe`
+
+### Via Docker
 Execute this to start frontend app in your selfhosted environment or local machine which runs docker.
 
  ```bash
