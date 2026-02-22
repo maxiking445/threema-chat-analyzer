@@ -57,14 +57,15 @@
 import { ref, onMounted } from 'vue'
 import { watch } from 'vue';
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
-import { ModelsDayCount, ModelsGroupTimeline } from '@/generated/api';
 import MessageCountLabel from './MessageCountLabel.vue';
 import NoData from './NoData.vue';
 import { useAppLoading } from '@/composables/useAppLoading';
+import { ModelsGroupTimeline } from '@/models';
+import { ModelsDayCount } from '@/models/ModelsDayCount';
 
 const props = defineProps<{
     title: string
-    data
+    data: ModelsGroupTimeline[]
     users: string[]
     loading?: boolean
 }>()
@@ -169,6 +170,7 @@ function filterByUserIdsMap(timelineResponse: ModelsGroupTimeline[], userIds: Se
             }
             if (result.has(key)) {
                 const oldValue = result.get(key);
+                if (!oldValue) return
                 const mergedArray = [
                     ...oldValue,
                     ...t.timeline
@@ -272,7 +274,7 @@ function nextPeriod() {
 function calcMessageCount() {
     var sum: number = 0
     series.value.forEach(user => {
-        user.data.forEach(x => {
+        user.data.forEach((x: any) => {
             sum += x.y
         })
     })

@@ -6,8 +6,8 @@
 import { ref, onMounted, watch } from 'vue'
 import Timeline from './Timeline.vue';
 import { dataCache } from "@/service/DataLoadService";
+import { ModelsContactTimeline } from '@/models/ModelsContactTimeline';
 
-import { ModelsContactTimeline } from '@/generated/api';
 
 const props = defineProps<{
     users: string[]

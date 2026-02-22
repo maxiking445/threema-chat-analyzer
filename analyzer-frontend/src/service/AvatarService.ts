@@ -1,4 +1,5 @@
-import { getZipFile, listFiles } from "./FileService";
+import { getZipFile } from "./FileService";
+// @ts-ignore
 import placeholderImageUrl from "../assets/placeholder_avatar.jpg";
 import { AvatarIdGetTypeEnum } from "../models/AvatarIdGetTypeEnum";
 

@@ -26,7 +26,7 @@ import MessageCountLabel from './MessageCountLabel.vue';
 const props = defineProps<{
     displayName: string
     id: string
-    uuid?: string
+    uuid: string
     value: number
     max?: number
     selected?: boolean

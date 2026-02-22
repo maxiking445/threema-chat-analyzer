@@ -6,14 +6,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { watch } from 'vue';
-import { ModelsGroupTimeline } from '@/generated/api';
 import Timeline from './Timeline.vue';
 import { dataCache } from "@/service/DataLoadService";
+import { ModelsGroupTimeline } from '@/models/ModelsGroupTimeline';
 
 
 const props = defineProps<{
-    groupName: string
-    groupID: string
+    groupName: string | undefined
+    groupID: string | undefined
     userIDs: string[]
 }>()
 
@@ -36,7 +36,11 @@ async function loadTimeline() {
     }
     isLoading.value = true
     try {
-        const response = await dataCache.getGroupTimeline(props.groupID)
+        if (!props.groupID) {
+            data.value = []
+            return
+        }
+        const response: ModelsGroupTimeline[]  = await dataCache.getGroupTimeline(props.groupID)
         data.value = response
     } finally {
         isLoading.value = false

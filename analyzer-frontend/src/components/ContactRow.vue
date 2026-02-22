@@ -11,13 +11,13 @@
 </template>
 
 <script setup lang="ts">
-import { ModelsContact } from '@/generated/api';
 import { onMounted, ref } from 'vue'
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import ContactPanel from './ContactPanel.vue';
 import ContactTimeline from './ContactTimeline.vue';
 import { dataCache } from "@/service/DataLoadService";
 import { useAppLoading } from '@/composables/useAppLoading'
+import { ModelsContact } from '@/models';
 
 const selectedContacts = ref<ModelsContact[]>();
 const contacts = ref<ModelsContact[]>([]);
@@ -25,7 +25,7 @@ const loadingDiv = ref(null)
 const $loading = useAppLoading();
 
 
-const handleContactSelected = (userIds) => {
+const handleContactSelected = (userIds: string[]) => {
     selectedContacts.value = undefined;
     var selected: ModelsContact[] = contacts.value.filter(contact => userIds.includes(contact.identity.identity));
     selectedContacts.value = selected
