@@ -19,14 +19,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { AvatarIdGetTypeEnum } from '@/generated/api'
+import { AvatarIdGetTypeEnum } from '../models/AvatarIdGetTypeEnum';
 import Avatar from './Avatar.vue'
 import MessageCountLabel from './MessageCountLabel.vue';
 
 const props = defineProps<{
     displayName: string
     id: string
-    uuid?: string
+    uuid: string
     value: number
     max?: number
     selected?: boolean

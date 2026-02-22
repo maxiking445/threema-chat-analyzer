@@ -6,19 +6,20 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { AvatarIdGetTypeEnum, AvatarIdGetRequest } from '@/generated/api';
 import { loadAvatar } from "@/service/ApiService";
 import { toast } from 'vue3-toastify'
+import { AvatarIdGetTypeEnum } from '@/models/AvatarIdGetTypeEnum';
 
 const avatarSrc = ref<string>()
 
 const props = defineProps<{
-    imageID: string
+    imageID: string | undefined
     avatarType: AvatarIdGetTypeEnum
 }>()
 
 
 onMounted(() => {
+    if (!props.imageID) return;
     loadAvatar(props.avatarType, props.imageID).then((response) => {
         avatarSrc.value = URL.createObjectURL(response);
     }).catch((error) => {

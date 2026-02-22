@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../HomeView.vue'
 import AnalyzeView from '../AnalyzeView.vue'
+import InitView from '@/InitView.vue'
 
 const routes = [
   {
@@ -13,11 +14,24 @@ const routes = [
     name: 'view',
     component: AnalyzeView,
   },
+  {
+    path: '/init',
+    name: 'init',
+    component: InitView,
+  },
 ]
+
+
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+router.beforeEach((to, from) => {
+  if (!from.name && to.path !== '/') {
+    return '/'
+  }
+  return true
 })
 
 export default router

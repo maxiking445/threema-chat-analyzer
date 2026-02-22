@@ -13,10 +13,10 @@
 </template>
 
 <script setup lang="ts">
-import { ModelsContact } from '@/generated/api';
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import { computed, PropType, ref } from 'vue'
 import PanelItem from './PanelItem.vue';
+import { ModelsContact } from '@/models';
 
 const props = defineProps({
   contacts: { type: Array as PropType<ModelsContact[]>, required: false, default: () => [] }

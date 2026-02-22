@@ -16,12 +16,12 @@
 
 
 <script setup lang="ts">
-import { ModelsGroup, ModelsIdentity } from '@/generated/api';
 import ViewPanelTemplate from './ViewPanelTemplate.vue'
 import { ref } from 'vue'
 import { PropType } from 'vue'
 import PanelItem from './PanelItem.vue';
 import NoData from './NoData.vue';
+import { ModelsGroup, ModelsIdentity } from '@/models';
 
 const selectedMembers = ref<string[]>([])
 

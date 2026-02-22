@@ -1,7 +1,7 @@
 import Papa from "papaparse";
 import { getZipFile } from "./FileService";
 import { loadIdentitiesFromCache } from "./IdentityService";
-import { ModelsContact, ModelsIdentity } from "@/generated/api";
+import { ModelsContact } from "@/models";
 
 const USER_MESSAGE_PATH = "message_";
 

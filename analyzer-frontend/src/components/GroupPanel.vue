@@ -8,9 +8,9 @@
 </template>
 
 <script setup lang="ts">
+import { ModelsGroup } from '@/models/ModelsGroup';
 import PanelItem from './PanelItem.vue';
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
-import { ModelsGroup } from '@/generated/api';
 import { PropType, ref } from 'vue'
 
 defineProps({
@@ -22,7 +22,7 @@ const selectedGroupKey = ref<string | null>(null)
 
 const emit = defineEmits(['groupSelected'])
 
-function handleItemClick(groupKey) {
+function handleItemClick(groupKey: string) {
   selectedGroupKey.value = groupKey
   emit('groupSelected', groupKey)
 }

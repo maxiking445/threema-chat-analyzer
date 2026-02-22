@@ -1,9 +1,8 @@
 // services/group-service.ts
-import { ModelsGroup, ModelsGroupMember } from "@/generated/api";
 import { getZipFile, listFiles } from "./FileService"; 
 import Papa from "papaparse"; 
-import { toast } from "vue3-toastify";
 import { loadIdentityByUserID } from "./IdentityService";
+import { ModelsGroup, ModelsGroupMember } from "@/models";
 
 interface GroupMessageRow {
   groupUID: string;

@@ -34,7 +34,7 @@ onMounted(async () => {
 
         addBatch();
         const timer = setInterval(addBatch, intervalTime);
-    } catch (error) {
+    } catch (error: any) {
         toast.error('Error during loading wordCloud.', error);
     }
 });

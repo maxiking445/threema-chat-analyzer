@@ -16,14 +16,14 @@
 </template>
 
 <script setup lang="ts">
-import { ModelsGroup } from '@/generated/api';
 import GroupPanel from './GroupPanel.vue';
 import GroupSelect from './GroupSelect.vue';
 import { onMounted, ref } from 'vue'
 import GroupTimeline from './GroupTimeline.vue';
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
-import { loadGroups } from "@/service/ApiService";
 import { useAppLoading } from '@/composables/useAppLoading';
+import { dataCache } from "@/service/DataLoadService";
+import { ModelsGroup } from '@/models';
 
 
 const selectedGroup = ref<ModelsGroup>();
@@ -33,11 +33,14 @@ const selectedUserIds = ref<Set<string>>(new Set());
 const loadingDiv = ref(null)
 const $loading = useAppLoading();
 
-const handleGroupSelected = (groupKey) => {
+const handleGroupSelected = (groupKey: any) => {
     selectedGroup.value = undefined;
-    var selected: ModelsGroup = groups.value.find(group => group.groupUid === groupKey);
+    const selected: ModelsGroup | undefined = groups.value.find(group => group.groupUid === groupKey);
+    
+    if (!selected) return;
+    
     selected.groupMember.sort((a, b) => b.messageCount - a.messageCount);
-    selectedGroup.value = selected
+    selectedGroup.value = selected;
 }
 
 function onSelectedMembersChanged(newSelection: Array<string>) {
@@ -48,7 +51,7 @@ onMounted(async () => {
     const loader = $loading.show({
         container: loadingDiv.value ? loadingDiv.value : undefined,
     })
-    loadGroups().then((response) => {
+    dataCache.loadGroups().then((response) => {
         groups.value = response;
         loader.hide()
     });

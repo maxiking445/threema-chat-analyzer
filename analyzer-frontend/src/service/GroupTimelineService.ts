@@ -1,7 +1,8 @@
 import Papa from "papaparse";
 import { getZipFile } from "./FileService";
 import { loadIdentityByUserID } from "./IdentityService";
-import { ModelsGroupTimeline, ModelsDayCount } from "@/generated/api";
+import { ModelsGroupTimeline } from "@/models";
+import { ModelsDayCount } from "@/models/ModelsDayCount";
 
 
 export async function getGroupTimeline(group: string): Promise<ModelsGroupTimeline[]> {

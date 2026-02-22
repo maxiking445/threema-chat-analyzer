@@ -31,7 +31,6 @@
     "vuewordcloud": "^19.0.0"
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.29.0",
     "@tauri-apps/cli": "^2.10.0",
     "@vitejs/plugin-vue": "^6.0.4",
     "vite": "^7.3.1",

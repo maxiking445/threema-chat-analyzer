@@ -1,17 +1,3 @@
-import {
-  AvatarIdGetRequest,
-  AvatarIdGetTypeEnum,
-  Configuration,
-  DefaultApi,
-  UploadApi,
-} from "@/generated/api";
-import {
-  ModelsWordCount,
-  ModelsGroupTimeline,
-  ModelsContact,
-  ModelsContactTimeline,
-  ModelsGroup,
-} from "@/generated/api/models";
 import { toast } from "vue3-toastify";
 import * as groupService from "./GroupService";
 import * as AvatarService from "./AvatarService";
@@ -20,12 +6,9 @@ import * as ContactService from "./ContactService";
 import * as FileService from "./FileService";
 import * as GroupTimelineService from "./GroupTimelineService";
 import * as ContactTimelineService from "./ContactTimelineService";
-const configuration = new Configuration({
-  basePath: "/api",
-});
-
-const defaultApi = new DefaultApi(configuration);
-const uploadApi = new UploadApi(configuration);
+import { AvatarIdGetTypeEnum } from "../models/AvatarIdGetTypeEnum";
+import { ModelsContactTimeline } from "@/models/ModelsContactTimeline";
+import { ModelsContact, ModelsGroup, ModelsGroupTimeline, ModelsWordCount } from "@/models";
 
 export async function loadGroupTimeline(
   groupName: string,
@@ -80,7 +63,7 @@ export async function loadAvatar(
   } catch (err) {
     toast.error(`Failed to load avatar ${imageID}`);
     console.error(err);
-    throw err; // Re-throw to maintain original behavior
+    throw err;
   }
 }
 
@@ -105,6 +88,6 @@ export async function uploadZip(
   } catch (err) {
     toast.error("Failed to upload ZIP file");
     console.error(err);
-    throw err; // Re-throw to maintain original behavior
+    throw err;
   }
 }

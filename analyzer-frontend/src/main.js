@@ -27,7 +27,7 @@ createApp(App)
     theme: "colored",
     pauseOnHover: true,
   })
-  .use(VueWordCloud)
   .use(VueApexCharts)
+  .component("VueWordCloud", VueWordCloud)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount("#app");

@@ -1,7 +1,8 @@
 import Papa from "papaparse";
 import { getZipFile } from "./FileService";
 import { loadIdentityByUserUUID } from "./IdentityService";
-import { ModelsContactTimeline, ModelsDayCount } from "@/generated/api";
+import { ModelsContactTimeline } from "@/models/ModelsContactTimeline";
+import { ModelsDayCount } from "@/models/ModelsDayCount";
 
 interface ContactMessageRow {
   identity: string;
