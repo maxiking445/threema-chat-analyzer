@@ -67,7 +67,7 @@ const onDragLeave = () => { isActive.value = false }
 const onUpload = () => {
   uploadZip(selectedFile.value, password.value).then(() => {
     toast.success('Upload successful')
-    router.push('/view')
+    router.push('/init')
   }).catch((error) => {
     if (error?.response) {
       error.response.text().then((t) => toast.error(t || 'Upload failed'))

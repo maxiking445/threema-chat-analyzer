@@ -5,7 +5,8 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import Timeline from './Timeline.vue';
-import { loadContactTimeline } from "@/service/ApiService";
+import { dataCache } from "@/service/DataLoadService";
+
 import { ModelsContactTimeline } from '@/generated/api';
 
 const props = defineProps<{
@@ -34,7 +35,7 @@ async function loadTimeline() {
     await Promise.all(
         props.users.map(async (userID) => {
             if (userID === "You") return
-            const response = await loadContactTimeline(userID)
+            const response = await dataCache.getContactTimeline(userID)
             collected.push(...response)
         })
     )

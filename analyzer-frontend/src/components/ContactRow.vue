@@ -16,7 +16,7 @@ import { onMounted, ref } from 'vue'
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import ContactPanel from './ContactPanel.vue';
 import ContactTimeline from './ContactTimeline.vue';
-import { loadContacts } from "@/service/ApiService";
+import { dataCache } from "@/service/DataLoadService";
 import { useAppLoading } from '@/composables/useAppLoading'
 
 const selectedContacts = ref<ModelsContact[]>();
@@ -35,7 +35,7 @@ onMounted(async () => {
     const loader = $loading.show({
         container: loadingDiv.value ? loadingDiv.value : undefined,
     })
-    loadContacts().then((response) => {
+    dataCache.loadContacts().then((response) => {
         loader.hide()
         contacts.value = response;
         contacts.value = contacts.value.sort((a, b) => (b.totalMessageCount || 0) - (a.totalMessageCount || 0));

@@ -22,8 +22,8 @@ import GroupSelect from './GroupSelect.vue';
 import { onMounted, ref } from 'vue'
 import GroupTimeline from './GroupTimeline.vue';
 import ViewPanelTemplate from './ViewPanelTemplate.vue';
-import { loadGroups } from "@/service/ApiService";
 import { useAppLoading } from '@/composables/useAppLoading';
+import { dataCache } from "@/service/DataLoadService";
 
 
 const selectedGroup = ref<ModelsGroup>();
@@ -48,7 +48,7 @@ onMounted(async () => {
     const loader = $loading.show({
         container: loadingDiv.value ? loadingDiv.value : undefined,
     })
-    loadGroups().then((response) => {
+    dataCache.loadGroups().then((response) => {
         groups.value = response;
         loader.hide()
     });
