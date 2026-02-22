@@ -21,9 +21,17 @@ const routes = [
   },
 ]
 
+
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+router.beforeEach((to, from) => {
+  if (!from.name && to.path !== '/') {
+    return '/'
+  }
+  return true
 })
 
 export default router

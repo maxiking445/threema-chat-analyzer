@@ -1,6 +1,6 @@
 import Papa from "papaparse";
-import { ModelsWordCount } from "@/generated/api";
 import { listFiles, getZipFile } from "./FileService";
+import { ModelsWordCount } from "@/models";
 
 const wordRegexp = /[A-Za-z0-9ÄÖÜäöüß]+/g;
 const urlRegexp = /^(https?:\/\/|www\.)\S+$/;
