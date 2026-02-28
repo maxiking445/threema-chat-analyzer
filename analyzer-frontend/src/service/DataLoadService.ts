@@ -1,4 +1,3 @@
-
 import {
   loadGroups,
   loadGroupTimeline,
@@ -6,16 +5,22 @@ import {
   loadContactTimeline,
   loadAvatar,
   loadWordCloudData,
-} from "./ApiService"; 
+} from "./ApiService";
 import { AvatarIdGetTypeEnum } from "../models/AvatarIdGetTypeEnum";
-import { ModelsContact, ModelsGroup, ModelsGroupTimeline, ModelsWordCount } from "@/models";
+import {
+  ModelsContact,
+  ModelsGroup,
+  ModelsGroupTimeline,
+  ModelsWordCount,
+} from "@/models";
 import { ModelsContactTimeline } from "@/models/ModelsContactTimeline";
+import { t } from "vue-router/dist/index-DFCq6eJK.js";
 
 export interface LoadedData {
   groups: ModelsGroup[];
   groupTimelines: ModelsGroupTimeline[];
   contacts: ModelsContact[];
-  contactTimelines: ModelsContactTimeline[];
+  contactTimelines: ModelsContactTimeline[][];
   avatars: Map<string, Blob>;
   wordCloud: ModelsWordCount[];
 }
@@ -36,15 +41,15 @@ class DataCache {
     this._data.groups = await loadGroups();
   }
 
-public async loadGroupTimelinesOnly(): Promise<void> {
-  const groupIds = this._data.groups
-    .map((g) => g.groupUid || g.id)
-    .filter((id): id is string => !!id);
-  
-  this._data.groupTimelines = (
-    await Promise.all(groupIds.map((id) => loadGroupTimeline(id)))
-  ).flat();
-}
+  public async loadGroupTimelinesOnly(): Promise<void> {
+    const groupIds = this._data.groups
+      .map((g) => g.groupUid || g.id)
+      .filter((id): id is string => !!id);
+
+    this._data.groupTimelines = (
+      await Promise.all(groupIds.map((id) => loadGroupTimeline(id)))
+    ).flat();
+  }
 
   public async loadContactsOnly(): Promise<void> {
     console.info("DataCache: Loading contacts...");
@@ -55,10 +60,11 @@ public async loadGroupTimelinesOnly(): Promise<void> {
     const contactIds = this._data.contacts
       .map((c) => c.identity?.identityID)
       .filter((id): id is string => !!id);
-    
-    this._data.contactTimelines = (
-      await Promise.all(contactIds.map(loadContactTimeline))
-    ).flat();
+
+    var contactTimelines: ModelsContactTimeline[][] = await Promise.all(
+      contactIds.map(loadContactTimeline),
+    );
+    this._data.contactTimelines = contactTimelines;
   }
 
   public async loadAvatarsOnly(): Promise<void> {
@@ -100,13 +106,18 @@ public async loadGroupTimelinesOnly(): Promise<void> {
   }
 
   async getGroupTimeline(groupName: string): Promise<ModelsGroupTimeline[]> {
-    console.log(`DataCache: Fetching group timeline for "${groupName}" from cache...`);
+    console.log(
+      `DataCache: Fetching group timeline for "${groupName}" from cache...`,
+    );
     console.log("Available group timelines:", this._data.groupTimelines);
     return this._data.groupTimelines.filter((t) => t.group === groupName);
   }
 
   async getContactTimeline(userId: string): Promise<ModelsContactTimeline[]> {
-    return this._data.contactTimelines.filter((t) => t.identity?.identity === userId);
+    const contactsTimelines: ModelsContactTimeline[] | undefined = this._data.contactTimelines.find((list: ModelsContactTimeline[]) =>
+      list.some((timeline: ModelsContactTimeline) => timeline.identity.identity === userId),
+    );
+    return contactsTimelines || [];
   }
 
   async getWordCount(limit: number): Promise<ModelsWordCount[]> {
@@ -121,7 +132,7 @@ public async loadGroupTimelinesOnly(): Promise<void> {
     avatarType: AvatarIdGetTypeEnum,
     imageID: string,
   ): Promise<Blob | null> {
-    const key = `${avatarType === AvatarIdGetTypeEnum.Contact ? 'contact' : 'group'}:${imageID}`;
+    const key = `${avatarType === AvatarIdGetTypeEnum.Contact ? "contact" : "group"}:${imageID}`;
     return this._data.avatars.get(key) || null;
   }
 
