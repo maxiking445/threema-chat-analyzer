@@ -32,7 +32,7 @@
       <div class="password-row">
         <label class="password-label" for="zip-password">Password</label>
         <input id="zip-password" v-model="password" type="password" class="password-input"
-          placeholder="Enter ZIP password" />
+          placeholder="Enter ZIP password"  @keydown.enter="onUpload"/>
       </div>
       <div class="upload-button-wrapper">
         <button class="upload-button" :disabled="!selectedFile || !password" @click="onUpload">Analyze</button>
