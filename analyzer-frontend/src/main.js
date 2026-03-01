@@ -12,11 +12,14 @@ import {
   faArrowLeft,
   faTrash,
   faFileZipper,
+  faDownload,
+  faFilePdf,
+  faCode
 } from "@fortawesome/free-solid-svg-icons";
 import { LoadingPlugin } from "vue-loading-overlay";
 import "vue-loading-overlay/dist/css/index.css";
 
-library.add(faArrowLeft, faTrash, faFileZipper);
+library.add(faArrowLeft, faTrash, faFileZipper, faDownload, faFilePdf, faCode);
 
 createApp(App)
   .use(router)

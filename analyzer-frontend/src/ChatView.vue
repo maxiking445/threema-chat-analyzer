@@ -4,26 +4,22 @@
     <main class="chat-main">
       <div class="top-bar">
         <BackButton to="/view" />
-        <DropDown :contacts="contacts" :groups="groups" @selection="handleSelection" />
+        <div class="top-controls">
+          <DropDown :contacts="contacts" :groups="groups" @selection="handleSelection" />
+          <RoundButton icon="download" @click="downloadHtmlContent" title="Download HTML" />
+          <RoundButton icon="file-pdf" @click="downloadAsPdf" title="Download PDF" />
+        </div>
       </div>
 
-      <div class="chat-display-area">
+      <div class="chat-display-area" ref="chatArea">
         <template v-if="chats?.messages">
-            <div
-              v-for="(msg, index) in chats.messages"
-              :key="index"
-              :class="['message-row', msg.sender.identityID === 'You' ? 'row-self' : 'row-other']"
-            >
-              <ChatMessage
-                :message="msg.text"
-                :date="msg.date"
-                :identity="msg.sender"
-                :showName="showName"
-              />
-                </div>
-            </template>
-            <div v-else class="no-messages">No Messages</div>
+          <div v-for="(msg, index) in chats.messages" :key="index"
+            :class="['message-row', msg.sender.identityID === 'You' ? 'row-self' : 'row-other']">
+            <ChatMessage :message="msg.text" :date="msg.date" :identity="msg.sender" :showName="showName" />
           </div>
+        </template>
+        <div v-else class="no-messages">No Messages</div>
+      </div>
     </main>
   </div>
 </template>
@@ -40,6 +36,7 @@ import { ModelsGroup } from '@/models/ModelsGroup'
 import { toast } from 'vue3-toastify'
 import { ModelsChat } from './models/ModelsChat'
 import { useAppLoading } from './composables/useAppLoading'
+import RoundButton from './components/button/RoundButton.vue'
 
 const contacts = ref<ModelsContact[]>([])
 const groups = ref<ModelsGroup[]>([])
@@ -48,6 +45,7 @@ const selectedItem = ref<string>('')
 const isLoading = ref(false)
 const showName = ref(false)
 const loadingDiv = ref(null)
+const chatArea = ref<HTMLElement | null>(null)
 const $loading = useAppLoading();
 const loader = ref<ReturnType<typeof $loading.show> | null>(null)
 
@@ -97,7 +95,7 @@ async function handleSelection(value: ModelsContact | ModelsGroup) {
       .map((m, idx) => ({ ...m, id: `${idx}-${id}-${m.date || ''}` }));
     chats.value.messages.push(...first);
   }
- 
+
 
   for (let i = BATCH_SIZE; i < result.messages.length; i += BATCH_SIZE) {
     const slice = result.messages
@@ -107,8 +105,41 @@ async function handleSelection(value: ModelsContact | ModelsGroup) {
     await new Promise<void>(r => requestAnimationFrame(() => r()));
   }
 
-   loader.value?.hide();
+  loader.value?.hide();
 }
+
+function downloadHtmlContent() {
+  if (!chatArea.value) return
+  const content = chatArea.value.innerHTML
+  const head = document.head.innerHTML
+  const full = `<!doctype html><html><head>${head}</head><body>${content}</body></html>`
+  const blob = new Blob([full], { type: 'text/html' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${selectedItem.value || 'chat'}.html`
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  URL.revokeObjectURL(url)
+}
+
+function downloadAsPdf() {
+  if (!chatArea.value) return
+  const content = chatArea.value.innerHTML
+  const head = document.head.innerHTML
+  const win = window.open('', '_blank')
+  if (!win) return
+  win.document.open()
+  win.document.write(`<!doctype html><html><head>${head}</head><body>${content}</body></html>`)
+  win.document.close()
+  setTimeout(() => {
+    win.focus()
+    win.print()
+  }, 300)
+}
+
+
 
 </script>
 
@@ -134,6 +165,13 @@ async function handleSelection(value: ModelsContact | ModelsGroup) {
   padding: 20px;
   border-bottom: 1px solid #20242b;
 }
+
+.top-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
 
 
 
