@@ -6,9 +6,16 @@ import * as ContactService from "./ContactService";
 import * as FileService from "./FileService";
 import * as GroupTimelineService from "./GroupTimelineService";
 import * as ContactTimelineService from "./ContactTimelineService";
+import * as ChatMessageService from "./ChatMessageService";
+
 import { AvatarIdGetTypeEnum } from "../models/AvatarIdGetTypeEnum";
 import { ModelsContactTimeline } from "@/models/ModelsContactTimeline";
-import { ModelsContact, ModelsGroup, ModelsGroupTimeline, ModelsWordCount } from "@/models";
+
+import { ModelsChat } from "@/models/ModelsChat";
+import { ModelsContact } from "@/models/ModelsContact";
+import { ModelsGroup } from "@/models/ModelsGroup";
+import { ModelsGroupTimeline } from "@/models/ModelsGroupTimeline";
+import { ModelsWordCount } from "@/models/ModelsWordCount";
 
 export async function loadGroupTimeline(
   groupName: string,
@@ -67,7 +74,7 @@ export async function loadAvatar(
   }
 }
 
-export async function loadGroups(): Promise<Array<ModelsGroup>> {
+export async function loadGroups(): Promise<ModelsGroup[]> {
   try {
     var result = await groupService.loadGroupsWithMessageCounts("groups.csv");
     console.info(result);
@@ -77,6 +84,10 @@ export async function loadGroups(): Promise<Array<ModelsGroup>> {
     console.error(err);
     return [];
   }
+}
+
+export async function loadAllChats(): Promise<ModelsChat[]> {
+  return await ChatMessageService.loadAllChats();
 }
 
 export async function uploadZip(

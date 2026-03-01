@@ -60,8 +60,8 @@ import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import MessageCountLabel from './MessageCountLabel.vue';
 import NoData from './NoData.vue';
 import { useAppLoading } from '@/composables/useAppLoading';
-import { ModelsGroupTimeline } from '@/models';
 import { ModelsDayCount } from '@/models/ModelsDayCount';
+import { ModelsGroupTimeline } from '@/models/ModelsGroupTimeline';
 
 const props = defineProps<{
     title: string

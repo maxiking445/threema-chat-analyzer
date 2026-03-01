@@ -31,6 +31,9 @@ onMounted(async () => {
     }).then(() => {
         loadingText.value = "Loading Avatars..."
         return dataCache.loadAvatarsOnly()
+    }).then(() => {
+        loadingText.value = "Loading All Chats..."
+        return dataCache.loadAllChats()
     }).finally(() => {
         showLoading.value = false;
         router.push('/view')

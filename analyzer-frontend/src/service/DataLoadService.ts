@@ -5,16 +5,16 @@ import {
   loadContactTimeline,
   loadAvatar,
   loadWordCloudData,
+  loadAllChats,
 } from "./ApiService";
 import { AvatarIdGetTypeEnum } from "../models/AvatarIdGetTypeEnum";
-import {
-  ModelsContact,
-  ModelsGroup,
-  ModelsGroupTimeline,
-  ModelsWordCount,
-} from "@/models";
 import { ModelsContactTimeline } from "@/models/ModelsContactTimeline";
 import { t } from "vue-router/dist/index-DFCq6eJK.js";
+import { ModelsWordCount } from "@/models/ModelsWordCount";
+import { ModelsContact } from "@/models/ModelsContact";
+import { ModelsGroup } from "@/models/ModelsGroup";
+import { ModelsGroupTimeline } from "@/models/ModelsGroupTimeline";
+import { ModelsChat } from "@/models/ModelsChat";
 
 export interface LoadedData {
   groups: ModelsGroup[];
@@ -23,6 +23,7 @@ export interface LoadedData {
   contactTimelines: ModelsContactTimeline[][];
   avatars: Map<string, Blob>;
   wordCloud: ModelsWordCount[];
+  chat: ModelsChat[];
 }
 
 class DataCache {
@@ -34,7 +35,13 @@ class DataCache {
     contactTimelines: [],
     avatars: new Map(),
     wordCloud: [],
+    chat: [],
   };
+
+  public async loadAllChats(): Promise<void> {
+    console.info("DataCache: Loading all chats...");
+    this._data.chat = await loadAllChats();
+  }
 
   public async loadGroupsOnly(): Promise<void> {
     console.info("DataCache: Loading groups...");
@@ -114,9 +121,13 @@ class DataCache {
   }
 
   async getContactTimeline(userId: string): Promise<ModelsContactTimeline[]> {
-    const contactsTimelines: ModelsContactTimeline[] | undefined = this._data.contactTimelines.find((list: ModelsContactTimeline[]) =>
-      list.some((timeline: ModelsContactTimeline) => timeline.identity.identity === userId),
-    );
+    const contactsTimelines: ModelsContactTimeline[] | undefined =
+      this._data.contactTimelines.find((list: ModelsContactTimeline[]) =>
+        list.some(
+          (timeline: ModelsContactTimeline) =>
+            timeline.identity.identity === userId,
+        ),
+      );
     return contactsTimelines || [];
   }
 
@@ -126,6 +137,10 @@ class DataCache {
 
   async loadContacts(): Promise<ModelsContact[]> {
     return this._data.contacts;
+  }
+
+  async loadChats(userId: string): Promise<ModelsChat> {
+    return this._data.chat.filter((chat) => chat.id === userId)[0];
   }
 
   async getAvatar(
