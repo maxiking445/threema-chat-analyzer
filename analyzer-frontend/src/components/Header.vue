@@ -2,8 +2,8 @@
     <div class="app">
         <header class="app-header">
             <div class="header-left">
-                <img alt="Vue logo" class="logo" src="../assets/logo.svg" width="32" height="32" />
-                <h1 class="title">Threema Chat Analyzer</h1>
+                <img alt="Vue logo" class="logo" src="../assets/logo.svg" width="32" height="32"  @click="navigateToHome()"/>
+                <h1 class="title" @click="navigateToHome()">Threema Chat Analyzer</h1>
             </div>
             <div class="header-right">
                 <div class="additional-link">
@@ -24,7 +24,9 @@ import { ref } from 'vue'
 const appVersion = ref(import.meta.env.PACKAGE_VERSION)
 
 
-
+function navigateToHome() {
+    window.location.href = "/";
+}
 
 </script>
 <style scoped>
@@ -58,6 +60,7 @@ const appVersion = ref(import.meta.env.PACKAGE_VERSION)
 
 .logo {
     display: block;
+    cursor: pointer;
 }
 
 .title {
@@ -65,6 +68,7 @@ const appVersion = ref(import.meta.env.PACKAGE_VERSION)
     font-size: 1.1rem;
     font-weight: 600;
     color: #f9fafb;
+    cursor: pointer;
 }
 
 .github-link {
