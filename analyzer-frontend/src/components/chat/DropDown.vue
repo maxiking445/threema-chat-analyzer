@@ -1,6 +1,6 @@
 <template>
   <div class="dropdown-wrapper">
-    <label for="chat-dropdown">Select:</label>
+    <label for="chat-dropdown"></label>
     <select
       id="chat-dropdown"
       v-model="selectedValue"
