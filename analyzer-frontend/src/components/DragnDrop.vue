@@ -32,7 +32,7 @@
       <div class="password-row">
         <label class="password-label" for="zip-password">Password</label>
         <input id="zip-password" v-model="password" type="password" class="password-input"
-          placeholder="Enter ZIP password" />
+          placeholder="Enter ZIP password"  @keydown.enter="onUpload"/>
       </div>
       <div class="upload-button-wrapper">
         <button class="upload-button" :disabled="!selectedFile || !password" @click="onUpload">Analyze</button>
@@ -67,11 +67,11 @@ const onDragLeave = () => { isActive.value = false }
 
 const onUpload = () => {
   uploadZip(selectedFile.value, password.value).then(() => {
-    toast.success('Upload successful')
     router.push('/init')
   }).catch((error) => {
     if (error?.response) {
-      error.response.text().then((t) => toast.error(t || 'Upload failed'))
+      toast.error('Analyse ZIP failed: ' + error.response.statusText)
+      error.response.text().then((t) => toast.error(t || 'Analyse ZIP failed'))
     }
   })
 }

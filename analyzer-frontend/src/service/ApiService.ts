@@ -97,7 +97,6 @@ export async function uploadZip(
   try {
     await FileService.handleZipUpload(selectedFile, password);
   } catch (err) {
-    toast.error("Failed to upload ZIP file");
     console.error(err);
     throw err;
   }

@@ -19,7 +19,7 @@ function goToChat() {
         <main class="app-main">
             <div class="contentWrapper">
                 <div class="header-row">
-                    <BackButton to="/view"></BackButton>
+                    <BackButton to="/"></BackButton>
                     <button class="chat-nav" @click="goToChat">Chat</button>
                 </div>
                 <GroupRow></GroupRow>
