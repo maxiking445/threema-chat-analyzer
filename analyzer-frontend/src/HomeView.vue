@@ -1,6 +1,5 @@
 <script setup>
 import DragnDrop from "./components/DragnDrop.vue";
-import HowTo from "./components/HowTo.vue";
 import Header from "./components/Header.vue";
 </script>
 
@@ -10,8 +9,6 @@ import Header from "./components/Header.vue";
     <main class="app-main">
       <div class="content">
         <DragnDrop />
-        <HowTo />
-
       </div>
     </main>
   </div>
