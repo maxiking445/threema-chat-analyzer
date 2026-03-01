@@ -20,10 +20,10 @@
                 :identity="msg.sender"
                 :showName="showName"
               />
-            </div>
-        </template>
-        <div v-else class="no-messages">No Messages</div>
-      </div>
+                </div>
+            </template>
+            <div v-else class="no-messages">No Messages</div>
+          </div>
     </main>
   </div>
 </template>
@@ -39,6 +39,7 @@ import { ModelsContact } from '@/models/ModelsContact'
 import { ModelsGroup } from '@/models/ModelsGroup'
 import { toast } from 'vue3-toastify'
 import { ModelsChat } from './models/ModelsChat'
+import { useAppLoading } from './composables/useAppLoading'
 
 const contacts = ref<ModelsContact[]>([])
 const groups = ref<ModelsGroup[]>([])
@@ -46,6 +47,10 @@ const chats = ref<ModelsChat>()
 const selectedItem = ref<string>('')
 const isLoading = ref(false)
 const showName = ref(false)
+const loadingDiv = ref(null)
+const $loading = useAppLoading();
+const loader = ref<ReturnType<typeof $loading.show> | null>(null)
+
 onMounted(async () => {
   await loadData()
 })
@@ -68,6 +73,10 @@ async function loadData() {
 }
 
 async function handleSelection(value: ModelsContact | ModelsGroup) {
+  loader.value = $loading.show({
+    container: loadingDiv.value,
+    isFullPage: false,
+  })
   const isContact: boolean = 'identity' in value;
   if (isContact) {
     showName.value = false;
@@ -78,7 +87,27 @@ async function handleSelection(value: ModelsContact | ModelsGroup) {
   selectedItem.value = id
   console.log('Selected:', value)
   const result = await dataCache.loadChats(id);
-  chats.value = result;
+  chats.value = { id, messages: [] } as ModelsChat;
+  const BATCH_SIZE = 500;
+
+  // append first chunk and reveal UI quickly
+  if (result.messages.length > 0) {
+    const first = result.messages
+      .slice(0, BATCH_SIZE)
+      .map((m, idx) => ({ ...m, id: `${idx}-${id}-${m.date || ''}` }));
+    chats.value.messages.push(...first);
+  }
+ 
+
+  for (let i = BATCH_SIZE; i < result.messages.length; i += BATCH_SIZE) {
+    const slice = result.messages
+      .slice(i, i + BATCH_SIZE)
+      .map((m, idx) => ({ ...m, id: `${i + idx}-${id}-${m.date || ''}` }));
+    chats.value.messages.push(...slice);
+    await new Promise<void>(r => requestAnimationFrame(() => r()));
+  }
+
+   loader.value?.hide();
 }
 
 </script>
@@ -111,7 +140,7 @@ async function handleSelection(value: ModelsContact | ModelsGroup) {
 .chat-display-area {
   flex: 1;
   padding: 20px;
-  overflow-y: auto;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -125,18 +154,26 @@ async function handleSelection(value: ModelsContact | ModelsGroup) {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
+.scroller {
+  height: 100%;
+  width: 100%;
+}
+
 .no-messages {
   color: #9ca3af;
   text-align: center;
   margin-top: 20px;
 }
+
 .message-row {
   display: flex;
   width: 100%;
 }
+
 .message-row.row-self {
   justify-content: flex-end;
 }
+
 .message-row.row-other {
   justify-content: flex-start;
 }
