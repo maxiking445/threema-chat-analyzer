@@ -1,20 +1,35 @@
 <template>
-  <div :class="['message-bubble', isSelf ? 'self' : 'other']">
-    <div class="text">{{ message }}</div>
-    <div class="timestamp">{{ formattedDate }}</div>
+  <div :class="['message', isSelf ? 'self' : 'other']">
+    <div :class="['message-bubble', isSelf ? 'self' : 'other']">
+      <div v-if="showName && senderName" class="sender">{{ senderName }}</div>
+      <div class="text">{{ message }}</div>
+      <div class="timestamp">{{ formattedDate }}</div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ModelsIdentity } from '@/models/ModelsIdentity';
 import { computed } from 'vue'
 
 const props = defineProps<{
   message: string
   date: string | Date
-  self?: boolean
+  identity?: ModelsIdentity
+  showName?: boolean
 }>()
 
-const isSelf = computed(() => props.self === true)
+const isSelf = computed(() => (props.identity?.identityID === 'You') === true)
+
+const senderName = computed(() => {
+  if (!props.identity) return '';
+  return (
+    props.identity.firstName ||
+    props.identity.identity ||
+    props.identity.identityID ||
+    ''
+  );
+});
 
 const formattedDate = computed(() => {
   const d = typeof props.date === 'string' ? new Date(props.date) : props.date
@@ -29,8 +44,29 @@ const formattedDate = computed(() => {
 </script>
 
 <style scoped>
+.message {
+  display: flex;
+  flex-direction: column;
+  margin: 6px 0;
+}
+
+.message.self {
+  align-items: flex-end;
+}
+
+.message.other {
+  align-items: flex-start;
+}
+
+.sender {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-bottom: 4px;
+  padding-right: 6px;
+}
+
 .message-bubble {
-  max-width: 70%;
+  max-width: 100%;
   padding: 8px 12px;
   margin: 6px 0;
   border-radius: 12px;
@@ -54,7 +90,9 @@ const formattedDate = computed(() => {
 }
 
 .text {
-  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 .timestamp {

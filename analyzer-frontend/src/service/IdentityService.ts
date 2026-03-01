@@ -25,7 +25,6 @@ export async function loadIdentityByUserID(
     return identityCache.get(userID)!;
   }
 
-  // Vollständige Liste laden und suchen
   const identities = await loadIdentitiesFromCache();
   for (const ident of identities) {
     if (ident.identity === userID) {

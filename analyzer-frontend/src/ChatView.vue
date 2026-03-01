@@ -17,7 +17,8 @@
               <ChatMessage
                 :message="msg.text"
                 :date="msg.date"
-                :self="msg.sender.identityID === 'You'"
+                :identity="msg.sender"
+                :showName="showName"
               />
             </div>
         </template>
@@ -44,7 +45,7 @@ const groups = ref<ModelsGroup[]>([])
 const chats = ref<ModelsChat>()
 const selectedItem = ref<string>('')
 const isLoading = ref(false)
-
+const showName = ref(false)
 onMounted(async () => {
   await loadData()
 })
@@ -67,6 +68,12 @@ async function loadData() {
 }
 
 async function handleSelection(value: ModelsContact | ModelsGroup) {
+  const isContact: boolean = 'identity' in value;
+  if (isContact) {
+    showName.value = false;
+  } else {
+    showName.value = true;
+  }
   const id = 'identity' in value ? value.identity.identityID : value.groupUid
   selectedItem.value = id
   console.log('Selected:', value)
