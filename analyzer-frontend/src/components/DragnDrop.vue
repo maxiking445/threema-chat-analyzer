@@ -1,44 +1,79 @@
 <template>
-  <div class="page">
-    <ViewPanelTemplate title="Saved Backups">
-      <div v-if="savedZips.length === 0" class="empty-state">
-        No saved backups yet.
-      </div>
-      <ZipItem v-for="zip in savedZips" :key="zip.name" :name="zip.name"
-        :selected="selectedFile && selectedFile.name === zip.name" @click="selectSavedZip(zip)"
-        @delete="deleteZip(zip.name)" />
-    </ViewPanelTemplate>
-    <ViewPanelTemplate title="Analyse Backup">
-      <p class="subtitle">
-        Drop your ZIP here or select it via data browser. It will only be computed locally.
-      </p>
+  <div class="upload-flow">
+    <!-- Dropzone -->
+    <label
+      class="dropzone"
+      :class="{ 'dropzone--active': isActive, 'dropzone--has-file': selectedFile }"
+      @dragenter.prevent="onDragEnter"
+      @dragover.prevent="onDragEnter"
+      @dragleave.prevent="onDragLeave"
+      @drop.prevent="onDrop"
+    >
+      <input
+        type="file"
+        class="file-input"
+        accept=".zip,application/zip"
+        @change="onFileSelect"
+      />
 
-      <label class="dropzone" :class="{ 'dropzone--active': isActive }" @dragenter.prevent="onDragEnter"
-        @dragover.prevent="onDragEnter" @dragleave.prevent="onDragLeave" @drop.prevent="onDrop">
-        <input type="file" class="file-input" accept=".zip,application/zip" @change="onFileSelect" />
-
-        <div class="dropzone-inner">
-          <div class="icon">⬆</div>
-          <div class="drop-text">
-            <span v-if="isActive">Let it go to upload...</span>
-            <span v-else>Drop ZIP here</span>
-          </div>
-
-          <div v-if="selectedFile" class="file-info">
-            <span class="file-name">{{ selectedFile.name }}</span>
-          </div>
+      <div class="dropzone-inner">
+        <div class="dropzone-icon" :class="{ 'dropzone-icon--active': isActive }">
+          <font-awesome-icon :icon="selectedFile ? 'check' : 'cloud-arrow-up'" />
         </div>
-      </label>
-      <div class="password-row">
-        <label class="password-label" for="zip-password">Password</label>
-        <input id="zip-password" v-model="password" type="password" class="password-input"
-          placeholder="Enter ZIP password"  @keydown.enter="onUpload"/>
-      </div>
-      <div class="upload-button-wrapper">
-        <button class="upload-button" :disabled="!selectedFile || !password" @click="onUpload">Analyze</button>
-      </div>
-    </ViewPanelTemplate>
 
+        <template v-if="selectedFile">
+          <p class="dropzone-title">{{ selectedFile.name }}</p>
+          <p class="dropzone-hint">Click or drop to replace</p>
+        </template>
+        <template v-else-if="isActive">
+          <p class="dropzone-title">Release to upload</p>
+        </template>
+        <template v-else>
+          <p class="dropzone-title">Drop your Threema backup here</p>
+          <p class="dropzone-hint">or click to browse files</p>
+        </template>
+      </div>
+    </label>
+
+    <!-- Password + Analyze -->
+    <div class="action-row">
+      <div class="password-field">
+        <font-awesome-icon icon="lock" class="field-icon" />
+        <input
+          v-model="password"
+          type="password"
+          class="password-input"
+          placeholder="Backup password"
+          @keydown.enter="onUpload"
+        />
+      </div>
+      <button
+        class="analyze-btn"
+        :disabled="!selectedFile || !password"
+        @click="onUpload"
+      >
+        Analyze
+      </button>
+    </div>
+
+    <p class="privacy-note">
+      All data is processed locally in your browser.
+    </p>
+
+    <!-- Saved Backups -->
+    <div v-if="savedZips.length > 0" class="saved-section">
+      <h3 class="saved-title">Saved Backups</h3>
+      <div class="saved-list">
+        <ZipItem
+          v-for="zip in savedZips"
+          :key="zip.name"
+          :name="zip.name"
+          :selected="selectedFile && selectedFile.name === zip.name"
+          @click="selectSavedZip(zip)"
+          @delete="deleteZip(zip.name)"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -46,10 +81,9 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
-import ViewPanelTemplate from './ViewPanelTemplate.vue';
 import { uploadZip } from '@/service/ApiService'
 import { getSavedZips, saveZipToStorage, deleteZipFromStorage } from '@/service/FileService'
-import ZipItem from './ZipItem.vue';
+import ZipItem from './ZipItem.vue'
 
 const router = useRouter()
 
@@ -66,6 +100,7 @@ const onDragEnter = () => { isActive.value = true }
 const onDragLeave = () => { isActive.value = false }
 
 const onUpload = () => {
+  if (!selectedFile.value || !password.value) return
   uploadZip(selectedFile.value, password.value).then(() => {
     router.push('/init')
   }).catch((error) => {
@@ -75,10 +110,15 @@ const onUpload = () => {
     }
   })
 }
+
 const deleteZip = async (zip) => {
   await deleteZipFromStorage(zip)
   savedZips.value = savedZips.value.filter(z => z.name !== zip)
+  if (selectedFile.value?.name === zip) {
+    selectedFile.value = null
+  }
 }
+
 const handleFiles = async (files) => {
   const file = files[0]
   if (!file) return
@@ -88,7 +128,7 @@ const handleFiles = async (files) => {
     await saveZipToStorage(file)
     savedZips.value = await getSavedZips()
   } else {
-    alert('Please select your Backup ZIP.')
+    toast.error('Please select a valid ZIP file.')
   }
 }
 
@@ -111,34 +151,38 @@ const onFileSelect = (e) => {
 </script>
 
 <style scoped>
-.page {
+.upload-flow {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.subtitle {
-  margin: 0 0 1.25rem;
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-}
-
+/* Dropzone */
 .dropzone {
   position: relative;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 12px;
-  border: 1px dashed var(--color-border-dropzone);
-  background: var(--color-bg-input);
-  padding: 1.5rem 1.25rem;
+  border: 2px dashed var(--color-border-dropzone);
+  background: var(--color-bg-surface);
+  padding: 2.5rem 1.5rem;
   cursor: pointer;
-  transition:
-    border-color 0.15s ease,
-    background-color 0.15s ease;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.dropzone:hover {
+  border-color: var(--color-text-secondary);
 }
 
 .dropzone--active {
   border-color: var(--color-primary);
   background: var(--color-primary-muted);
+}
+
+.dropzone--has-file {
+  border-style: solid;
+  border-color: var(--color-primary);
 }
 
 .file-input {
@@ -151,108 +195,148 @@ const onFileSelect = (e) => {
 .dropzone-inner {
   text-align: center;
   pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.icon {
-  width: 44px;
-  height: 44px;
-  margin: 0 auto 0.5rem;
-  border-radius: 999px;
+.dropzone-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--color-bg-elevated);
-  color: var(--color-primary);
-  font-size: 1.4rem;
+  color: var(--color-text-secondary);
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+  transition: color 0.2s, background 0.2s;
 }
 
-.drop-text {
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.file-info {
-  margin-top: 0.9rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--color-border);
-  font-size: 0.85rem;
-  text-align: left;
-}
-
-.file-name {
-  display: inline-block;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.dropzone:hover .dropzone-icon {
   color: var(--color-text-primary);
 }
 
-.password-row {
-  margin-top: 1.25rem;
+.dropzone--active .dropzone-icon,
+.dropzone-icon--active {
+  background: var(--color-primary-muted);
+  color: var(--color-primary);
+}
+
+.dropzone--has-file .dropzone-icon {
+  background: var(--color-primary-muted);
+  color: var(--color-primary);
+}
+
+.dropzone-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.dropzone-hint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Action Row */
+.action-row {
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.5rem;
+  align-items: stretch;
 }
 
-.password-label {
-  font-size: 0.85rem;
-  color: var(--color-text-secondary);
-}
-
-.password-input {
+.password-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 0.75rem;
   border-radius: 8px;
   border: 1px solid var(--color-border-input);
-  background: var(--color-bg-base);
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: var(--color-text-primary);
-  padding: 0.45rem 0.6rem;
-  outline: none;
+  background: var(--color-bg-surface);
+  transition: border-color 0.15s;
 }
 
-.password-input:focus {
+.password-field:focus-within {
   border-color: var(--color-primary);
 }
 
-.upload-button-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 1.25rem;
+.field-icon {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  flex-shrink: 0;
 }
 
-.upload-button {
-  width: 50%;
+.password-input {
+  flex: 1;
   border: none;
-  border-radius: 999px;
-  padding: 0.55rem 0.9rem;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  padding: 0.65rem 0;
+  outline: none;
+}
+
+.password-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.analyze-btn {
+  padding: 0 1.5rem;
+  border: none;
+  border-radius: 8px;
   background: var(--color-primary);
   color: var(--color-text-on-primary);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition:
-    background-color 0.15s ease,
-    transform 0.1s ease,
-    box-shadow 0.15s ease,
-    opacity 0.15s ease;
-  box-shadow: var(--shadow-btn);
+  white-space: nowrap;
+  transition: background 0.15s, opacity 0.15s;
 }
 
-.upload-button:hover {
+.analyze-btn:hover:not(:disabled) {
   background: var(--color-primary-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-btn-hover);
 }
 
-.upload-button:active {
-  transform: translateY(0);
-  box-shadow: var(--shadow-btn);
+.analyze-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
-.upload-button:disabled {
-  opacity: 0.5;
-  cursor: default;
-  box-shadow: none;
+/* Privacy note */
+.privacy-note {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 0;
+}
+
+/* Saved Backups */
+.saved-section {
+  margin-top: 0.5rem;
+  border-radius: 12px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.saved-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  padding: 0.75rem 1rem 0.25rem;
+  margin: 0;
+}
+
+.saved-list {
+  max-height: 240px;
+  overflow-y: auto;
 }
 </style>
