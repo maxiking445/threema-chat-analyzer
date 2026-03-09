@@ -1,33 +1,27 @@
 <template>
   <div class="chat-container">
-    <Header />
-    <main class="chat-main">
-      <div class="top-bar">
-        <BackButton to="/view" />
-        <div class="top-controls">
-          <DropDown :contacts="contacts" :groups="groups" @selection="handleSelection" />
-          <RoundButton icon="download" @click="downloadHtmlContent" title="Download HTML" />
-          <RoundButton icon="file-pdf" @click="downloadAsPdf" title="Download PDF" />
-        </div>
+    <div class="top-bar">
+      <div class="top-controls">
+        <DropDown :contacts="contacts" :groups="groups" @selection="handleSelection" />
+        <RoundButton icon="download" @click="downloadHtmlContent" title="Download HTML" />
+        <RoundButton icon="file-pdf" @click="downloadAsPdf" title="Download PDF" />
       </div>
+    </div>
 
-      <div class="chat-display-area" ref="chatArea">
-        <template v-if="chats?.messages">
-          <div v-for="(msg, index) in chats.messages" :key="index"
-            :class="['message-row', msg.sender.identityID === 'You' ? 'row-self' : 'row-other']">
-            <ChatMessage :message="msg.text" :date="msg.date" :identity="msg.sender" :showName="showName" />
-          </div>
-        </template>
-        <div v-else class="no-messages">No Messages</div>
-      </div>
-    </main>
+    <div class="chat-display-area" ref="chatArea">
+      <template v-if="chats?.messages">
+        <div v-for="(msg, index) in chats.messages" :key="index"
+          :class="['message-row', msg.sender.identityID === 'You' ? 'row-self' : 'row-other']">
+          <ChatMessage :message="msg.text" :date="msg.date" :identity="msg.sender" :showName="showName" />
+        </div>
+      </template>
+      <div v-else class="no-messages">No Messages</div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import Header from './components/Header.vue'
-import BackButton from './components/BackButton.vue'
 import DropDown from './components/chat/DropDown.vue'
 import ChatMessage from './components/chat/ChatMessage.vue'
 import { dataCache } from '@/service/DataLoadService'
@@ -138,32 +132,22 @@ function downloadAsPdf() {
     win.print()
   }, 300)
 }
-
-
-
 </script>
 
 <style scoped>
 .chat-container {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.chat-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: #0f1115;
 }
 
 .top-bar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid #20242b;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .top-controls {
@@ -172,13 +156,10 @@ function downloadAsPdf() {
   align-items: center;
 }
 
-
-
-
 .chat-display-area {
   flex: 1;
   padding: 20px;
-  overflow: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -186,19 +167,14 @@ function downloadAsPdf() {
   margin: 20px auto;
   max-width: 800px;
   width: 90%;
-  border: 1px solid #2a2e34;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  background: #0f1115;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-}
-
-.scroller {
-  height: 100%;
-  width: 100%;
+  background: var(--color-chat-area-bg);
+  box-shadow: var(--shadow-md);
 }
 
 .no-messages {
-  color: #9ca3af;
+  color: var(--color-text-secondary);
   text-align: center;
   margin-top: 20px;
 }

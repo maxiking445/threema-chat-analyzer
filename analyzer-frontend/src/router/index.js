@@ -3,6 +3,7 @@ import HomeView from "../HomeView.vue";
 import AnalyzeView from "../AnalyzeView.vue";
 import InitView from "@/InitView.vue";
 import ChatView from "@/ChatView.vue";
+import { dataCache } from "@/service/DataLoadService";
 
 const routes = [
   {
@@ -14,6 +15,7 @@ const routes = [
     path: "/view",
     name: "view",
     component: AnalyzeView,
+    meta: { requiresData: true },
   },
   {
     path: "/init",
@@ -24,6 +26,7 @@ const routes = [
     path: "/chat",
     name: "chat",
     component: ChatView,
+    meta: { requiresData: true },
   },
 ];
 
@@ -32,7 +35,10 @@ const router = createRouter({
   routes,
 });
 router.beforeEach((to, from) => {
-  if ((!from.name && to.path !== "/")) {
+  if (!from.name && to.path !== "/") {
+    return "/";
+  }
+  if (to.meta.requiresData && !dataCache.isLoaded()) {
     return "/";
   }
   return true;

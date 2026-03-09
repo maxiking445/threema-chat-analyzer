@@ -1,6 +1,6 @@
 <template>
     <div class="wordCloudContainer">
-        <vue-word-cloud class="wordCloud" :words="words" :color="([, weight]) => weight > 900 ? '#1abc5b' : '#ffffff'"
+        <vue-word-cloud class="wordCloud" :words="words" :color="wordColor"
             font-family="Righteous" />
     </div>
 </template>
@@ -12,6 +12,11 @@ import { loadWordCloudData } from "@/service/ApiService";
 import { toast } from 'vue3-toastify';
 const words = ref([]);
 const allWords = ref([]);
+
+const rootStyles = getComputedStyle(document.documentElement);
+const primaryColor = rootStyles.getPropertyValue('--color-primary').trim() || '#3bb54a';
+const textColor = rootStyles.getPropertyValue('--color-text-primary').trim() || '#f9fafb';
+const wordColor = ([, weight]: [string, number]) => weight > 900 ? primaryColor : textColor;
 const batchSize = 10;
 const intervalTime = 3000;
 

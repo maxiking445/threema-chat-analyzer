@@ -60,7 +60,7 @@ const formattedDate = computed(() => {
 
 .sender {
   font-size: 0.85rem;
-  color: #9ca3af;
+  color: var(--color-text-secondary);
   margin-bottom: 4px;
   padding-right: 6px;
 }
@@ -76,15 +76,15 @@ const formattedDate = computed(() => {
 }
 
 .message-bubble.self {
-  background: #3d3f44;
-  color: #e0e0e0;
+  background: var(--color-chat-self-bg);
+  color: var(--color-chat-self-text);
   align-self: flex-end;
   border-bottom-right-radius: 2px;
 }
 
 .message-bubble.other {
-  background: #181b20;
-  color: #ffffff;
+  background: var(--color-chat-other-bg);
+  color: var(--color-chat-other-text);
   align-self: flex-start;
   border-bottom-left-radius: 2px;
 }
@@ -97,7 +97,7 @@ const formattedDate = computed(() => {
 
 .timestamp {
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: var(--color-text-secondary);
   margin-top: 4px;
   text-align: right;
 }

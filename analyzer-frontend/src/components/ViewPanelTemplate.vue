@@ -33,10 +33,10 @@ const directionClass = computed(() =>
     min-height: 600px;
     padding: 1.75rem 1.75rem 2rem;
     border-radius: 16px;
-    background: #181b20;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-    border: 1px solid #20242b;
-    color: #f9fafb;
+    background: var(--color-bg-surface);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
@@ -51,7 +51,7 @@ const directionClass = computed(() =>
 .accent-line {
     height: 2px;
     width: 100%;
-    background: #ffffff;
+    background: var(--color-text-primary);
     opacity: 0.18;
     margin-bottom: 1rem;
 }

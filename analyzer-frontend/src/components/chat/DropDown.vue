@@ -35,7 +35,6 @@ import { ref } from 'vue'
 import { ModelsContact } from '@/models/ModelsContact'
 import { ModelsGroup } from '@/models/ModelsGroup'
 
-// Define props for contacts and groups
 const props = defineProps<{
   contacts: ModelsContact[]
   groups: ModelsGroup[]
@@ -49,9 +48,9 @@ const emit = defineEmits<{
 
 function handleChange() {
   if (!selectedValue.value) return
-  
+
   const [type, id] = selectedValue.value.split(':')
-  
+
   if (type === 'contact') {
     const contact = props.contacts.find(c => c.identity.identity === id)
     if (contact) emit('selection', contact)
@@ -79,16 +78,16 @@ function getContactName(contact: ModelsContact): string {
 }
 
 .dropdown-wrapper label {
-  color: #f9fafb;
+  color: var(--color-text-primary);
   font-weight: 500;
   white-space: nowrap;
 }
 
 .dropdown {
   padding: 8px 12px;
-  background: #181b20;
-  color: #f9fafb;
-  border: 1px solid #3bb54a;
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-primary);
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.95rem;
@@ -96,18 +95,18 @@ function getContactName(contact: ModelsContact): string {
 }
 
 .dropdown:hover {
-  background: #1e2127;
+  background: var(--color-bg-elevated);
 }
 
 .dropdown:focus {
   outline: none;
-  border-color: #4cc859;
-  box-shadow: 0 0 0 2px rgba(59, 181, 74, 0.2);
+  border-color: var(--color-primary-hover);
+  box-shadow: 0 0 0 2px var(--color-primary-focus-shadow);
 }
 
 .dropdown option,
 .dropdown optgroup {
-  background: #181b20;
-  color: #f9fafb;
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
 }
 </style>

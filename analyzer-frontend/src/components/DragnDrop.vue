@@ -120,15 +120,15 @@ const onFileSelect = (e) => {
 .subtitle {
   margin: 0 0 1.25rem;
   font-size: 0.9rem;
-  color: #9ca3af;
+  color: var(--color-text-secondary);
 }
 
 .dropzone {
   position: relative;
   display: block;
   border-radius: 12px;
-  border: 1px dashed #3f4a56;
-  background: #12151a;
+  border: 1px dashed var(--color-border-dropzone);
+  background: var(--color-bg-input);
   padding: 1.5rem 1.25rem;
   cursor: pointer;
   transition:
@@ -137,8 +137,8 @@ const onFileSelect = (e) => {
 }
 
 .dropzone--active {
-  border-color: #1abc5b;
-  background: #151b17;
+  border-color: var(--color-primary);
+  background: var(--color-primary-muted);
 }
 
 .file-input {
@@ -161,8 +161,8 @@ const onFileSelect = (e) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #1f2933;
-  color: #1abc5b;
+  background: var(--color-bg-elevated);
+  color: var(--color-primary);
   font-size: 1.4rem;
 }
 
@@ -174,7 +174,7 @@ const onFileSelect = (e) => {
 .file-info {
   margin-top: 0.9rem;
   padding-top: 0.75rem;
-  border-top: 1px solid #262b33;
+  border-top: 1px solid var(--color-border);
   font-size: 0.85rem;
   text-align: left;
 }
@@ -185,7 +185,7 @@ const onFileSelect = (e) => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #e5e7eb;
+  color: var(--color-text-primary);
 }
 
 .password-row {
@@ -197,23 +197,22 @@ const onFileSelect = (e) => {
 
 .password-label {
   font-size: 0.85rem;
-  color: #9ca3af;
+  color: var(--color-text-secondary);
 }
 
 .password-input {
   border-radius: 8px;
-  border: 1px solid #303441;
-  background: #111317;
+  border: 1px solid var(--color-border-input);
+  background: var(--color-bg-base);
   cursor: pointer;
-  font-size: 0.875rem;
-  color: #e5e7eb;
-  padding: 0.45rem 0.6rem;
   font-size: 0.9rem;
+  color: var(--color-text-primary);
+  padding: 0.45rem 0.6rem;
   outline: none;
 }
 
 .password-input:focus {
-  border-color: #1abc5b;
+  border-color: var(--color-primary);
 }
 
 .upload-button-wrapper {
@@ -227,8 +226,8 @@ const onFileSelect = (e) => {
   border: none;
   border-radius: 999px;
   padding: 0.55rem 0.9rem;
-  background: #1abc5b;
-  color: #0b1120;
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -237,18 +236,18 @@ const onFileSelect = (e) => {
     transform 0.1s ease,
     box-shadow 0.15s ease,
     opacity 0.15s ease;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--shadow-btn);
 }
 
 .upload-button:hover {
-  background: #18b055;
+  background: var(--color-primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-btn-hover);
 }
 
 .upload-button:active {
   transform: translateY(0);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--shadow-btn);
 }
 
 .upload-button:disabled {

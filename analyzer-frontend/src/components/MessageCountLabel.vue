@@ -12,8 +12,8 @@ defineProps({
 
 <style scoped>
 .message-count {
-    background: #ffffff;
-    color: #181b20;
+    background: var(--color-text-primary);
+    color: var(--color-bg-surface);
     font-size: 0.875rem;
     font-weight: 600;
     padding: 0.25rem 0.5rem;

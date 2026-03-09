@@ -26,14 +26,14 @@ defineProps<{
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    color: #9ca3af;
+    color: var(--color-text-secondary);
     text-align: center;
 }
 
 .icon {
     width: 40px;
     height: 40px;
-    fill: #facc15;
+    fill: var(--color-warning);
     opacity: 0.9;
 }
 

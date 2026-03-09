@@ -30,14 +30,14 @@ function handleClick() {
   height: 38px;
   border-radius: 50%;
   border: none;
-  background-color: #3dca6e;
-  color: #000;
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
   cursor: pointer;
   font-size: 16px;
   transition: background 0.2s;
 }
 
 .generic-button:hover {
-  background-color: #2fb85e;
+  background-color: var(--color-primary-hover);
 }
 </style>

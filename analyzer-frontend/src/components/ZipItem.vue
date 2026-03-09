@@ -45,7 +45,7 @@ function handleDelete() {
   padding: 0.75rem 1rem;
   border-radius: 3px;
   cursor: pointer;
-  border-bottom: 1px solid #20242b;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .left {
@@ -56,13 +56,13 @@ function handleDelete() {
 }
 
 .zip-icon {
-  color: #3bb54a;
+  color: var(--color-primary);
   font-size: 1.1rem;
   flex-shrink: 0;
 }
 
 .name {
-  color: #ffffff;
+  color: var(--color-text-primary);
   font-weight: 600;
   font-size: 0.95rem;
   overflow: hidden;
@@ -71,11 +71,11 @@ function handleDelete() {
 }
 
 .user-bar:hover {
-  background-color: #2a2e35;
+  background-color: var(--color-hover-bg);
 }
 
 .user-bar.selected {
-  background-color: #2d3138;
+  background-color: var(--color-selected-bg);
 }
 
 .message-label-container {
@@ -88,7 +88,7 @@ function handleDelete() {
 .delete-btn {
   background: transparent;
   border: none;
-  color: #6b7280;
+  color: var(--color-text-muted);
   cursor: pointer;
   padding: 4px 6px;
   border-radius: 4px;
@@ -97,6 +97,6 @@ function handleDelete() {
 }
 
 .delete-btn:hover {
-  color: #ef4444;
+  color: var(--color-danger);
 }
 </style>

@@ -159,6 +159,10 @@ class DataCache {
     return this._isLoaded;
   }
 
+  setLoaded(value: boolean): void {
+    this._isLoaded = value;
+  }
+
   clear(): void {
     this._isLoaded = false;
     this._data = {
@@ -168,6 +172,7 @@ class DataCache {
       contactTimelines: [],
       avatars: new Map(),
       wordCloud: [],
+      chat: [],
     };
   }
 }

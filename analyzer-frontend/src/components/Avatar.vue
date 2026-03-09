@@ -34,7 +34,7 @@ onMounted(() => {
     height: 28px;
     border-radius: 50%;
     overflow: hidden;
-    background: #444;
+    background: var(--color-btn-bg);
     flex-shrink: 0;
 }
 
