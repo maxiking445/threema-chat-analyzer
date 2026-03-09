@@ -4,18 +4,28 @@ import { ModelsContactStats } from "@/models/ModelsContactStats";
 
 const USER_MESSAGE_PATH = "message_";
 
+function detectMediaType(type: string, body: string): "image" | "video" | "voice" | null {
+  const upperType = type.toUpperCase().trim();
+
+  if (upperType === "IMAGE") return "image";
+  if (upperType === "VIDEO") return "video";
+  if (upperType === "VOICEMESSAGE" || upperType === "VOICE" || upperType === "AUDIO") return "voice";
+
+  if (upperType === "FILE" && body) {
+    const lower = body.toLowerCase();
+    if (lower.includes("image/")) return "image";
+    if (lower.includes("video/")) return "video";
+    if (lower.includes("audio/")) return "video";
+  }
+
+  return null;
+}
+
 export async function loadContactStats(
   identityID: string,
 ): Promise<ModelsContactStats> {
-  console.warn("[ContactStats] called with identityID:", identityID);
-  const filename = `${USER_MESSAGE_PATH}${identityID}.csv`;
-  console.warn("[ContactStats] looking for file:", filename);
-  const file = getZipFile(filename);
-  if (!file) {
-    console.warn("[ContactStats] file NOT found!");
-    return emptyStats();
-  }
-  console.warn("[ContactStats] file found, size:", file.size);
+  const file = getZipFile(`${USER_MESSAGE_PATH}${identityID}.csv`);
+  if (!file) return emptyStats();
 
   const text = await file.content.text();
   const parsed = Papa.parse(text, {
@@ -25,12 +35,6 @@ export async function loadContactStats(
 
   const rows = parsed.data as any[];
   if (rows.length === 0) return emptyStats();
-
-  // Debug: log first row's keys and type value to diagnose column names
-  if (rows.length > 0) {
-    console.debug("[ContactStats] CSV columns:", Object.keys(rows[0]));
-    console.debug("[ContactStats] Sample row:", JSON.stringify(rows[0]));
-  }
 
   let sentCount = 0;
   let receivedCount = 0;
@@ -47,10 +51,8 @@ export async function loadContactStats(
     if (isNaN(ts)) continue;
 
     const isOutbox = row.isoutbox === "1" || row.isoutbox === 1;
-
-    // Try multiple possible column names for message type
-    const typeRaw = row.type || row.message_type || row.messagetype || "";
-    const type = String(typeRaw).toUpperCase().trim();
+    const type = row.type || "";
+    const body = row.body || "";
 
     if (isOutbox) {
       sentCount++;
@@ -58,9 +60,10 @@ export async function loadContactStats(
       receivedCount++;
     }
 
-    if (type === "IMAGE") imageCount++;
-    else if (type === "VIDEO") videoCount++;
-    else if (type === "VOICEMESSAGE" || type === "VOICE" || type === "AUDIO") voiceMessageCount++;
+    const media = detectMediaType(type, body);
+    if (media === "image") imageCount++;
+    else if (media === "video") videoCount++;
+    else if (media === "voice") voiceMessageCount++;
 
     if (ts < firstTs) firstTs = ts;
     if (ts > lastTs) lastTs = ts;
@@ -70,8 +73,6 @@ export async function loadContactStats(
 
   const totalMessages = sentCount + receivedCount;
   if (totalMessages === 0) return emptyStats();
-
-  console.debug(`[ContactStats] ${identityID}: total=${totalMessages}, images=${imageCount}, videos=${videoCount}, voice=${voiceMessageCount}`);
 
   const firstMessageDate = new Date(firstTs);
   const lastMessageDate = new Date(lastTs);
