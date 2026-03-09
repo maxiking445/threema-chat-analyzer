@@ -41,14 +41,16 @@ FEATURES:
 - Group statistics (count)
 - Wordcloud ( most used words)
 - Offline analysis (your data is safe)
+- Contact stats
+- Chat export HTML/PDF
 
 TODO:
 - ~~execute backend logic inside browser~~
-- add analysis of single contact (chat frequency, answertime, ...)
+- ~add analysis of single contact (chat frequency, answertime, ...)~
 - add chat search interface
-- script to anonymze data
+- ~script to anonymze data~
 - ~~windows/linux desktop app~~
-- pdf export
+- ~pdf export~
 - suggestions are welcome
 
 ---
