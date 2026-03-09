@@ -22,12 +22,21 @@ import {
   faAnglesLeft,
   faCloudArrowUp,
   faLock,
-  faCheck
+  faCheck,
+  faPaperPlane,
+  faInbox,
+  faImage,
+  faVideo,
+  faMicrophone,
+  faCalendarDay,
+  faClock,
+  faCalendar,
+  faHashtag
 } from "@fortawesome/free-solid-svg-icons";
 import { LoadingPlugin } from "vue-loading-overlay";
 import "vue-loading-overlay/dist/css/index.css";
 
-library.add(faArrowLeft, faTrash, faFileZipper, faDownload, faFilePdf, faCode, faHome, faChartBar, faComments, faBars, faAnglesLeft, faCloudArrowUp, faLock, faCheck);
+library.add(faArrowLeft, faTrash, faFileZipper, faDownload, faFilePdf, faCode, faHome, faChartBar, faComments, faBars, faAnglesLeft, faCloudArrowUp, faLock, faCheck, faPaperPlane, faInbox, faImage, faVideo, faMicrophone, faCalendarDay, faClock, faCalendar, faHashtag);
 
 createApp(App)
   .use(router)

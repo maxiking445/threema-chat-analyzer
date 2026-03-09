@@ -1,5 +1,6 @@
 <template>
-  <div class="chat-container">
+  <div class="chat-view">
+    <!-- Top bar -->
     <div class="top-bar">
       <div class="top-controls">
         <DropDown :contacts="contacts" :groups="groups" @selection="handleSelection" />
@@ -8,14 +9,26 @@
       </div>
     </div>
 
-    <div class="chat-display-area" ref="chatArea">
-      <template v-if="chats?.messages">
-        <div v-for="(msg, index) in chats.messages" :key="index"
-          :class="['message-row', msg.sender.identityID === 'You' ? 'row-self' : 'row-other']">
-          <ChatMessage :message="msg.text" :date="msg.date" :identity="msg.sender" :showName="showName" />
+    <!-- Main content area -->
+    <div class="chat-body">
+      <!-- Stats sidebar (contacts only) -->
+      <aside v-if="isContactSelected && statsContactId" class="stats-sidebar">
+        <ContactStatsPanel :contactId="statsContactId" />
+      </aside>
+
+      <!-- Chat area -->
+      <div class="chat-main">
+        <div class="chat-display-area" ref="chatArea">
+          <template v-if="chats?.messages?.length">
+            <div v-for="(msg, index) in chats.messages" :key="index"
+              :class="['message-row', msg.sender.identityID === 'You' ? 'row-self' : 'row-other']">
+              <ChatMessage :message="msg.text" :date="msg.date" :identity="msg.sender" :showName="showName" />
+            </div>
+          </template>
+          <div v-else-if="chats" class="empty-state">No messages</div>
+          <div v-else class="empty-state">Select a contact or group to view messages</div>
         </div>
-      </template>
-      <div v-else class="no-messages">No Messages</div>
+      </div>
     </div>
   </div>
 </template>
@@ -24,6 +37,7 @@
 import { ref, onMounted } from 'vue'
 import DropDown from './components/chat/DropDown.vue'
 import ChatMessage from './components/chat/ChatMessage.vue'
+import ContactStatsPanel from './components/ContactStatsPanel.vue'
 import { dataCache } from '@/service/DataLoadService'
 import { ModelsContact } from '@/models/ModelsContact'
 import { ModelsGroup } from '@/models/ModelsGroup'
@@ -38,6 +52,8 @@ const chats = ref<ModelsChat>()
 const selectedItem = ref<string>('')
 const isLoading = ref(false)
 const showName = ref(false)
+const isContactSelected = ref(false)
+const statsContactId = ref<string | null>(null)
 const loadingDiv = ref(null)
 const chatArea = ref<HTMLElement | null>(null)
 const $loading = useAppLoading();
@@ -56,7 +72,6 @@ async function loadData() {
     ])
     contacts.value = contactsData
     groups.value = groupsData
-
   } catch (error) {
     toast.error('Error loading data. Please try again.', error)
   } finally {
@@ -69,27 +84,25 @@ async function handleSelection(value: ModelsContact | ModelsGroup) {
     container: loadingDiv.value,
     isFullPage: false,
   })
-  const isContact: boolean = 'identity' in value;
-  if (isContact) {
-    showName.value = false;
-  } else {
-    showName.value = true;
-  }
-  const id = 'identity' in value ? value.identity.identityID : value.groupUid
+
+  const isContact = 'identity' in value
+  isContactSelected.value = isContact
+  showName.value = !isContact
+
+  const id = isContact ? value.identity.identityID : value.groupUid
   selectedItem.value = id
-  console.log('Selected:', value)
+  statsContactId.value = isContact ? id : null
+
   const result = await dataCache.loadChats(id);
   chats.value = { id, messages: [] } as ModelsChat;
   const BATCH_SIZE = 500;
 
-  // append first chunk and reveal UI quickly
   if (result.messages.length > 0) {
     const first = result.messages
       .slice(0, BATCH_SIZE)
       .map((m, idx) => ({ ...m, id: `${idx}-${id}-${m.date || ''}` }));
     chats.value.messages.push(...first);
   }
-
 
   for (let i = BATCH_SIZE; i < result.messages.length; i += BATCH_SIZE) {
     const slice = result.messages
@@ -135,7 +148,7 @@ function downloadAsPdf() {
 </script>
 
 <style scoped>
-.chat-container {
+.chat-view {
   width: 100%;
   height: 100%;
   display: flex;
@@ -146,14 +159,35 @@ function downloadAsPdf() {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 20px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
 }
 
 .top-controls {
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+.chat-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.stats-sidebar {
+  width: 340px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-right: 1px solid var(--color-border);
+}
+
+.chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .chat-display-area {
@@ -173,10 +207,11 @@ function downloadAsPdf() {
   box-shadow: var(--shadow-md);
 }
 
-.no-messages {
-  color: var(--color-text-secondary);
+.empty-state {
+  color: var(--color-text-muted);
   text-align: center;
-  margin-top: 20px;
+  padding: 3rem 1rem;
+  font-size: 0.9rem;
 }
 
 .message-row {
