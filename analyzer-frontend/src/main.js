@@ -14,12 +14,17 @@ import {
   faFileZipper,
   faDownload,
   faFilePdf,
-  faCode
+  faCode,
+  faHome,
+  faChartBar,
+  faComments,
+  faBars,
+  faAnglesLeft
 } from "@fortawesome/free-solid-svg-icons";
 import { LoadingPlugin } from "vue-loading-overlay";
 import "vue-loading-overlay/dist/css/index.css";
 
-library.add(faArrowLeft, faTrash, faFileZipper, faDownload, faFilePdf, faCode);
+library.add(faArrowLeft, faTrash, faFileZipper, faDownload, faFilePdf, faCode, faHome, faChartBar, faComments, faBars, faAnglesLeft);
 
 createApp(App)
   .use(router)
