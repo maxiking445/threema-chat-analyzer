@@ -61,6 +61,6 @@ function resolveUserName(contact: ModelsContact): string {
 }
 
 :deep(.contacts-list::-webkit-scrollbar-thumb) {
-  background-color: #3bb54a;
+  background-color: var(--color-primary);
 }
 </style>

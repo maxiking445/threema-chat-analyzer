@@ -1,53 +1,52 @@
-/* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  /* Brand / Primary */
+  --color-primary: #3bb54a;
+  --color-primary-hover: #2fa842;
+  --color-primary-muted: rgba(59, 181, 74, 0.1);
+  --color-primary-focus-shadow: rgba(59, 181, 74, 0.2);
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
+  /* Backgrounds */
+  --color-bg-base: #111317;
+  --color-bg-surface: #181b20;
+  --color-bg-elevated: #1e2127;
+  --color-bg-input: #12151a;
+  --color-bg-bar: #111317;
 
-  --vt-c-indigo: #2c3e50;
+  /* Text */
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #9ca3af;
+  --color-text-muted: #6b7280;
+  --color-text-on-primary: #111317;
 
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+  /* Borders */
+  --color-border: #20242b;
+  --color-border-light: #242731;
+  --color-border-input: #303441;
+  --color-border-dropzone: #3f4a56;
 
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
-}
+  /* Interactive / Buttons */
+  --color-btn-bg: #2d3138;
+  --color-btn-hover: #44484f;
+  --color-hover-bg: #2a2e35;
+  --color-selected-bg: #2d3138;
 
-/* semantic color variables for this project */
-:root {
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
+  /* Semantic */
+  --color-danger: #ef4444;
+  --color-danger-muted: rgba(239, 68, 68, 0.1);
+  --color-warning: #facc15;
 
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
+  /* Chat */
+  --color-chat-self-bg: #3d3f44;
+  --color-chat-self-text: #e0e0e0;
+  --color-chat-other-bg: #181b20;
+  --color-chat-other-text: #ffffff;
+  --color-chat-area-bg: #0f1115;
 
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
-
-  --section-gap: 160px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
-
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
-
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
-  }
+  /* Shadows */
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.5);
+  --shadow-btn: 0 8px 18px rgba(0, 0, 0, 0.45);
+  --shadow-btn-hover: 0 10px 22px rgba(0, 0, 0, 0.5);
 }
 
 *,
@@ -60,8 +59,8 @@
 
 body {
   min-height: 100vh;
-  color: var(--color-text);
-  background: #111317;
+  color: var(--color-text-primary);
+  background: var(--color-bg-base);
   transition:
     color 0.5s,
     background-color 0.5s;

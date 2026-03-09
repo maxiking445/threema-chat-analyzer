@@ -312,25 +312,25 @@ function switchView(mode: ViewMode) {
     font-weight: 600;
     border-radius: 0.25rem;
     border: none;
-    background-color: #2d3138;
-    color: #fff;
+    background-color: var(--color-btn-bg);
+    color: var(--color-text-primary);
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
 }
 
 .period-button:hover {
-    background-color: #44484f;
+    background-color: var(--color-btn-hover);
 }
 
 .period-button:active {
-    background-color: #3bb54a;
-    color: #181b20;
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
 }
 
 .time-label {
     font-weight: 600;
     font-size: 1rem;
-    color: #fff;
+    color: var(--color-text-primary);
     min-width: 90px;
     text-align: center;
 }
@@ -358,24 +358,24 @@ function switchView(mode: ViewMode) {
     font-weight: 600;
     border-radius: 0.25rem;
     border: none;
-    background-color: #2d3138;
-    color: #fff;
+    background-color: var(--color-btn-bg);
+    color: var(--color-text-primary);
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
 .view-mode-switch button.active {
-    background-color: #3bb54a;
-    color: #181b20;
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
 }
 
 .view-mode-switch button:hover {
-    background-color: #44484f;
+    background-color: var(--color-btn-hover);
 }
 
 
 .no-data {
-    color: #fff;
+    color: var(--color-text-primary);
     font-weight: 600;
     font-size: 1rem;
     text-align: center;

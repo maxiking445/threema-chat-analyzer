@@ -147,7 +147,7 @@ function downloadAsPdf() {
   justify-content: flex-start;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid #20242b;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .top-controls {
@@ -167,14 +167,14 @@ function downloadAsPdf() {
   margin: 20px auto;
   max-width: 800px;
   width: 90%;
-  border: 1px solid #2a2e34;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  background: #0f1115;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  background: var(--color-chat-area-bg);
+  box-shadow: var(--shadow-md);
 }
 
 .no-messages {
-  color: #9ca3af;
+  color: var(--color-text-secondary);
   text-align: center;
   margin-top: 20px;
 }

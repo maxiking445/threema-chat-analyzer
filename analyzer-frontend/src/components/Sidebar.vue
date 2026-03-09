@@ -27,6 +27,14 @@
 
     <div class="sidebar-bottom">
       <a
+        class="nav-link clear-cache"
+        @click="clearCache"
+        title="Clear Cache"
+      >
+        <font-awesome-icon icon="trash" class="nav-icon" />
+        <span class="nav-label" v-show="!collapsed">Clear Cache</span>
+      </a>
+      <a
         class="nav-link"
         href="https://github.com/maxiking445/threema-chat-analyzer"
         target="_blank"
@@ -42,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
@@ -63,6 +71,25 @@ function isActive(path: string) {
 function navigateTo(path: string) {
   router.push(path)
 }
+
+async function clearCache() {
+  try {
+    localStorage.clear()
+    sessionStorage.clear()
+
+    const cacheNames = await caches.keys()
+    await Promise.all(cacheNames.map(name => caches.delete(name)))
+
+    const databases = await indexedDB.databases()
+    databases.forEach(db => {
+      if (db.name) indexedDB.deleteDatabase(db.name)
+    })
+
+    window.location.href = '/'
+  } catch (error) {
+    window.location.href = '/'
+  }
+}
 </script>
 
 <style scoped>
@@ -71,8 +98,8 @@ function navigateTo(path: string) {
   flex-direction: column;
   width: 220px;
   height: 100vh;
-  background: #181b20;
-  border-right: 1px solid #242731;
+  background: var(--color-bg-surface);
+  border-right: 1px solid var(--color-border-light);
   transition: width 0.2s ease;
   flex-shrink: 0;
   overflow: hidden;
@@ -87,7 +114,7 @@ function navigateTo(path: string) {
   flex-direction: column;
   padding: 16px 12px 8px;
   gap: 12px;
-  border-bottom: 1px solid #242731;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .brand {
@@ -102,7 +129,7 @@ function navigateTo(path: string) {
 }
 
 .brand:hover {
-  background: #23272e;
+  background: var(--color-bg-elevated);
 }
 
 .logo {
@@ -112,7 +139,7 @@ function navigateTo(path: string) {
 .brand-text {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #f9fafb;
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
@@ -122,7 +149,7 @@ function navigateTo(path: string) {
   justify-content: center;
   background: none;
   border: none;
-  color: #9ca3af;
+  color: var(--color-text-secondary);
   cursor: pointer;
   padding: 6px;
   border-radius: 6px;
@@ -133,8 +160,8 @@ function navigateTo(path: string) {
 }
 
 .collapse-btn:hover {
-  background: #23272e;
-  color: #f9fafb;
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
 }
 
 .nav-links {
@@ -153,7 +180,7 @@ function navigateTo(path: string) {
   gap: 12px;
   padding: 10px 12px;
   border-radius: 6px;
-  color: #9ca3af;
+  color: var(--color-text-secondary);
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
   text-decoration: none;
@@ -161,13 +188,13 @@ function navigateTo(path: string) {
 }
 
 .nav-link:hover {
-  background: #23272e;
-  color: #f9fafb;
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
 }
 
 .nav-link.active {
-  background: #3bb54a1a;
-  color: #3bb54a;
+  background: var(--color-primary-muted);
+  color: var(--color-primary);
 }
 
 .nav-icon {
@@ -184,10 +211,15 @@ function navigateTo(path: string) {
 
 .sidebar-bottom {
   padding: 12px 8px;
-  border-top: 1px solid #242731;
+  border-top: 1px solid var(--color-border-light);
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.clear-cache:hover {
+  background: var(--color-danger-muted);
+  color: var(--color-danger);
 }
 
 .github-icon {
@@ -203,7 +235,7 @@ function navigateTo(path: string) {
 
 .version {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--color-text-muted);
   padding: 4px 12px;
   white-space: nowrap;
 }

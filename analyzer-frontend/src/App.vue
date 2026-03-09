@@ -27,6 +27,6 @@ const showSidebar = computed(() => route.path !== '/init')
 .app-content {
   flex: 1;
   overflow-y: auto;
-  background: #111317;
+  background: var(--color-bg-base);
 }
 </style>

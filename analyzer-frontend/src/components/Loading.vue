@@ -67,13 +67,13 @@ onMounted(async () => {
     width: 64px;
     height: 64px;
     border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid #ffffff;
+    border-top: 4px solid var(--color-text-primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
 
 .loading-text {
-    color: white;
+    color: var(--color-text-primary);
     font-size: 18px;
     font-weight: bold;
     text-align: center;

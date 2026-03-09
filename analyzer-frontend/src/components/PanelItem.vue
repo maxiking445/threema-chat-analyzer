@@ -57,11 +57,10 @@ function handleClick() {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.4rem 0.75rem;
-    border-radius: 3px;
     padding: 0.75rem 1rem;
+    border-radius: 3px;
     cursor: pointer;
-    border-bottom: 1px solid #20242b;
+    border-bottom: 1px solid var(--color-border);
 }
 
 .left {
@@ -76,7 +75,7 @@ function handleClick() {
     height: 28px;
     border-radius: 50%;
     overflow: hidden;
-    background: #444;
+    background: var(--color-btn-bg);
     flex-shrink: 0;
 }
 
@@ -89,7 +88,7 @@ function handleClick() {
 }
 
 .name {
-    color: #ffffff;
+    color: var(--color-text-primary);
     font-weight: 600;
     font-size: 0.95rem;
 }
@@ -97,29 +96,29 @@ function handleClick() {
 .bar-wrapper {
     flex: 1;
     height: 16px;
-    background: #111;
+    background: var(--color-bg-bar);
     border-radius: 2px;
     overflow: hidden;
 }
 
 .bar-fill {
     height: 100%;
-    background: #3bb54a;
+    background: var(--color-primary);
     pointer-events: none;
 }
 
 .user-bar:hover {
-    background-color: #2a2e35;
+    background-color: var(--color-hover-bg);
 }
 
 .user-bar.selected {
-    background-color: #2d3138;
+    background-color: var(--color-selected-bg);
 }
 
 .message-label-container {
     display: flex;
     align-items: center;
-    justify-content: flex-end; 
-    margin-left: auto; 
+    justify-content: flex-end;
+    margin-left: auto;
 }
 </style>
