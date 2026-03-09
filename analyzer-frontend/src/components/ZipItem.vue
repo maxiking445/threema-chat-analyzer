@@ -1,15 +1,12 @@
 <template>
-  <div class="user-bar" :class="{ selected: isSelected }" @click="handleClick">
-    <div class="left">
+  <div class="zip-item" :class="{ selected: isSelected }" @click="handleClick">
+    <div class="zip-left">
       <font-awesome-icon icon="file-zipper" class="zip-icon" />
-      <span class="name">{{ name }}</span>
+      <span class="zip-name">{{ name }}</span>
     </div>
-
-    <div class="message-label-container">
-      <button class="delete-btn" @click.stop="handleDelete">
-        <font-awesome-icon icon="trash" />
-      </button>
-    </div>
+    <button class="delete-btn" @click.stop="handleDelete" title="Delete backup">
+      <font-awesome-icon icon="trash" />
+    </button>
   </div>
 </template>
 
@@ -38,51 +35,47 @@ function handleDelete() {
 </script>
 
 <style scoped>
-.user-bar {
+.zip-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  border-radius: 3px;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
   cursor: pointer;
+  transition: background 0.12s;
+}
+
+.zip-item:not(:last-child) {
   border-bottom: 1px solid var(--color-border);
 }
 
-.left {
+.zip-item:hover {
+  background: var(--color-hover-bg);
+}
+
+.zip-item.selected {
+  background: var(--color-primary-muted);
+}
+
+.zip-left {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  flex: 1;
+  gap: 0.6rem;
+  min-width: 0;
 }
 
 .zip-icon {
   color: var(--color-primary);
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   flex-shrink: 0;
 }
 
-.name {
+.zip-name {
   color: var(--color-text-primary);
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 500;
+  font-size: 0.88rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.user-bar:hover {
-  background-color: var(--color-hover-bg);
-}
-
-.user-bar.selected {
-  background-color: var(--color-selected-bg);
-}
-
-.message-label-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-left: auto;
 }
 
 .delete-btn {
@@ -92,8 +85,13 @@ function handleDelete() {
   cursor: pointer;
   padding: 4px 6px;
   border-radius: 4px;
-  transition: color 0.15s;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
+  opacity: 0;
+  transition: opacity 0.12s, color 0.12s;
+}
+
+.zip-item:hover .delete-btn {
+  opacity: 1;
 }
 
 .delete-btn:hover {

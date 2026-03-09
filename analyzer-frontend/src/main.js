@@ -19,12 +19,15 @@ import {
   faChartBar,
   faComments,
   faBars,
-  faAnglesLeft
+  faAnglesLeft,
+  faCloudArrowUp,
+  faLock,
+  faCheck
 } from "@fortawesome/free-solid-svg-icons";
 import { LoadingPlugin } from "vue-loading-overlay";
 import "vue-loading-overlay/dist/css/index.css";
 
-library.add(faArrowLeft, faTrash, faFileZipper, faDownload, faFilePdf, faCode, faHome, faChartBar, faComments, faBars, faAnglesLeft);
+library.add(faArrowLeft, faTrash, faFileZipper, faDownload, faFilePdf, faCode, faHome, faChartBar, faComments, faBars, faAnglesLeft, faCloudArrowUp, faLock, faCheck);
 
 createApp(App)
   .use(router)
