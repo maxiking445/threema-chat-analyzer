@@ -15,9 +15,9 @@
       <li v-for="item in navItems" :key="item.route">
         <a
           class="nav-link"
-          :class="{ active: isActive(item.route) }"
+          :class="{ active: isActive(item.route), disabled: item.requiresData && !dataCache.isLoaded() }"
           @click="navigateTo(item.route)"
-          :title="item.label"
+          :title="item.requiresData && !dataCache.isLoaded() ? `${item.label} (load a backup first)` : item.label"
         >
           <font-awesome-icon :icon="item.icon" class="nav-icon" />
           <span class="nav-label" v-show="!collapsed">{{ item.label }}</span>
@@ -52,6 +52,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { dataCache } from '@/service/DataLoadService'
 
 const router = useRouter()
 const route = useRoute()
@@ -59,9 +60,9 @@ const collapsed = ref(false)
 const appVersion = ref(import.meta.env.PACKAGE_VERSION)
 
 const navItems = [
-  { route: '/', icon: 'home', label: 'Home' },
-  { route: '/view', icon: 'chart-bar', label: 'Analysis' },
-  { route: '/chat', icon: 'comments', label: 'Chat' },
+  { route: '/', icon: 'home', label: 'Home', requiresData: false },
+  { route: '/view', icon: 'chart-bar', label: 'Analysis', requiresData: true },
+  { route: '/chat', icon: 'comments', label: 'Chat', requiresData: true },
 ]
 
 function isActive(path: string) {
@@ -69,25 +70,35 @@ function isActive(path: string) {
 }
 
 function navigateTo(path: string) {
+  const item = navItems.find(i => i.route === path)
+  if (item?.requiresData && !dataCache.isLoaded()) return
+
+  if (path === '/') {
+    dataCache.clear()
+  }
   router.push(path)
 }
 
 async function clearCache() {
   try {
+    dataCache.clear()
     localStorage.clear()
     sessionStorage.clear()
 
     const cacheNames = await caches.keys()
     await Promise.all(cacheNames.map(name => caches.delete(name)))
 
+    // Delete all IndexedDB databases except the backup storage
     const databases = await indexedDB.databases()
     databases.forEach(db => {
-      if (db.name) indexedDB.deleteDatabase(db.name)
+      if (db.name && db.name !== 'zip-storage') {
+        indexedDB.deleteDatabase(db.name)
+      }
     })
 
-    window.location.href = '/'
+    router.push('/')
   } catch (error) {
-    window.location.href = '/'
+    router.push('/')
   }
 }
 </script>
@@ -195,6 +206,16 @@ async function clearCache() {
 .nav-link.active {
   background: var(--color-primary-muted);
   color: var(--color-primary);
+}
+
+.nav-link.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.nav-link.disabled:hover {
+  background: none;
+  color: var(--color-text-secondary);
 }
 
 .nav-icon {

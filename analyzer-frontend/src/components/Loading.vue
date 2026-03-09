@@ -34,9 +34,13 @@ onMounted(async () => {
     }).then(() => {
         loadingText.value = "Loading All Chats..."
         return dataCache.loadAllChats()
-    }).finally(() => {
+    }).then(() => {
+        dataCache.setLoaded(true);
         showLoading.value = false;
         router.push('/view')
+    }).catch(() => {
+        showLoading.value = false;
+        router.push('/')
     })
 });
 </script>
