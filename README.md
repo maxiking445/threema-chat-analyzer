@@ -50,7 +50,7 @@ TODO:
 - add chat search interface
 - ~script to anonymze data~
 - ~~windows/linux desktop app~~
-- ~pdf export~
+- ~html export~
 - suggestions are welcome
 
 ---
