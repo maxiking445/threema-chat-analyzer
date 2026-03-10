@@ -5,7 +5,6 @@
       <div class="top-controls">
         <DropDown :contacts="contacts" :groups="groups" @selection="handleSelection" />
         <RoundButton icon="download" @click="downloadHtmlContent" title="Download HTML" />
-        <RoundButton icon="file-pdf" @click="downloadAsPdf" title="Download PDF" />
       </div>
     </div>
 
@@ -131,20 +130,7 @@ function downloadHtmlContent() {
   URL.revokeObjectURL(url)
 }
 
-function downloadAsPdf() {
-  if (!chatArea.value) return
-  const content = chatArea.value.innerHTML
-  const head = document.head.innerHTML
-  const win = window.open('', '_blank')
-  if (!win) return
-  win.document.open()
-  win.document.write(`<!doctype html><html><head>${head}</head><body>${content}</body></html>`)
-  win.document.close()
-  setTimeout(() => {
-    win.focus()
-    win.print()
-  }, 300)
-}
+
 </script>
 
 <style scoped>
