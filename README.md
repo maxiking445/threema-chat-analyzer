@@ -28,6 +28,11 @@ Versions:
 ## About
 
 Threema Chat Analyzer is a tool for analyzing exported Threema chats. I know many people are skeptical of tools like this, but I enjoy exploring data—and even more so when it’s my own. Unlike WhatsApp, which doesn’t make it easy to access your backups, Threema lets you freely create and use them, which makes analysis possible and actually I enjoy it so see trends when I write more or less during the year. So I hope you will like it too! 
+
+<p align="center">
+  <img src="docs/example_3.png" alt="Threema Chat Analyzer" width="700"/>
+</p>
+
 <p align="center">
  <img src="docs/example_1.png" alt="Threema Chat Analyzer" width="700"/>
 </p>
@@ -36,6 +41,10 @@ Threema Chat Analyzer is a tool for analyzing exported Threema chats. I know man
   <img src="docs/example_2.png" alt="Threema Chat Analyzer" width="700"/>
 </p>
   
+<p align="center">
+  <img src="docs/example_4.png" alt="Threema Chat Analyzer" width="700"/>
+</p>
+
 FEATURES:
 - Contact statistics (count)
 - Group statistics (count)
