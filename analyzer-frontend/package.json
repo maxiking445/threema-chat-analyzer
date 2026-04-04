@@ -23,7 +23,7 @@
     "apexcharts": "^5.10.4",
     "idb": "^8.0.3",
     "papaparse": "^5.5.3",
-    "vue": "^3.5.31",
+    "vue": "^3.5.32",
     "vue-loading-overlay": "^6.0.6",
     "vue-router": "^5.0.4",
     "vue3-apexcharts": "^1.11.1",
