@@ -22,7 +22,7 @@
     "@zip.js/zip.js": "^2.8.41",
     "apexcharts": "^6.8.0",
     "idb": "^8.0.3",
-    "papaparse": "^5.5.4",
+    "papaparse": "^5.6.0",
     "vue": "^3.5.41",
     "vue-loading-overlay": "^6.0.6",
     "vue-router": "^5.2.0",
