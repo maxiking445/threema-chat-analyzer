@@ -18,7 +18,7 @@
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "@fortawesome/vue-fontawesome": "^3.3.3",
-    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/api": "^2.12.0",
     "@zip.js/zip.js": "^2.18.2",
     "apexcharts": "^7.6.1",
     "idb": "^8.0.3",
