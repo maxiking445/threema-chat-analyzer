@@ -4,6 +4,17 @@
     <div class="top-bar">
       <div class="top-controls">
         <DropDown :contacts="contacts" :groups="groups" @selection="handleSelection" />
+        <input
+          v-model="searchQuery"
+          class="chat-search"
+          type="search"
+          placeholder="Search messages"
+          aria-label="Search messages"
+          :disabled="!chats"
+        />
+        <span v-if="chats && searchQuery.trim()" class="search-results">
+          {{ filteredMessages.length }} result{{ filteredMessages.length === 1 ? '' : 's' }}
+        </span>
         <RoundButton icon="download" @click="downloadHtmlContent" title="Download HTML" />
       </div>
     </div>
@@ -18,12 +29,13 @@
       <!-- Chat area -->
       <div class="chat-main">
         <div class="chat-display-area" ref="chatArea">
-          <template v-if="chats?.messages?.length">
-            <div v-for="(msg, index) in chats.messages" :key="index"
+          <template v-if="filteredMessages.length">
+            <div v-for="(msg, index) in filteredMessages" :key="index"
               :class="['message-row', msg.sender.identityID === 'You' ? 'row-self' : 'row-other']">
               <ChatMessage :message="msg.text" :date="msg.date" :identity="msg.sender" :showName="showName" />
             </div>
           </template>
+          <div v-else-if="chats && searchQuery.trim()" class="empty-state">No matching messages</div>
           <div v-else-if="chats" class="empty-state">No messages</div>
           <div v-else class="empty-state">Select a contact or group to view messages</div>
         </div>
@@ -33,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import DropDown from './components/chat/DropDown.vue'
 import ChatMessage from './components/chat/ChatMessage.vue'
 import ContactStatsPanel from './components/ContactStatsPanel.vue'
@@ -49,6 +61,7 @@ const contacts = ref<ModelsContact[]>([])
 const groups = ref<ModelsGroup[]>([])
 const chats = ref<ModelsChat>()
 const selectedItem = ref<string>('')
+const searchQuery = ref('')
 const isLoading = ref(false)
 const showName = ref(false)
 const isContactSelected = ref(false)
@@ -57,6 +70,14 @@ const loadingDiv = ref(null)
 const chatArea = ref<HTMLElement | null>(null)
 const $loading = useAppLoading();
 const loader = ref<ReturnType<typeof $loading.show> | null>(null)
+
+const filteredMessages = computed(() => {
+  const messages = chats.value?.messages ?? []
+  const query = searchQuery.value.trim().toLocaleLowerCase()
+
+  if (!query) return messages
+  return messages.filter(message => message.text.toLocaleLowerCase().includes(query))
+})
 
 onMounted(async () => {
   await loadData()
@@ -90,6 +111,7 @@ async function handleSelection(value: ModelsContact | ModelsGroup) {
 
   const id = isContact ? value.identity.identityID : value.groupUid
   selectedItem.value = id
+  searchQuery.value = ''
   statsContactId.value = isContact ? id : null
 
   const result = await dataCache.loadChats(id);
@@ -154,6 +176,30 @@ function downloadHtmlContent() {
   display: flex;
   gap: 12px;
   align-items: center;
+  width: 100%;
+}
+
+.chat-search {
+  flex: 1;
+  max-width: 360px;
+  padding: 8px 12px;
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.chat-search:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-focus-shadow);
+}
+
+.search-results {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
 
 .chat-body {
