@@ -258,3 +258,4 @@ function downloadHtmlContent() {
 .message-row.row-other {
   justify-content: flex-start;
 }
+</style>
