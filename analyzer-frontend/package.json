@@ -20,7 +20,7 @@
     "@fortawesome/vue-fontawesome": "^3.3.3",
     "@tauri-apps/api": "^2.12.5",
     "@zip.js/zip.js": "^2.25.0",
-    "apexcharts": "^8.8.2",
+    "apexcharts": "^8.9.1",
     "idb": "^8.0.4",
     "papaparse": "^5.7.1",
     "vue": "^3.5.45",
